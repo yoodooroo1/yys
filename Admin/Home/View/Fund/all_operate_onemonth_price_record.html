@@ -1,0 +1,209 @@
+<include file="Public:head"/>
+<link type="text/css" rel="stylesheet" href="__ROOT__/Public/media/css/webuploader.css" />
+<link type="text/css" rel="stylesheet" href="__ROOT__/Public/media/css/diyUpload.css" />
+<style type="text/css">
+	hr{margin:0; padding:0;}
+	table tr:nth-child(1){  
+		background:#eee;  
+		font-size:0.75rem;
+		font-weight:bold;
+		color:#333;
+	}
+	td{
+		padding:14px 10px;
+		text-align:center;
+		border:1px solid #DDD;
+	}  
+	/*上传图片0303*/ 
+	body{position:relative;}
+	.upImgLayer{position:fixed; top:0; left:0; z-index:999; width:100%; height:100%; background:rgba(0,0,0,0.6); text-align:center; display:none; }
+	.uploadContent{background:#FFF; margin-top:10%; width:400px; display:inline-block;}
+	.uploadContent h4{background:#e8e8e8; line-height:40px; text-align:left; padding:0 15px; margin:0; font-weight:600; font-size:14px; letter-spacing:1px;}
+	.layerBtnBox a{display:inline-block; width:50%; float:left; line-height:45px; text-align:center; box-sizing:border-box; border-top:1px solid #ddd; font-size:14px; text-decoration:none;}
+	.check_up{border-left:1px solid #ddd; background:#4D90FE; color:#FFF;}
+	.img_upBox{height:250px; text-align:center; padding:10px 15px; position:relative; background:url('__ROOT__/Public/media/image/image_bg.png')center center no-repeat; background-size:100px;}
+	#upload_btn:after{content:'可将图片直接拖入此区域'; color:#ddd; vertical-align:50%; margin-left:5px;}
+	.is_getted{position:relative; }
+	.tri_top{position:absolute; top:15px; right:5px; z-index:555; width:0; height:0; border-left:8px solid transparent; border-right:8px solid transparent; border-bottom:10px solid #ddd; display:none;}
+	.gettedShow{position:absolute; top:25px; right:-130px; z-index:555; width:370px; border:1px solid #ddd; box-shadow:1px 1px 2px #000; border-radius:2px; background:#fff;  padding:10px; display:none;}
+	.gettedShow img{width:100%; height:180px;}
+	
+</style>
+<div class="container-fluid">  
+	<!-- BEGIN PAGE HEADER-->
+	<div class="row-fluid">
+		<div class="span12">
+		<h4 class="page-title">资金管理<small> Fund management</small></h4>
+			<ul class="breadcrumb" style="margin:0;">
+				<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> 
+					<i class="icon-angle-right"></i></li>
+  
+				<li><a href="#">资金管理</a><i class="icon-angle-right"></i></li>
+				<li><a href=""><strong>运营商利润</strong></a></li>
+				
+			</ul>        
+			<!-- END PAGE TITLE & BREADCRUMB-->
+		</div>
+	</div>
+<hr>   
+	<!-- BEGIN PAGE CONTENT-->          
+	<div class="row-fluid"  >
+		<table style="border:1px solid #ddd; width:100%" border="1px">
+			<tr>
+				<td colspan="7" style="text-align:left">
+				该月运营总利润：{$info.total} &nbsp;&nbsp;&nbsp; 
+				已分润打款：{$info.getmoney}  
+				</td>  
+			</tr>  
+		</table> 
+	   
+		<form class="login-form" action="__URL__/all_operate_onemonth_price_record" method="get" style="margin:15px 0  0;">  
+		<input type="hidden" name="showtype" value='2'>
+		查询月份：<select name="yd" style="width:80px">
+				  <?php for($i=2016;$i<2021;$i++) { ?>	
+			      <option value="<?php echo $i ?>" <?php if($y == $i){ echo "selected='selected'";}  ?>  ><?php echo $i ?></option>
+				  <?php } ?>  
+				  </select>年       
+				  <select name="md" style="width:80px" >
+				   <option value="01" <if condition="$m eq '01'">selected='selected' </if>>01</option>
+				   <option value="02" <if condition="$m eq '02'">selected='selected' </if>>02</option>
+				   <option value="03" <if condition="$m eq '03'">selected='selected' </if>>03</option>   
+				   <option value="04" <if condition="$m eq '04'">selected='selected' </if>>04</option>
+				   <option value="05" <if condition="$m eq '05'">selected='selected' </if>>05</option>
+				   <option value="06" <if condition="$m eq '06'">selected='selected' </if>>06</option>
+				   <option value="07" <if condition="$m eq '07'">selected='selected' </if>>07</option>
+				   <option value="08" <if condition="$m eq '08'">selected='selected' </if>>08</option>
+				   <option value="09" <if condition="$m eq '09'">selected='selected' </if>>09</option>
+				   <option value="10" <if condition="$m eq '10'">selected='selected' </if>>10</option>
+				   <option value="11" <if condition="$m eq '11'">selected='selected' </if>>11</option>
+				   <option value="12" <if condition="$m eq '12'">selected='selected' </if>>12</option>
+				  </select>月     
+				  &nbsp;  &nbsp;    
+		分润状态：<select name="is_get" style="width:80px" >
+				   <option value="">全部</option>
+				   <option value="1">已分润</option>  
+				   <option value="2">未分润</option>
+				  </select> &nbsp;  &nbsp; 
+		运营商：<input type="text" name="operate_name"   value="{$operate_name}" />   &nbsp;  &nbsp; 
+		<input type="submit" name="button" id="button" value="搜索" style="height:28px; margin-left:10px; vertical-align:top;">  
+		</form>    
+		<table style="border:1px solid #ddd; width:100%" border="1px">
+			<tr>       
+			    <td>选择</td>
+				<td>运营商名称</td>
+				<td>开户行</td>  
+				<td>开户名称</td>  
+				<td>银行卡号</td>
+				<td>应分润</td>
+				<td>分润状态</td>
+				<td>操作</td>
+			</tr>
+			<volist name ="lists" id="list">
+			<tr>	
+				<td>{$list.id}</td>
+				<td>{$list.operate_name}</td>
+				<td>{$list.bank_name}</td>
+				<td>{$list.bank_username}</td>
+				<td>{$list.bank_sn}</td>  
+				<td>{$list.value}</td>  
+				<td><if condition="$list.is_get eq 0">未打款<else/>{$list.get_time|date="Y-m-d H:i",###} 已打款 </if></td>    
+				<td><a href="{:U('Fund/operate_day_price_record',array('id'=>$list['id']))}">查看</a> &nbsp;&nbsp;&nbsp; 
+				<if condition="$list.is_get eq 0">
+					<?php if($list['month'] != date('Y-m')){ ?>
+						<a href="javascript:img_get({$list['id']});">确认打款</a>
+					<?php } ?>   
+				<else/>          
+					已打款  
+				</if></td>
+			</tr>	   
+			</volist>
+		</table>  		
+		</if>
+		
+		<!-- BEGIN PAGE CONTENT-->
+		
+	</div>
+</div></div>
+
+<!--确认打款-上传图片-->
+<div class="upImgLayer" id="upImgLayer">
+	<div class="uploadContent">
+		<h4>上传该月打款的凭证</h4>
+		<div class="img_upBox" id="img_upBox">
+			<div class="" id="upload_btn"></div>
+		</div>
+		<div class="layerBtnBox">
+			<a href="javascript:closeUploader();" class="cancel_up uploadBtn" >取消</a>
+			<a href="javascript:confirm_get();" class="check_up uploadBtn" >确定</a>						
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="__ROOT__/Public/media/js/webuploader.html5only.min.js"> </script>
+<script type="text/javascript" src="__ROOT__/Public/media/js/diyUpload.js"> </script><!--主图-->
+<include file="Public:foot" />
+<script>
+function img_get(id){
+		$("#upImgLayer").show();    
+		ID = id; 
+		$("#upload_btn").diyUpload({
+			url:"{:U('Fund/upload_img')}",
+			success:function( data ) {
+				IMG_URL = data['url'];
+				//console.info( data );      
+			}, 
+			error:function( err ) { 
+				console.info( err );	
+			},
+			buttonText : '选择凭证截图',
+			chunked:false,  // 分片大小  
+			chunkSize:100 * 1024 * 1024, //最大上传的文件数量, 总文件大小,单个文件大小(单位字节);
+			fileNumLimit:1,
+			fileSizeLimit:5000*1024 * 1024, 
+			fileSingleSizeLimit:100 * 1024 * 1024,
+			accept: {},
+			dnd:'#img_upBox'
+		});
+		$("#upload_btn").on('click',function (){
+			$("#img_upBox").find(".fileBoxUl li,.diyButton").remove();
+		});
+	}    
+	function confirm_get(){ 		
+		if(typeof(IMG_URL) == 'undefined' || IMG_URL== ''){
+			alert('凭证必须先上传（选择凭证图片后，点击图片下方上传按钮）');
+			return false;
+		}    
+		var url= "{:U('Fund/ajax_operate_confirm_get')}";  
+		$.ajax({       
+			type: "POST",
+			url: url,      
+			data: {id:ID,img_url:IMG_URL},   
+			dataType: "json",
+			success: function(data){
+				if(data.result == 1){
+					 window.location.reload();
+				}else{     
+					alert(data.desc);
+					window.location.reload();
+				}      
+				  
+			}	     
+		});      
+				  
+	}
+	function closeUploader(){
+		$("#upImgLayer").hide();
+		$("#img_upBox").find(".fileBoxUl li,.diyButton").remove();
+		ID = '';
+		IMG_URL = '';
+	}
+
+	$(".if_showimg").each(function (){
+		var This = $(this);
+		This.hover(function (){
+			This.children("span,div").show();
+		},function (){
+			This.children("span,div").hide();
+		});
+	});
+</script>  

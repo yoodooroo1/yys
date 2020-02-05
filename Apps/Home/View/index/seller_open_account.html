@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>商家开户</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+<div class="header">
+    <ul>
+        <li><a href="javascript:history.go(-1)" class="fl">
+            <img class="img_back" src="./images/back.png">全球采购商家开户</a>
+        </li>
+        <li><a>收益明细</a></li>
+    </ul>
+</div>
+<div class="main">
+    <form action="successful_opening.html" method="post">
+        <div class="b_fff">
+            <div class="ptrbl_15 border_b1">
+                <label>店铺名称</label>
+                <input class="label_input" placeholder="开通后无法修改店铺名称">
+            </div>
+            <div class="ptrbl_15 border_b1">
+                <label>行业类别</label>
+                <span>平台创建的类别</span>
+                <span class="img_20_20 fr"><img src="images/next.png"></span>
+            </div>
+            <div class="ptrbl_15 border_b1">
+                <label>选择账号</label>
+                <span>546464</span>
+                <span class="img_20_20 fr"><img src="images/next.png"></span>
+            </div>
+            <div class="ptrbl_15 border_b1">
+                <label>登录密码</label>
+                <input class="label_input" placeholder="请输入登录密码">
+            </div>
+            <div class="ptrbl_15 border_b10">
+                <label>选择套餐</label>
+                <input class="label_input" style="width: 60%;" placeholder="选择套餐/创业版/企业版/试用7天">
+                <span class="img_20_20 fr" style="margin-top: -1px;"><img src="images/next.png"></span>
+            </div>
+            <div class="ptb_15 border_b1" style="padding-left: 15px;">
+                <label>手机号码</label>
+                <input class="label_input" name="phone" style="width: 34%;" placeholder="请输入手机号码">
+                <button type="button" class="button2 fr border_no ptrbl_15 color_fff" style="width:inherit;height:52px;background-color: #D7D7D7;    position: relative;margin-top: -15px;font-size: 12px;" onclick="sendMessage()" id="check">获取验证码</button>
+            </div>
+            <div class="ptrbl_15 border_b1">
+            <label>验证码</label>
+            <input class="label_input" placeholder="请输入验证码">
+        </div>
+        </div>
+        <div class="ta_c plr_15 mt_30">
+            <button class="button b_red1 color_fff">立即开通</button>
+        </div>
+        <div class="ptrbl_15">
+            <span class="img_20_20 pr_10"><img class="img_sub" src="images/select_checkbox.png"></span>
+            <span class="f_12">我已同意全球采购服务条款</span>
+        </div>
+        <div class="mt_30 ptrbl_15 mlr_15 b_fff mb_50">
+            <label style="width: 35%">业务编号：</label>
+            <span>X123451</span>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="js/jquery-2.1.3.js"></script>
+<script type="text/javascript" src="js/layer/layer.js"></script>
+<script>
+    //检测电话号码是否正确
+    function phoneCheck()
+    {
+        var phone=$('input[name="phone"]').val();
+        var myreg = /^1[3|4|5|8][0-9]\d{4,8}$/;
+        if((phone.length==0)||(phone.length!=11)||(!myreg.test(phone)))
+        {
+            layer.msg('请输入有效的手机号码！',{icon:2,time:1000});
+            return false;
+        }
+    }
+    var InterValObj; //timer变量，控制时间
+    var count = 60; //间隔函数，1秒执行
+    var curCount;//当前剩余秒数
+    function sendMessage() {
+        var dt=window.phoneCheck();
+        if(dt!==false){
+            curCount = count;
+            //设置button效果，开始计时
+            $('#check').attr("disabled", "true");
+            InterValObj = window.setInterval(SetRemainTime, 1000); //启动计时器，1秒执行一次
+            var phone=$('input[name="phone"]').val();
+
+            //向后台发送处理数据
+        }
+    }
+    //time处理函数
+    function SetRemainTime() {
+        if (curCount == 0 ){
+            window.clearInterval(InterValObj);//停止计时器
+            $('#check').removeAttr("disabled");//启用按钮
+            $('#check').html("点击重新发送");
+        }
+        else {
+            curCount--;
+            $('#check').html(curCount + "秒后重新发送");
+        }
+    }
+</script>
+</body>
+</html>

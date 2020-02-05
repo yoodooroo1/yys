@@ -1,0 +1,180 @@
+/*charset=utf-8*
+	—∏–≈’“ªÿ√‹¬Î£¨÷ÿ÷√√‹¬Î
+*/
+body,div,img,input,font,label,button,a,span,p,h3,ul,li{margin:0; padding:0; font:400 14px Avenir,Microsoft Yahei,Hiragino Sans GB,Microsoft Sans Serif,WenQuanYi Micro Hei,sans-serif;}
+body{
+	background:#FFF;
+	color:#666;
+}
+ul{
+	list-style:none;
+}
+input{
+	outline:0;
+	box-shadow:inset 0px  1px 1px rgba(216,56,56,0.01);
+	border:1px solid #f3c3c3;
+	font-size:14px;
+	padding:10px;
+	height:40px;
+	vertical-align:middle;
+	border-radius:2px;
+}
+.resetMain{
+	width:68.5%;
+	margin:0 auto;
+	padding:20px 0;
+}
+.xunxinLog{
+	text-align:left;
+	width:26.5%;
+	margin-bottom:20px;
+}
+.formContent{
+	width:100%;
+	border:1px solid #F3C3C3;	
+	padding:25px 55px;
+	box-sizing:border-box;
+	background:rgba(216,56,56,0.009);
+}
+.forget_header{
+	margin-bottom:40px;
+}
+h3{
+	font-size:23px;
+	font-weight:400;
+	display:inline-block;
+	color:#414c59;
+	text-align:top
+}
+.forget-header-guide{
+    display: inline-block;
+    margin-left: 100px;
+    vertical-align: top;
+}
+.forget-header-guide li{
+	display:inline-block;
+}
+.num{
+	margin-right: 5px;
+    padding:2px 8px;
+    border-radius: 50%;
+    background-color: #999;
+    color: #fff;   
+	text-align:center;
+  
+}
+.forget-header-guide .nowNum{
+	color:#FFF;
+	background:#d83838;
+}
+.curText{
+	color:#999;
+	font-style:italic;
+}
+.forget-header-guide .nowText{
+	color:#d83838;
+}
+.line{
+	margin:0 5px;
+	width:270px;
+	background:#EEE;
+	height:5px;
+}
+.forget_tip{
+	margin-left:200px;
+	padding-bottom:15px;
+	color: #414c59;
+    font-size: 18px;
+    font-weight: 400;
+}
+.forgetForm{
+	width:280px;
+	margin:0 0 100px 300px;
+}
+.forgetInput{
+	position:relative;
+	margin:12px 10px;
+}
+.codeInput{
+	padding-right:115px;
+}
+input[name=account],input[name=tel],input[name=code],input[type=submit ],input[name=newPw],input[name=secPw]{
+	width:100%;
+}
+.forgetLabel{
+	position:absolute;	
+	text-align:right;
+	height:40px;
+	font-size:14px;
+	line-height:40px;
+	display:block;
+}
+.xunxinAccount,.checkCode{
+	left:-45px;
+}
+.mibTel{
+	left:-70px;
+}
+.codeBtn{
+	position:absolute;
+	right:0px;
+	height:40px;	
+	background:#d83838;
+	color:#FFF;
+	top:0;
+	width:110px;
+	padding:5px !important;
+	
+}
+input[name=fistBtn],input[name=secondBtn]{
+	background:#D83838;
+	color:#FFF;
+	margin-top:10px;
+	letter-spacing:2px;
+	font-size:16px;
+	vertical-align:20%;
+	height:auto;
+}
+footer{
+	padding:35px 0 20px;	
+	width:100%;
+}
+footer p{
+	font-size:0.82rem;
+	text-align:center;
+	padding:3px 0;
+}
+.footerLink a{	
+	letter-spacing:2px;
+	font-size:0.82rem;
+	padding:3px 0;
+	text-decoration:none;
+	color:#666;	
+}
+.copyRight{
+	color:#999;
+}
+.footerLink a:hover{
+	color:#d83838;
+	text-decoration:underline;
+}
+.note{
+	position:absolute;
+	right:-150px;
+	top:0;
+	text-algin:left;
+	width:140px;
+	height:40px;
+	line-height:40px;
+	color:#d83838;
+}
+
+/*÷ÿ÷√√‹¬Î*/
+.nearH{
+	margin:10px 0 -10px;
+}
+
+
+
+
+

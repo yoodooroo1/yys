@@ -1,0 +1,129 @@
+<include file="Public:head"/>
+<link href="__PUBLIC__/times/mobiscroll.css" rel="stylesheet" />
+<link href="__PUBLIC__/times/mobiscroll_date.css" rel="stylesheet" />
+<script src="__PUBLIC__/times/mobiscroll_date.js" charset="gb2312"></script> 
+<script src="__PUBLIC__/times/mobiscroll.js"></script> 
+<link href="__ROOT__/Public/media/css/layout.css" rel="stylesheet" type="text/css"/>
+<div class="container-fluid">  
+	<!-- BEGIN PAGE HEADER-->
+	<div class="title">
+		<ul class="breadcrumb">
+			<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> <i class="icon-angle-right"></i></li>
+			<li><a href="#">运营商管理</a><i class="icon-angle-right"></i></li>
+			<li><a href="#">运营商列表</a></li>
+		</ul>  		 
+	</div><!-- END PAGE TITLE & BREADCRUMB-->	
+	<div class="nav-tabs">
+        <ul>
+            <li class="{$ui.operate_list}"> <a href="{:U('Operate/operate_list')}"> 运营商列表</a> </li>
+            <li class="{$ui.operate_info}"> <a href="{:U('Operate/operate_info')}"> 运营商店铺</a> </li> 
+			<li class="{$ui.operate_apply}"> <a href="{:U('Operate/operate_apply_list')}"> 运营商申请</a> </li> 
+        </ul>
+    </div><!-- END PAGE HEADER-->	
+    <div class="main-content" >
+		<form action="__URL__/operate_list" method="get"   name="searchForm">       
+			<input type="text" name="operate_id" value=""  placeholder="运营商ID"/> 
+			<input type="text" name="operate_name"   value=""  placeholder="运营商名称" />
+			<select name="choose_level">
+						<option value=''>选择代理等级</option>
+						<option value='1'>初级</option>
+						<option value='2'>铜牌</option>
+						<option value='3'>银牌</option>
+						<option value='4'>金牌</option>
+						<option value='5'>白金</option>  
+						<option value='6'>钻石</option>
+					  </select>	 
+			<input type="text" name="operate_sn"   value=""  placeholder="业务编号" />
+			<input type="text" name="link_name"   value=""   placeholder="联系人"/>
+			<input type="text" name="link_tel"   value=""   placeholder="联系方式"/> 
+			成立时间：<input type="text" id="Time1"  readonly name="Time1"  /> 至 <input type="text"  readonly id="Time2" name="Time2" />
+			<input type="submit" name="button" id="button" value="搜索" />  
+		</form>  
+		<table name="table-list">
+			<tr> 
+			    <th>运营商ID</th>
+			    <th>运营商名称</th>
+				<th>业务编号</th>
+				<th>预存余额</th>   
+				<th>登录账号</th>
+				<th>联系人/手机号</th>
+				<th>代理等级</th>
+				<th>代理折扣</th>
+				<th>发展店铺</th>
+				<th>团队成员</th>
+				<th>成立时间</th>
+				<th width="100">操作</th>
+			</tr> 
+				<volist name ="lists" id ="list">
+				<tr>
+				<td style="text-align:center">{$list.id}</td>   
+				<td style="text-align:center">{$list.operate_name}</td>   
+				<td>{$list.operate_sn}</td>  
+				<td>{$list.money}</td> 
+				<td>{$list.login_name}</td> 
+				<td>{$list.link_name}/{$list.link_tel}</td>
+				<td><if condition="$list.level eq 1"> 
+					初级
+					<elseif condition = "$list.level eq 2" />
+					铜牌
+					<elseif condition = "$list.level eq 3" />
+					银牌
+					<elseif condition = "$list.level eq 4" />
+					金牌
+                    <elseif condition = "$list.level eq 5" />
+					白金 
+					<else />
+					钻石   
+					</if>	
+				</td>	   
+				<td>{$list.discount}</td>
+				<td>{$list.store_num}</td>   				
+				<td><a href="{:U('Operate/operate_shareholder_list',array('id'=>$list['id']))}">{$list.shareholder_num}</a></td> 				
+				<td>{$list.addtime|date="Y-m-d H:i",###}</td>   
+				<td>     
+					<a href="{:U('Fund/operate_month_price_record',array('operate_id'=>$list['id']))}">查看</a>&nbsp;&nbsp;
+					<a href="{:U('Operate/operate_info',array('id'=>$list['id']))}">编辑</a>   				
+				</td>  
+			</tr>                      
+			</volist>
+		</table>
+		<div class="pages">  
+            {$page}  
+        </div> 
+	</div>	 
+</div>
+<!-- hjun 2017年2月22日 11:47:55 删除提示-->
+<script>
+	$(function () {
+		$('.del_operate').click(function () {
+			if (confirm('确定要删除吗？')){
+			    location.href = "{:U('Operate/del_operate',array('id'=>$list['id']))}";
+			}
+        });
+    })
+</script>
+<script type="text/javascript">
+$(function () {   
+	var currYear = (new Date()).getFullYear();	
+	var opt={};
+	opt.date = {preset : 'date'};
+	opt.datetime = {preset : 'datetime'};
+	opt.time = {preset : 'time'};
+	opt.default = {
+		theme: 'android-ics light', //皮肤样式
+		display: 'modal', //显示方式 
+		mode: 'scroller', //日期选择模式
+		dateFormat: 'yyyy-mm-dd',
+		lang: 'zh',
+		showNow: true,
+		nowText: "今天",
+		startYear: currYear - 50, //开始年份
+		endYear: currYear + 10 //结束年份
+	};
+  
+	$("#Time1").mobiscroll($.extend(opt['date'], opt['default']));
+	$("#Time2").mobiscroll($.extend(opt['date'], opt['default']));
+
+});
+</script>
+<include file="Public:foot" />

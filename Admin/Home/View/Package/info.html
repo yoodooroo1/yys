@@ -1,0 +1,219 @@
+
+<include file="Public:head"/>
+<link type="text/css" rel="stylesheet" href="__ROOT__/Public/media/css/layout.css" />
+<link rel="stylesheet" href="__ROOT__/Public/kindeditor/themes/default/default.css" />
+<link rel="stylesheet" href="__ROOT__/Public/kindeditor/plugins/code/prettify.css" />
+<script src="__ROOT__/Public/kindeditor/kindeditor.js" type="text/javascript"></script>
+<script src="__ROOT__/Public/kindeditor/upyun.js" type="text/javascript"></script>
+<script src="__ROOT__/Public/kindeditor/lang/zh_CN.js" type="text/javascript"></script>
+<script src="__ROOT__/Public/kindeditor/plugins/code/prettify.js" type="text/javascript"></script>
+<script type="text/javascript" src="__ROOT__/Public/js/jquery-2.1.3.js"></script>
+<script src="__PUBLIC__/mjs/template.js"></script><!--加载更多-->
+<div class="container-fluid">
+	<!-- BEGIN PAGE HEADER--> 
+	<div class="title">
+		<ul class="breadcrumb" >
+			<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> <i class="icon-angle-right"></i></li>
+			<li><a href="#">套餐管理</a><i class="icon-angle-right"></i></li>
+			<if condition="$act eq 'info'">
+			<li><a href="{:U('Package/package_list')}">套餐管理</a><i class="icon-angle-right"></i></li>
+			<li><a href="#"><strong>套餐详情</strong></a></li>				
+			<else />
+			<li><a href="#"><strong>添加套餐</strong></a></li>
+			</if>
+		</ul>      
+	</div><!-- END PAGE TITLE & BREADCRUMB-->
+	<if condition="$act neq 'info'">
+		<div  class="nav-tabs">
+			<ul >
+				<li class="{$ui.package_list}"> <a href="{:U('Package/lists')}" > 套餐列表</a> </li>
+				<li class="{$ui.package_info}"> <a href="{:U('Package/info')}"> 添加套餐</a> </li>
+				<li class="{$ui.package_order}"> <a href="{:U('Package/order')}"> 套餐订单</a> </li>
+			</ul>
+		</div>
+	</if><!-- END PAGE HEADER-->
+	<div style="position:fixed;line-height:0px;z-index:-2">  <!--解决360浏览器自动填充账号密码问题-->    
+	<input style="line-height:0px" type='text'  /><input style="line-height:0px" type='password' >    
+	</div>	
+    <div class="main-content" >
+		<form action="{:U('Package/updates')}" method="post" enctype="multipart/form-data" name="add-submit" onSubmit="return checkTable()">      
+			<table name="add_table">
+				<!-- <tr style="display:none">  
+					<td>套餐升级等级</td>
+					<td>
+						<select name='up_level'>		 
+							<option value="1" <?php if($info['up_level'] == 1) echo "selected = 'selected'"; ?>  >  VIP1 </option>   
+							<option value="2" <?php if($info['up_level'] == 2) echo "selected = 'selected'"; ?>  >  VIP2 </option>   
+							<option value="3" <?php if($info['up_level'] == 3) echo "selected = 'selected'"; ?>  >  VIP3 </option>         
+							<option value="4" <?php if($info['up_level'] == 4) echo "selected = 'selected'"; ?>  >  VIP4 </option>   
+							<option value="5" <?php if($info['up_level'] == 5) echo "selected = 'selected'"; ?>  >  VIP5 </option>  
+							<option value="6" <?php if($info['up_level'] == 6) echo "selected = 'selected'"; ?>  >  VIP6 </option>	 			
+						</select>     
+					</td>      
+				</tr>   -->	
+				<tr> 
+					<td>套餐名称</td>
+					<td> 
+				
+					<select name='name'>	      
+					
+					<option value="商铺版" <?php if($info['name'] == "商铺版") echo "selected = 'selected'"; ?>  >  商铺版 </option> 
+					<option value="批发版" <?php if($info['name'] == "批发版") echo "selected = 'selected'"; ?>  >  批发版 </option> 
+					<option value="工厂版" <?php if($info['name'] == "工厂版") echo "selected = 'selected'"; ?>  >  工厂版 </option> 
+					<option value="分销版" <?php if($info['name'] == "分销版") echo "selected = 'selected'"; ?>  >  分销版 </option> 
+					<option value="外贸版" <?php if($info['name'] == "外贸版") echo "selected = 'selected'"; ?>  >  外贸版 </option> 
+					<option value="企业版" <?php if($info['name'] == "企业版") echo "selected = 'selected'"; ?>  >  企业版 </option> 
+					<!-- <option value="大众版" <?php if($info['name'] == "大众版") echo "selected = 'selected'"; ?>  >  大众版 </option>  -->
+					</select>
+					</td>  
+					   
+				</tr>  	
+				<tr>
+					<td>套餐描述</td>   
+					<td><textarea name="desc" rows="2" cols="200" style="width:70%">{$info.desc}</textarea></td>
+				</tr>	
+				<tr>   
+					<td>原价</td>  
+					<td>
+					一年：<input name="original_price" type="text" value="{$info.original_price}" ><br/>
+					两年：<input name="original_price2" type="text" value="{$info.original_price2}" ><br/>
+					三年：<input name="original_price3" type="text" value="{$info.original_price3}" >
+					</td>  
+				</tr>	
+				<tr>   
+					<td>市场价</td>  
+					<td>
+					一年：<input name="market_price" type="text" value="{$info.market_price}" ><br/>
+					两年：<input name="market_price2" type="text" value="{$info.market_price2}" ><br/>
+					三年：<input name="market_price3" type="text" value="{$info.market_price3}" ><br/>
+					</td> 
+				</tr>	
+				<tr>   
+					<td>最低价</td>  
+					<td>
+					一年：<input name="min_price" type="text" value="{$info.min_price}" ><br/>
+					两年：<input name="min_price2" type="text" value="{$info.min_price2}" ><br/>
+					三年：<input name="min_price3" type="text" value="{$info.min_price3}" >
+					</td>
+				</tr>  
+				<tr>  
+					<td>图文详情页内容</td>
+					<td >
+						<textarea name="content" id="info"  rows="5" style="width:99%;height:360px">{$info.content}</textarea>   
+					</td>   
+				</tr>  
+				<tr >
+					<td >是否显示</td>
+					<td>	
+						<span class="diyCheckBox">				
+							<input type="radio" name="is_show" id="show_1" value="1"  <if condition="$info.is_show eq 1 "> checked </if>  /> 
+							<label for="show_1">是</label>
+						</span>  
+						<span class="diyCheckBox">
+							<input type="radio" name="is_show" id="show_0" value="0"  <if condition="$info.is_show eq 0"> checked </if>  /> 
+							<label for="show_0">否</label>  
+						</span>   
+					</td>    
+				</tr>   
+			</table>    
+			<div class="info-input">
+				<input type="hidden" value="{$info.packageid}" name="pid"/>
+				<input type="submit" value="确定"/>
+			</div>
+		</form>
+    </div>      
+</div>
+
+<script type="text/javascript">
+	function checkTable(){ 
+		var min_price = $("input[name=min_price]").val();			
+		var min_price2 = $("input[name=min_price2]").val();			
+		var min_price3 = $("input[name=min_price3]").val();			
+		var market_price = $("input[name=market_price]").val();			
+		var market_price2 = $("input[name=market_price2]").val();			
+		var market_price3 = $("input[name=market_price3]").val();			
+		if(min_price == '' || min_price <= 0){
+			alert('一年最低价不能为空');
+			return false;
+		}else if(min_price2 == '' || min_price2 <= 0){
+			alert('两年最低价不能为空');
+			return false;
+		}else if(min_price3 == '' || min_price3 <= 0){
+			alert('三年最低价不能为空');  
+			return false;
+		}else if(market_price == '' || market_price <= 0){
+			alert('一年市场价不能为空');
+			return false;
+		}else if(market_price2 == '' || market_price2 <= 0){
+			alert('两年市场价不能为空');
+			return false;
+		}else if(market_price3 == '' || market_price3 <= 0){
+			alert('三年市场价不能为空');
+			return false;
+		}else if(Number(min_price) > Number(market_price)){
+			alert('一年最低价不能大于市场价');
+			return false;
+		}else if(Number(min_price2) > Number(market_price2)){
+			alert('两年最低价不能大于市场价');
+			return false;
+		}else if(Number(min_price3) > Number(market_price3)){
+			alert('三年最低价不能大于市场价');
+			return false;
+		}else{
+			return true;
+		}
+					  
+	}
+</script>  
+<!--更改图片-->
+<script>  
+     
+	$("#main_img").change(function(){
+		var objUrl = getObjectURL(this.files[0]) ;		
+		//console.log("objUrl = "+objUrl) ;	
+		if (objUrl) {
+			$("#main_Img").attr("src", objUrl) ;
+		}		    	
+	}) ;       
+	//建立一個可存取到該file的url
+	function getObjectURL(file) {
+		var url = null ; 
+		
+		if (window.createObjectURL!=undefined) { // basic
+			url = window.createObjectURL(file) ;
+		} else if (window.URL!=undefined) { // mozilla(firefox)
+			url = window.URL.createObjectURL(file) ;
+		} else if (window.webkitURL!=undefined) { // webkit or chrome
+			url = window.webkitURL.createObjectURL(file) ;
+		}
+		return url ;
+	}
+</script>
+  
+
+<script>
+var editor;
+KindEditor.ready(function(K) {
+//var url = 'http://'+window.location.host+'/admin.php?m=Service&c=Upyun&a=kindedtiropic';
+var url = "<?php echo ADMIN_URL.'/admin.php/Home/Upyun/kindedtiropic';?>";
+editor = K.create('#info', {      
+filterMode: false,      
+resizeType : 1,
+allowPreviewEmoticons : false, 
+allowImageUpload : true,
+postParams:{'PHPSESSID':"<?php echo session_id();?>"},
+uploadJson : url,   
+items : [<include file="Public:editorToolbar" />],
+ afterBlur: function () { this.sync(); }  
+});  
+  
+});  
+</script>
+<script>
+    $(function () {
+       
+    });
+
+</script>
+
+<include file="Public:foot" />

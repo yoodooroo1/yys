@@ -1,0 +1,113 @@
+<include file="Public:head"/>
+<link href="__ROOT__/Public/media/css/layout.css" rel="stylesheet" type="text/css"/>
+<div class="container-fluid">  
+	<!-- BEGIN PAGE HEADER-->
+	<div class="title">
+		<ul class="breadcrumb" >
+			<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> <i class="icon-angle-right"></i></li>
+			<li><a href="#">套餐管理</a><i class="icon-angle-right"></i></li>
+			<li><a href="{:U('Package/lists')}"><strong>套餐列表</strong></a></li>
+		</ul>      
+	</div><!-- END PAGE TITLE & BREADCRUMB-->
+    <div class="nav-tabs">
+        <ul>
+            <li class="{$ui.package_list}"> <a href="{:U('Package/lists')}" > 套餐列表</a> </li>
+            <li class="{$ui.package_info}"> <a href="{:U('Package/info')}"> 添加套餐</a> </li>
+			<li class="{$ui.package_order}"> <a href="{:U('Package/order')}"> 套餐订单</a> </li>
+        </ul>
+    </div><!-- END PAGE HEADER-->
+          
+	<div class="main-content" >
+		<table name="table-list">	
+			<tr>
+			    <th>套餐名称</th>
+			    <th>套餐等级</th>
+			    <th >功能描述</th>
+				<th>原价</th>
+				<th>市场价格</th>
+				<th>最低价格</th>
+				<th>修改时间</th>
+				<th>是否显示</th>
+				<th>操作</th>  
+				
+			</tr> 
+			 <foreach name='lists' item='list' > 				
+			<tr>   
+			    <td>{$list.name}</td>  
+				<td>VIP{$list.up_level}</td>  
+				<td>{$list.desc}</td>     
+				<td>一年：￥{$list.original_price}<br/>
+					两年：￥{$list.original_price2}<br/>
+					三年：￥{$list.original_price3}	
+				</td> 
+				<td>一年：￥{$list.market_price}<br/>
+					两年：￥{$list.market_price2}<br/>
+					三年：￥{$list.market_price3}	
+				</td>  
+				<td>一年：￥{$list.min_price}<br/>
+					两年：￥{$list.min_price2}<br/>
+					三年：￥{$list.min_price3}
+				</td> 
+				<td>{$list.edittime|date="Y-m-d H:i:s",###}</td>
+				<if condition="$list.is_show  eq 0">
+					<td data="{$list.is_show}" id="show_{$list['packageid']}"  ondblclick="javascript:changPackageShow({$list['packageid']})"><a href="javascript:;" class="serverJudge " id="sv_{$list['packageid']}">	&#935;</a></td><!--显示-->
+				<else />  
+					<td data="{$list.is_show}" id="show_{$list['packageid']}" ondblclick="javascript:changPackageShow({$list['packageid']})"><a href="javascript:;" class="serverJudge" id="sv_{$list['packageid']}">&#8730;</a></td><!--不显示-->
+				</if>  
+				<td> 
+				     <a href="{:U('Package/info',array('pid'=>$list['packageid']))}">编辑</a>&nbsp;
+					<a href="{:U('Package/del_package',array('pid'=>$list['packageid']))}">删除
+				</td>
+					 
+			</tr>           
+			</foreach>  
+		</table>
+		
+		<!-- BEGIN PAGE CONTENT-->
+		<div class="pagination pagination-right">
+			<ul class="pageNumber">
+				{$page}
+			</ul>
+		</div>  
+	</div>
+</div>
+<script>
+function changPackageShow(packageid)
+{
+	var blind = $("#show_"+packageid)
+	var state = blind.attr('data');
+	url  = "{:U('Package/changPackageShow')}";
+	$.ajax({   
+	type:'POST',       
+	url:''+url+'',    
+	data:'packageid=' + packageid +'&state='+state,
+	dataType:'text',
+	success:function(msg){
+		if(msg != '3')   
+		{   
+			blind.attr('data',msg);
+			if(msg == 0)    
+			{				
+				$("#sv_"+packageid).html("&#935;");						
+			}
+			else if(msg == 1)
+			{    	 		
+				$("#sv_"+packageid).html("&#8730;");
+			}						
+		}
+		else
+		{
+			alert('操作失败');
+		}
+	},
+	error:function(){
+		alert('访问失败');
+	}  
+	});
+	
+}
+</script>
+
+
+
+<include file="Public:foot" />

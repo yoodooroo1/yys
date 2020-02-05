@@ -1,0 +1,96 @@
+<include file="Public:head"/> 
+ <link href="__ROOT__/Public/media/css/layout.css" rel="stylesheet" type="text/css"/>
+    <div class="container-fluid">
+		<div class="title">
+			<h4 class="page-title"> 管理首页<small> Management Homepage</small></h4>
+			<ul class="breadcrumb">
+				<li><i class="icon-home"></i><a href="{:U('Shareholder/index')}">管理首页</a></li>  
+			</ul> 
+		</div>
+		<table  class="colorDiv" >			
+			<tr>
+				 <th >预充值账号余额<br>{$info.money}元<br><a href="{:U('Shareholder/preloaded')}">查看</a></th></th> 
+				<th >未打款收益<br>{$info.unget_price}元<br><a href="{:U('Shareholder/operate_month_price_record')}">查看</a></th></th>
+			<th>团队成员<br>{$info.shareholder_num}个<br><a href="{:U('Team/team_list')}">查看</a></th></th>
+				<th  >在线客服<br>QQ:78789789</th></th>  
+			</tr>   	 		 
+		</table>     
+		<div>
+		 <p>我的手机端推广链接:<input type="" value="{$info.share_url}" id="copyId1" readonly /><input type="button" value="复制" class="clickCopy" /></p> 
+		  <p>我的PC端推广链接:<input type="" value="{$info.pc_share_url}" id="copyId3" readonly /><input type="button" value="复制" class="clickCopy" /></p>
+		  <p>我的业务编号:<input type="" value="{$info.operate_sn}" id="copyId2" readonly /><input type="button" value="复制" class="clickCopy" /></p>
+		</div>  
+		<table class="msgDiv">		 	 
+			<tr>
+				<td>店铺总数量<span>{$info.store_num}</span></td>
+				<td>直接开户<span>{$info.store_num2}</span></td>
+				<td>试用期<span>{$info.store_num3}</span></td>
+				<td>专业版<span>{$info.store_num4}</span></td>
+			</tr>  
+			<tr>
+				<td>企业版<span>{$info.store_num5}</span></td>
+				<td>运营中心总收益<span>{$info.total_price}</span></td>
+				<td>总收益总部已打款金额<span>{$info.get_price}</span></td>
+				<td>成员分红<span>{$info.group_price}</span></td>
+			</tr>
+			<tr>
+				<td>成员佣金<span>{$info.recommend_price}</span></td>
+				<td>成员总收益未打款金额<span>{$info.holder_ungetprice}</span></td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</span></td>
+			</tr>
+		
+		</table>
+	
+    </div>   
+<include file="Public:foot"/>
+<script>
+	$(function () {
+		$(document).on('click','.clickCopy',function () {
+		    var text=$(this).prev('input').val();
+		    var id=$(this).prev('input').attr('id');
+            copy_text(text,id);
+        })
+    })
+    function copy_text(text,id) {
+        if (navigator.userAgent.match(/(iPhone|iPod|iPad);?/i)) {
+            //ios
+            // alert(id);
+            var copyDOM = document.querySelector('#'+id);  //要复制文字的节点
+            var range = document.createRange();
+            // 选中需要复制的节点
+            range.selectNode(copyDOM);
+            // 执行选中元素
+            window.getSelection().addRange(range);
+            // 执行 copy 操作
+            var successful = document.execCommand('copy');
+            try {
+                var msg = successful ? 'successful' : 'unsuccessful';
+
+                console.log('copy is' + msg);
+            } catch(err) {
+                console.log('Oops, unable to copy');
+            }
+            // 移除选中的元素
+            window.getSelection().removeAllRanges();
+        }else{
+            //
+            // 创建元素用于复制
+            var aux = document.createElement("input");
+            //aux.type = 'hidden';//创建元素隐藏域=>否则ios会调出输入框
+            // 设置元素内容
+            aux.setAttribute("value", text);
+            // 将元素插入页面进行调用
+            document.body.appendChild(aux);
+            // 复制内容
+            aux.select();
+            // 将内容复制到剪贴板
+            document.execCommand("copy");
+            // 删除创建元素
+            document.body.removeChild(aux);
+        }
+		alert('已复制内容到剪贴板');
+
+
+    }
+</script>

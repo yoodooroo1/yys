@@ -1,0 +1,58 @@
+<include file="Public:head"/>
+<link type="text/css" rel="stylesheet" href="__ROOT__/Public/media/css/layout.css" />
+<div class="container-fluid" >
+	<!-- BEGIN PAGE HEADER-->
+	<div class="title">
+		 <ul class="breadcrumb">
+			<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> <i class="icon-angle-right"></i></li>
+			<li><a href="#">资金管理</a><i class="icon-angle-right"></i></li>
+			<li><a href="{:U('Fund/according_month')}"><strong>运营商收益按月</strong></a></li>
+		</ul>  		 
+	</div><!-- END PAGE TITLE & BREADCRUMB-->	
+    <div class="nav-tabs" >
+        <ul>
+            <li class="{$ui.history_detail}"> <a href="{:U('Fund/history_detail')}" > 运营商推广历史明细</a> </li>
+            <li class="{$ui.according_month}"> <a href="{:U('Fund/according_month')}"> 运营商收益按月</a> </li>
+            <li class="{$ui.according_name}"> <a href="{:U('Fund/according_name')}"> 运营商收益按名称</a> </li>
+			<li class="{$ui.recharge_detail}"> <a href="{:U('Fund/recharge_detail')}"> 运营商充值明细</a> </li>
+        </ul>
+    </div><!-- END PAGE HEADER-->    
+	<div class="main-content">
+		<div  class="data">
+			<ul>
+				<li> 运营商历史推广收益：<b>{$info.total}元</b></li>
+				<li> 已打款：<b>{$info.getmoney}元</b></li>
+			</ul>	   
+		</div>
+		<table name="table-list">			
+			<tr>	
+				<th>年月份</th>				
+				<th>运营商推广收益</th>
+				<th>已打款</th>
+				<th>剩余</th>
+				<th>运营商数量</th>
+				<th>操作</th>				
+			</tr>
+			<foreach name='lists' item='list' >
+			<tr>
+				<td>{$list.month}</td>
+				<td>{$list.totalmoney} </td>
+				<td>{$list.get_money}</td>
+				<td>{$list.unget_money}</td>
+				<td>{$list.operate_num}</td>  
+				<td style="letter-spacing:3px;">
+				     <a href="{:U('Fund/history_detail',array('periods'=>$list['month']))}">明细</a>
+                  	<a href="{:U('Fund/all_operate_onemonth_price_record',array('month'=>$list['month']))}">查看</a>   
+				</td>
+			</tr>     
+		    </foreach>
+		</table>
+	</div>	
+</div>
+<!-- 自动选中搜索条件-->
+<script>
+	var status = "{$money_status}";
+	$('#money_status').val(status);
+</script>
+<include file="Public:foot" />
+

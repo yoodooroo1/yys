@@ -1,0 +1,129 @@
+/*我的余额*/
+.balanceHeader{position:fixed;top:0;z-index:4;width:100%;max-width:640px;background:#cc222b;
+	text-align:center;	padding:0.33rem 0 0;}
+.shopLogo{width:3rem;border-radius:100%;display:inline-block;}
+.shop_bl{margin:0.5rem 0 1rem;}
+.left_bl,.right_bl{display:inline-block;	box-sizing:border-box;width:49%;	padding:3px 0;}
+.left_bl p{	color:#FFF;}
+.right_bl{	border-left:1px solid #FFF;}
+.balanceShow i{padding:1.2rem;background:url('../mimages/memberbalance_pic1.png')center center no-repeat;background-size:1.4rem;}
+.fontBig{font-size:1.1rem;}
+.to_ff{padding:2px 3px;	border:1px solid #FFF;border-radius:3px;box-sizing:border-box;display:inline-block;}
+.greyBg{background:#eaeaea;text-align:left;	margin-top:1rem;padding:0 1.4rem;line-height:34px;}
+.balance_detail{margin-top:186px;	background:#FFF;	padding:0 0.48rem;}
+.balance_detail li{border-bottom:1px solid #efefef;	padding:0 0.65rem;}
+/*编辑/修改地址*/
+.inputTContent{overflow:hidden;background:#FFF;	padding:0 1.1rem;	border-bottom:1px solid #efefef;}
+.inputTContent,.checkAll{line-height:43px;}
+.inputTContent>label{display:block;letter-spacing:1px;font-size:1rem;}
+.inputTContent input{border:0;font-size:0.9rem;color:#000;padding:0 0.6rem;}
+.inputTContent textarea{border:0;width:calc(100%  - 5rem);line-height:1.2rem;padding:5px 0.6rem;margin:0.5rem 0 0.3rem;}
+.inputTContent textarea,.inputTContent span{	vertical-align:top;}
+.inputTContent select{ appearence:none; -webkit-appearance:none; -moz-appearance:none; border:0; margin:0; padding:0;}
+.editAddMain{box-sizing:border-box;}
+.checkAll{width:100%;border-radius:3px;}
+.default_check{ border-top:1px solid #efefef; margin-top:0.6rem;}
+.checkAdd{ width:calc(100%  - 2.2rem); margin:1.88rem 1.1rem; line-height:38px; border-radius:3px;}
+.selecetContent{ background:#FFF url('../mimages/ad_right.png') no-repeat; background-position:calc(100% - 1.1rem) center; background-size:0.5rem;}
+.selecetContent select{ float:right; height:44px;  margin-right:0.7rem; text-align:left; width:calc(100% - 3.2rem); line-height:43px; padding-left:calc(100% - 7rem);}
+.checkInp{ border:1px solid #efefef; border-radius:3px; padding:0 0.5rem; display:inline-block; height:1.1rem; box-sizing:border-box; float:right; margin-top:14px;}
+.default_check input:checked + label{ background:url('../mimages/sd.png')center center no-repeat; background-size:0.8rem;border:1px solid #d83838; }
+/*个人资料*/
+.personData{	background:#FFF;	padding:0 1.45rem;line-height:40px;	border-bottom:1px solid #efefef;}
+.personData>label{}
+.personData input{width:85%;padding-left:1.45rem;width:70%;border:0;}
+.personData img,.personData span{vertical-align:middle;}
+.personData img{width:3.5rem;	margin:0.75rem 0 0.75rem 1.45rem;}
+.perMrT{margin-top:1.03rem;}
+.littleMart{	margin-top:7px;}
+.firstFloor{	margin-top:0.8rem;}
+.personBack{background:url('../mimages/back_btn.png')left center no-repeat;background-size:0.5rem;width:48px;	color:#FFF;}
+.subBtn{float:right;background:rgba(2,3,4,0);	border:0;}
+.sexChs label{display:inline-block;width:50%;	box-sizing:border-box;text-align:center;padding:0.6rem 0;}
+.sexChs label:nth-child(1){	border-right:1px solid #efefef;}	
+.sexChs input{display:none;}
+
+/*我*/
+.link_login{background:#C82526 url('../mimages/usrCenterHeader.png')center center no-repeat;background-size:cover;	display:block;text-decoration:none;	padding:2.6rem 2rem;}
+.userImg,.link_login span{vertical-align:middle;}
+.userImg{display:inline-block;width:4rem;height:4rem;border-radius:100%;border:0.2rem solid;	border-color:rgba(255,255,255,0.3);	box-sizing:border-box;}
+.userImg img{width:100%;border-radius:100%;}
+.link_login span{margin-left:0.9rem;}
+.userL{margin-top:0.5rem;background:#FFF;}
+.toMyOrder,.userAllLink li,.downLoadXX{line-height:43px;}
+.toMyOrder{display:block;border-bottom:1px solid #efefef;padding:0 1.8rem 0 1rem;}
+.toMyOrder,.userAllLink li{background:url('../mimages/ad_right.png')no-repeat;background-size:0.42rem;	background-position:95%;
+}@media(min-width:414px){
+	.toMyOrder,.userAllLink li{	background-position:96%;	}
+}@media(min-width:480px){
+	.toMyOrder,.userAllLink li{	background-position:97%;	}
+}@media(min-width:600px){
+	.toMyOrder,.userAllLink li{	background-position:98%;	}
+}
+.toMyOrder span{float:right;	}
+.diffOrder{padding:0.7rem 0;	overflow:hidden;}
+.diffOrder a{display:inline-block;	width:20%;text-align:center;	padding-top:1.8rem;font-size:0.85rem;text-decoration:none;box-sizing:border-box;	float:left;}
+.diff_orderF{background:url('../mimages/generationOrder.png')top center no-repeat;background-size:1.4rem;}
+.diff_orders{background:url('../mimages/pending.png')top center no-repeat;background-size:1.4rem;}
+.diff_ordert{background:url('../mimages/shipped.png')top center no-repeat;background-size:1.4rem;}
+.diff_orderFo{background:url('../mimages/successOrder.png')top center no-repeat;background-size:1.4rem;}
+.diff_orderFi{background:url('../mimages/closedOder.png')top center no-repeat;background-size:1.4rem;}
+.userAllLink{margin-top:0.4rem;background-color:#FFF;}
+.userAllLink li{padding:0 1rem;border-bottom:1px solid #efefef;}
+.userAllLink li a{display:block;text-decoration:none;padding-left:2.3rem;	}
+.userLi_1{background:url('../mimages/user_add.png')left center no-repeat;	background-size:1.75rem;}
+.userLi_2{	background:url('../mimages/user_coupon.png')left center no-repeat;background-size:1.75rem;}
+.userLi_3{background:url('../mimages/user_prize.png')left center no-repeat;background-size:1.75rem;}
+.userLi_4{background:url('../mimages/user_balance.png')left center no-repeat;background-size:1.75rem;}
+.userLi_5{background:url('../mimages/user_save.png')left center no-repeat;background-size:1.75rem;}
+.userLi_6{background:url('../mimages/user_prize.png')left center no-repeat;background-size:1.75rem;}
+.downLoadXX{margin-top:0.4rem;background:#FFF;	display:block;text-decoration:none;text-align:center;}
+
+/*账户与安全*/
+.paddLogin,.bindPadd{padding:0 4.44%;	}
+.paddLogin,.bindTel{background-color:#FFF;}
+.userLineH{line-height:40px;}
+.btnText{width:90%;margin:3px auto;text-align:left;}
+.account label{display:inline-block;width:4rem;}
+.account span{margin-left:1.5rem;}
+.xxAcc,.outXx,.oldPass{margin-top:1.2rem;}
+.changePass{margin-top:0.6rem;background:url('../mimages/ad_right.png')right center no-repeat;background-size:0.45rem;cursor:pointer;}
+.xxTel{border-top:1px solid #efefef;overflow:hidden;}
+.xxTel span{float:right;}
+.outXx{text-align:center}
+.changeTelTop{margin-top:0.4rem;}
+
+/*修改密码*/
+.passReset input{width:calc(100% - 4.4rem);/*4.4== 4 + 0.4 padding*/	border:0;}
+.passReset label{text-align:right;	padding-right:0.4rem;}
+.subReset{width:90%;border:0;	padding:0;margin:1.2rem auto 0;}
+.chaPassSub input{border-radius:4px;}
+/*绑定手机*/
+.bindTel label{max-width:8rem;	display:inline-block;cursor:pointer;}
+.bindTel input{border:0;	padding:0;}
+.bindTel{border-top:1px solid #efefef;	border-bottom:1px solid #efefef;overflow:hidden;}
+.checkingText{padding-top:20px;text-align:center;	color:#FFF;}
+.telHeader{padding:0.7rem 4.44%;}
+/*选国家区号*/
+#selectBasic-demo_dummy{padding:0;max-width:5rem;}
+/*绑定手机-下一步*/
+.userTimer{float:right;line-height:30px;border:1px solid #efefef;border-radius:3px;margin-top:4px;}
+#btnSendCode{background:#FFF;	line-height:30px;padding:0 9px;}
+/*注册登录*/
+.registerForm h3{font-weight:normal;	text-align:center;}
+.register_gb{background:#FFF url('../mimages/ad_right.png')95% center no-repeat;background-size:0.45rem;	padding:0.5rem 0;	cursor:pointer;	border-top:1px solid #efefef;}
+.number_gb,.tel_reg label{display:inline-block;width:6rem;padding-left:1rem;box-sizing:border-box;	}
+.number_gb{border-right:1px solid #efefef;}
+.country_reg{padding-left:0.5rem;}
+.country_reg input{border:0;}
+.tel_reg{border-top:1px solid #efefef;	border-bottom:1px solid #efefef;background:#FFF;}
+.tel_reg input{border:0;}
+/*----已注册-下一步---*/
+.regEd_header{padding:1.1rem 0;	text-align:center;}
+.login_pass{background:#FFF url('../mimages/login_pass.png')1.45rem center no-repeat;background-size:1.1rem;padding:0 1rem 0 3rem;	border-top:1px solid #efefef;	}
+.login_pass,.reg_pass{width:100%;border-radius:0;border-bottom:1px solid #efefef;border-right:0;border-left:0;}
+.fogetPass{float:right;}
+.reg_next_sub a{text-decoration:none;padding:10px 0 ;	display:inline-block;}
+/*---未注册-下一步---*/
+.reg_pass{background:#FFF;	border-top:0;}
+

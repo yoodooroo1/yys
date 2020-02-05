@@ -1,0 +1,120 @@
+<include file="Public:head"/>
+<link type="text/css" rel="stylesheet" href="__ROOT__/Public/media/css/layout.css" /><!--弹出层-->
+<script src="__ROOT__/Public/layer/layer.js"></script><!--弹出层-->
+<div class="container-fluid" >
+	<!-- BEGIN PAGE HEADER-->
+	<div class="title"  >
+		 <h4 class="page-title">团队管理<small>   Team management</small></h4>
+		 <ul class="breadcrumb" >
+			<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> <i class="icon-angle-right"></i></li>
+			<li><a href="#">团队管理</a><i class="icon-angle-right"></i></li>
+			<li><a href="{:U('Team/team_list')}"><strong>成员列表</strong></a></li>
+		</ul>  		
+	</div><!-- END PAGE TITLE & BREADCRUMB-->
+ 
+
+	<div class="main-content">       
+		<table name="table-list">			
+			<tr>	
+				<th>成员名称</th>				
+				<th>手机号</th>
+				<th>开户银行</th>
+				<th>开户名称</th>
+				<th>银行卡号</th>
+				<th>总收益</th>
+				<th>已打款</th>			
+			</tr>
+
+			<tr>
+				<td >1</td>
+				<td>2</td>
+				<td>3</td>
+				<td>4</td>
+				<td>5</td>
+				<td>6</td>
+				<td>7</td>
+			</tr>
+	
+		</table>
+		<table name="table-list">			
+			<tr>	
+			    <th>编号</th>
+				<th>月份</th>				
+				<th>收益金额</th>
+				<th>款项状态</th>
+				<th>操作</th>	
+			</tr>
+
+			<tr>
+			    <td style="width:50px;" ><input type="checkbox" class="checks">1</td>
+				<td >1</td>
+				<td>2</td>
+				<td>3</td>
+				<td>
+				<a href="{:U('Team/team_data',array('shop_id'=>$shop['shop_id']))}">查看</a>
+					<input type="button"  value="确认打款" onclick="func7()"/>
+				</td>
+			</tr>
+	
+		</table>
+		<div  class="checkbox"> 
+			<input type="checkbox" class="allcheck" onclick="checkall()" /> 全选		    
+			<input type="hidden" id="classid" value="{$rt.classid}" name="classid" />
+			<a  onclick="export()" class="export">导出</a>
+		 </div>
+		<div class="pagination pagination-right">
+			<ul class="pageNumber">
+			 {$page}
+			</ul>
+		</div>
+    </div>		
+</div>
+<script>
+	function checkall(){
+		if($('.allcheck').prop("checked"))
+		{
+			$(".checks").attr('checked',true);	
+		}
+		else{
+			$(".checks").attr('checked',false);	
+		}
+	}
+</script>
+<script type="text/javascript">
+
+ function func7() {
+		layer.confirm(' <div  style="width:300px;padding-left:75px;"><div class="sellerImg"><img src="<?php echo (empty ($shopinfo['purl']))?'__ROOT__/Public/images/imglogo.png':$shopinfo['purl']; ?>" id="memberImg1" class="seller_img"/></div><label class="imgBtn" ><input type="file" name="fileImg1" id="fileImg1" multiple="multiple" style="display:none;"/>上传该月打款的凭证</label></div>', {
+		  btn: ['确定','取消'] //按钮
+		 title: false;
+		}, function(){
+		  layer.msg('上传成功', {icon: 1});
+		});
+		}
+
+</script>
+<!--更改图片-->
+
+<script>	
+    $("#fileImg1").change(function(){			
+		var objUrl = getObjectURL(this.files[0]) ;
+		if (objUrl) {
+			$("#memberImg1").attr("src", objUrl) ;
+		}
+		
+	}) ;
+
+	//建立一個可存取到該file的url
+	function getObjectURL(file) {
+		var url = null ; 
+		if (window.createObjectURL!=undefined) { // basic
+			url = window.createObjectURL(file) ;
+		} else if (window.URL!=undefined) { // mozilla(firefox)
+			url = window.URL.createObjectURL(file) ;
+		} else if (window.webkitURL!=undefined) { // webkit or chrome
+			url = window.webkitURL.createObjectURL(file) ;
+		}
+		return url ;
+	}
+</script>
+<include file="Public:foot" />
+

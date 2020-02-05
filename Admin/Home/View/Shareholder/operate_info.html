@@ -1,0 +1,190 @@
+<include file="Public:head"/>
+<link type="text/css" rel="stylesheet" href="__ROOT__/Public/media/css/add_seller.css" />
+<style type="text/css">
+	.diyCheckBox input + label{
+		padding:0 20px;
+		background:url('__ROOT__/Public/media/image/no-check.png')left center no-repeat;
+		background-size:14px;
+		margin:0;
+	}
+	.diyCheckBox input:checked + label{
+		padding:0 20px;
+		background:url('__ROOT__/Public/media/image/check.png')left center no-repeat;
+		background-size:14px;
+		margin:0;
+	}
+	.sub_button{
+		background: #4D90FE;
+		color: #FFF;
+		border: 1px solid #4D90FE;
+		padding: 5px 14px;
+		margin: 0 5px;   
+		border-radius: 5px !important;
+	}
+
+</style>
+<div class="container-fluid">
+	<!-- BEGIN PAGE HEADER-->
+	
+	<!-- END PAGE HEADER-->   
+
+	<!--员工详情开始-->
+	<form action="{:U('Shareholder/operate_edit')}" method="post"  onSubmit="return checkTabel();"> 
+ 	   
+	<div style="position:fixed;line-height:0px;z-index:-2">  <!--解决360浏览器自动填充账号密码问题-->    
+	<input style="line-height:0px" type='text'  /><input style="line-height:0px" type='password' >    
+	</div>	  
+	<div class="">
+	
+		<table name="add_infor" border="1px" style="border:1px dotted #EEE;">
+			
+			<tr>
+				<td><font style="color:red; font-size:15px ;">* </font>运营商名称</td>
+				<td style="position:relative;">
+					<input type="text" readonly name="operate_name" value="{$info.operate_name}" />
+				</td>
+			</tr>
+			
+			<tr>
+				<td><font style="color:red; font-size:15px ;">* </font>运营商账户</td>
+				<td style="position:relative;">
+					<input type="text" value="{$info.login_name}" name="login_name" <if condition="$act eq 'info' "> readonly="readonly" </if> />
+				</td>
+			</tr>
+			
+			<tr>   
+				<td>登录密码</td>
+				<td style="position:relative;">
+					<input type="text" name="login_password" />
+				</td>
+			</tr>
+			
+		</table>  
+		<br/>	
+		<table name="add_infor" border="1px" style="border:1px dotted #EEE;">				
+			<tr>
+				<td><font style="color:red; font-size:15px ;">* </font>联系人</td>
+				<td>  
+					<input type="text" readonly name="link_name"  value="{$info.link_name}" />
+				</td>
+			</tr>
+			<tr>
+				<td><font style="color:red; font-size:15px ;">* </font>手机号码</td>
+				<td>  
+					<input type="text" readonly name="link_tel"  value="{$info.link_tel}" />
+				</td>
+			</tr>   
+			<tr>   
+				<td>开户银行名称</td>
+				<td>  
+					<input type="text" readonly name="bank_name"  value="{$info.bank_name}" />
+				</td>
+			</tr>
+			<tr>
+				<td>收款人名称</td>
+				<td>  
+					<input type="text" readonly name="bank_username"  value="{$info.bank_username}"  />
+				</td>
+			</tr>
+			<tr>
+				<td>银行卡号</td>
+				<td>  
+					<input type="text" readonly name="bank_sn"  value="{$info.bank_sn}"  />
+				</td>
+			</tr>
+			<tr>
+				<td><font style="color:red; font-size:15px ;">* </font>绑定会员账户</td>
+				<td>  
+					<input type="text" readonly name="member_name"  value="{$info.member_name}" /> &nbsp; 
+				</td>     
+			</tr>		     
+		</table>  
+		<if condition="$act eq 'info' ">
+		<br/>   
+		<table name="add_infor" border="1px" style="border:1px dotted #EEE;">				
+			<tr>   
+				<td>发展的会员</td>   
+				<td>  
+					<font style="color:red ; margin:10px ;line-height:30px">{$info.recommend_num} </font> 
+				</td>
+			</tr>     
+			<tr>
+				<td>总分成利润</td>
+				<td>  
+					<font style="color:red;margin:10px ;line-height:30px" >{$info.total_price} </font> 
+				</td>   
+			</tr>   
+			<tr>      
+				<td>已打款金额</td>
+				<td>  
+					<font style="margin:10px;line-height:30px" >{$info.get_price}</font>
+				</td>
+			</tr>
+			<tr>
+				<td>未打款金额</td>   
+				<td>    
+					<font style="margin:10px ;line-height:30px" >{$info.unget_price}</font>
+				</td>
+			</tr>
+				
+		</table>   
+		</if>
+	        <div style="margin:15px 5px; text-align:right; padding-right:50px">
+			<if condition="$act eq 'info' ">
+			<input type="hidden" value="{$info.id}" name="id"/>
+			</if>
+			<input type="hidden" value="{$act}" name="act">
+	        <input class="sub_button" type="submit" value="确定"/>
+			
+         	</div>
+			<br/>
+	</div>
+	</form>
+</div>
+
+<script type="text/javascript">
+	function checkTabel(){
+		var operate_name = $("input[name=operate_name]").val();	
+		var login_name = $("input[name=login_name]").val();	
+		var login_password = $("input[name=login_password]").val().length;
+		var link_name = $("input[name=operate_name]").val();	
+		var link_tel = $("input[name=link_tel]").val();	
+		var member_name = $("input[name=member_name]").val();	
+	    var act = $("input[name=act]").val();	
+		if(act == 'insert' || login_password != 0){
+			if(login_password < 6){
+				alert("请输入六位及六位以上密码");
+				return false;
+			}   
+		}
+		if(operate_name == ''){
+			alert("请输入运营商名称");
+			return false;
+		}
+		else if(login_name == ''){
+			alert("登录账号不能为空");
+			return false;
+		}
+		else if(!/\D/g.test(login_name)){
+			alert("登录账号不能全为数字");
+			return false;
+		}
+		else if(link_name == ''){
+			alert("联系人不能为空");
+			return false;
+		}
+		else if(link_tel == ''){
+			alert("关联账户不能为空");
+			return false;
+		}
+		else if(member_name == ''){
+			alert("联系人不能为空");
+			return false;
+		}else{
+			return true;
+		}      
+		   
+	}
+</script>
+
+<include file="Public:foot" />

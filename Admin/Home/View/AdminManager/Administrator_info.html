@@ -1,0 +1,87 @@
+<include file="Public:head"/>
+<link rel="stylesheet" type="text/css" href="__ROOT__/Public/media/css/store_member_infor.css" />
+<script type="text/javascript" src="__ROOT__/Public/media/js/area.min.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Eg2jEs4qqyrkkGaFcW5z9aa6afUPy655"></script>
+<link href="__ROOT__/Public/media/css/layout.css" rel="stylesheet" type="text/css"/>
+<div class="container-fluid">
+	<!-- BEGIN PAGE HEADER-->
+	<div class="title">
+		<ul class="breadcrumb">
+			<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> <i class="icon-angle-right"></i></li>
+			<li><a href="#">系统管理</a><i class="icon-angle-right"></i></li>
+			<li><a href="{:U('AdminManager/Administrator_list')}">管理员列表</a><i class="icon-angle-right"></i></li>
+			<li><a href="#"><strong>编辑管理员</strong></a></li>
+		</ul>   
+	</div>
+	<div style="position:fixed;line-height:0px;z-index:-2">  <!--解决360浏览器自动填充账号密码问题-->    
+		<input style="line-height:0px" type='text'  /><input style="line-height:0px" type='password' >    
+		</div>
+    <div class="main-content" >     	
+		<!-- <form action="{:U('AdminManager/save_Administrator_info')}" method="post" name="add-submit" enctype="multipart/form-data" onSubmit="return checkMust()">  --> 
+		<form action="" method="post" name="add-submit" enctype="multipart/form-data" >
+			<table name="add_table">		
+				<tr>
+					<td>用户名</td>
+					<td><input name="login_name" type="text"  value="{$info.loginname}" readonly /></td>
+				</tr>           
+				<tr>
+					<td>密码</td>
+					<td><input id='pass' type="password" name="password" value=""/></td> 
+				</tr> 
+			</table>  
+			<div class="info-input">
+				<input type="submit"  onclick="save_Administrator_info()" value="提交"/>
+			</div>					
+		<!-- </form> -->
+		</form>
+	</div>
+</div>   
+
+<script type="text/javascript">
+	function checkMust(){
+		var len = $("#pass").val().length;
+		if(len != 0 && (len < 6 || len >13)){
+			alert('密码必须为6~13位');
+			return false;   
+		}else{
+			return true;
+		}
+		  
+    } 
+	// 提交
+    function  save_Administrator_info() {
+        // 请求url
+		var loginname = "{$info.loginname}";
+		var pass = $("#pass").val();
+		var len = $("#pass").val().length;
+		if(len != 0 && (len < 6 || len >13)){
+			alert('密码必须为6~13位');
+			return false;   
+		}
+        var url = "{:U('AdminManager/save_Administrator_info')}";
+        $.ajax({   
+            type: "post",
+            dataType: "json",
+            data:{
+                login_name:loginname,password:pass
+            },  
+            url: url,
+            success: function (data) {
+				if(data.status == 1){
+					alert('修改成功！');
+				}else{  
+					alert(data.desc);
+				}
+            },
+            error: function () {
+                alert('更新管理员数据失败，或请求失败');
+                return false;
+            }
+        });
+	}	
+    
+  
+</script>
+<!--查找地图-->
+
+<include file="Public:foot" />

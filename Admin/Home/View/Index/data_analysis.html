@@ -1,0 +1,195 @@
+<include file="Public:head"/>
+<link href="__PUBLIC__/times/mobiscroll.css" rel="stylesheet" />
+<link href="__PUBLIC__/times/mobiscroll_date.css" rel="stylesheet" />
+<script src="__PUBLIC__/times/mobiscroll_date.js" charset="gb2312"></script> 
+<script src="__PUBLIC__/times/mobiscroll.js"></script>    
+<link type="text/css" rel="stylesheet" href="__ROOT__/Public/media/css/layout.css" />
+<div class="container-fluid" >
+	<!-- BEGIN PAGE HEADER-->
+	<div class="row-fluid"  >
+	    <div class="title">
+	        <ul class="breadcrumb">
+				<li><i class="icon-home"></i><a href="#">数据分析</a></li>  
+			</ul> 			
+        </div>			
+	</div><!-- END PAGE TITLE & BREADCRUMB-->  
+	<!-- END PAGE HEADER-->	
+	<div class="main-content">  
+		<form name="searchForm" action="__URL__/data_analysis" method="GET" >  
+				时间：<label for="type" style="display:inline"  ><input type="radio" style="margin-top:0px;width:20px;"  name="time_style" value="today" <if condition="$search['time_style'] eq 'today'"> checked  </if>> 今日</label> 
+						  <label for="type" style="display:inline"  ><input type="radio" style="margin-top:0px;width:20px;"  name="time_style" value="week"  <if condition="$search['time_style'] eq 'week'"> checked  </if>> 一星期内</label>
+						  <label for="type" style="display:inline"> 
+								<input type="radio" style="margin-top:0px;width:20px;"   name="time_style" value="zdy"  <if condition="$search['time_style'] eq 'zdy'"> checked  </if>> 自定义时间
+								<input type="text" id="Time1"  readonly name="Time1" value="{$search['Time1']}" />~
+							    <input type="text" id="Time2"  readonly name="Time2"  value="{$search['Time2']}"/>
+						  </label>  
+							
+				<select name="device">   
+							<option value=''>设备</option>
+							<option value='计算机' <if condition="$search['device'] eq '计算机'"> selected </if>>计算机</option>
+							<option value='移动设备' <if condition="$search['device'] eq '移动设备'"> selected </if>>移动设备</option>
+							</select>
+						
+			
+				<input type="text" name="ad_id"   value="{$search['ad_id']}"   placeholder="业务编号"/>
+					<input type="text" name="domain_url"   value="{$search['domain_url']}"  style="width:200px;" placeholder="链接来源"/>
+				<input type="submit" name="button" id="button" value="搜索" />
+				
+		</form>	<!-- BEGIN PAGE CONTENT-->
+
+		<style>
+			ul{ margin: 0;;}
+			ul,li{list-style: none;}
+			.dataList .th{    background: #eee;
+				font-weight: bold;
+				color: #333; }
+			/*.dataList .th div{float: left;width: 10.47%;;padding: 10px;
+				text-align: center;
+				border: 1px solid #ddd; }*/
+			.dataList .td li{width: 100%;box-sizing: border-box;    display: flex;border: 1px solid #ddd; }
+			.dataList .td li div{width: 11.1%; display: inline-block;    white-space: nowrap;    height: 33px;    padding: .5rem;text-align: center;
+				line-height: 33px;
+				overflow: hidden;border-right: 1px solid #ddd;
+				text-overflow: ellipsis;}
+			.dataList .td li:nth-child(2n){background: #F4F7FA;}
+
+		</style> 
+		<div class="dataList">
+			<ul class="td"> 
+				<li class="th">
+					<div>访问时间</div>
+					<div>访问地址</div>
+					<div>设备</div>
+					<div>来源链接</div>
+					<div>微信昵称</div>
+					<div>地域/访问IP</div>
+					<div>访问时长</div>
+					<div>申请电话</div>
+					<div>推广运营商</div>
+					<div>开户结果</div>
+				</li>
+			<foreach name='lists' item='list' >
+				<li>
+					<div onclick="showInfo(this)">{$list.addtime|date="Y-m-d H:i:s",###}</div>
+					<div onclick="showInfo(this)">{$list.view_url}</div>
+					<div onclick="showInfo(this)">{$list.device} </div>
+					<div onclick="showInfo(this)">{$list.domain_url}</div>
+					<div onclick="showInfo(this)">{$list.nickname}</div>
+					<div onclick="showInfo(this)">{$list.ip_city}/{$list.ip}</div>
+					<div onclick="showInfo(this)">{$list.keep_time}</div>
+					<div onclick="showInfo(this)">{$list.member_tel}</div>
+					<div onclick="showInfo(this)">{$list.operate_name}</div>
+					<div onclick="showInfo(this)">{$list.package_name}</div>
+				</li>
+			</foreach> 
+			</ul>
+		</div>
+
+		<!--<table name="table-list">
+			<tr>	 
+				<th>访问时间</th>	
+				<th>访问地址</th>					
+				<th>设备</th>
+				<th>来源链接</th>
+				<th>地域/访问IP</th>
+				<th>访问时长</th>
+				<th>申请电话</th>
+				<th>开户结果</th>
+					
+			</tr>
+			<foreach name='lists' item='list' >
+			<tr>
+				<td>{$list.addtime|date="Y-m-d H:i:s",###}</td>
+				<td>{$list.view_url}</td> 
+				<td>{$list.device} </td>
+				<td>{$list.domain_url}</td>
+				<td>{$list.ip_city}/{$list.ip}</td>
+				<td>{$list.keep_time}</td>
+				<td>{$list.member_tel}</td>
+				<td>{$list.package_name}</td>
+			</tr>
+		    </foreach> 
+		</table>-->
+		<div class="pagination pagination-right">
+		<ul class="pageNumber">
+		{$page}
+		</ul>
+	    </div>
+	</div><!-- BEGIN PAGE CONTENT-->	
+</div>
+
+<!-- 删除礼品 -->
+<script>
+	$(function () {
+        $('.del').click(function () {
+            var id = $(this).val();
+            var node = $(this);
+            if(confirm("确定要删除吗？")) {
+                var url = "{:U('Present/delPresent')}";
+                $.ajax({
+                    url:url,
+                    data:{id:id},
+                    type:'post',
+                    dataType:'json',
+                    success:function (data) {
+                        if (data == '1'){
+                            alert('删除成功');
+                            node.parent().parent().remove();
+                        }else if(data == '-3'){
+                            alert('权限不足！');
+						}else {
+                            alert('删除失败');
+                        }
+                    },
+                    error:function () {
+                        alert('请求失败！');
+                    }
+                });
+            }
+            return false;
+        });
+    });
+</script>
+<!-- 自动选中搜索条件-->
+<script>
+	var status = "{$present_status}";
+	$('#present_status').val(status);
+</script>
+<script type="text/javascript">
+$(function () {
+	var currYear = (new Date()).getFullYear();	
+	var opt={};
+	opt.date = {preset : 'date'};
+	opt.datetime = {preset : 'datetime'};
+	opt.time = {preset : 'time'};
+	opt.default = {
+		theme: 'android-ics light', //皮肤样式
+		display: 'modal', //显示方式 
+		mode: 'scroller', //日期选择模式
+		dateFormat: 'yyyy-mm-dd',
+		lang: 'zh',
+		showNow: true,
+		nowText: "今天",
+		startYear: currYear - 50, //开始年份
+		endYear: currYear + 10 //结束年份
+	};
+  
+	$("#Time1").mobiscroll($.extend(opt['date'], opt['default']));
+	$("#Time2").mobiscroll($.extend(opt['date'], opt['default']));
+
+});
+</script>
+<include file="Public:foot" />
+
+<script type="text/javascript" src="__PUBLIC__/layer/layer.js"></script>
+<script>
+    //点击查看
+    function showInfo(obj) {
+        var text=$(obj).text();
+        layer.open({
+            type:1,
+            area:['60%','auto'],
+            content:'<p style="padding: 1rem">'+text+'</p>'
+        })
+    }
+</script>

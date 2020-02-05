@@ -1,0 +1,91 @@
+<include file="Public:head"/>
+<link href="__ROOT__/Public/media/css/layout.css" rel="stylesheet" type="text/css"/>
+
+<div class="container-fluid">
+	<!-- BEGIN PAGE HEADER-->
+	<div class="title">
+		<ul class="breadcrumb">
+			<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> <i class="icon-angle-right"></i></li>
+			<li><a href="#">系统管理</a><i class="icon-angle-right"></i></li>
+			<li><a href="#"><strong>管理员日志</strong></a></li>
+		</ul>  
+	</div><!-- END PAGE HEADER-->
+	<div class="nav-tabs">
+        <ul>
+            <li class="{$ui.admin_list}"> <a href="{:U('AdminManager/Administrator_list')}"> 管理员列表</a> </li>
+            <li class="{$ui.award_config}"> <a href="{:U('System/award_config')}"> 运营商设置</a> </li> 
+			<li class="{$ui.log_list}"> <a href="{:U('System/AdminLogList')}"> 管理员日志</a> </li>
+        </ul>
+    </div><!-- END PAGE HEADER-->
+         
+	<div class="main-content" > 
+		<table  name="table-list">
+			<tr>
+				<!--<td>用户ID</td>-->
+				<th>编号</th>
+				<th>操作者</th>
+				<th>操作时间</th>
+				<th>IP地址</th>   
+				<th>操作记录</th>	
+			</tr>   
+			<foreach name='lists' item='list' >
+			<tr>
+				<!--<td>{$user.member_id}</td>-->
+				<td><input type="checkbox" name="checks" class="checks" value="{$list.id}"  style="display:none"/>{$list.id}</td>   
+				<td>{$list.admin_name}</td>
+				<td>{$list.addtime|date='Y-m-d H:i:s',###}</td>
+				<td>{$list.ip}</td>
+				<td>{$list.desc}</td>  
+			</tr>
+			</foreach>
+		</table>
+		<div  class="checkbox"  style="display:none"> 
+		    <input type="checkbox" name="allcheck" id="allcheck" value="全选" />		    
+			<input type="hidden" id="classid" value="{$rt.classid}" name="classid" />
+			 <a  onclick="del_log()" class="export">批量删除</a>
+		 </div>
+        <div class="pages">  
+            {$page}  
+        </div> 		
+	</div>
+</div>
+
+<include file="Public:foot" />
+<script>
+	$("#allcheck").click(function(){
+		if($("#allcheck").prop("checked")){
+	     
+			$(".checks").attr('checked',true);
+		}
+		else{
+			$(".checks").attr('checked',false);
+		}  
+				
+	})
+	
+	function del_log(){   
+		arr = [];
+		$('input[name="checks"]:checked').each(function(){
+			arr.push($(this).val());
+        });
+		//console.log('a',arr);
+		str = arr.join(",");  
+		url = "{:U('System/DelLog')}";	
+		$.ajax({  
+			type: "POST",
+			url: url,   
+			data: {str:str},
+			dataType: "json",
+			success: function(data){
+				alert(data.desc);
+				window.location.reload();   
+			
+		    },  
+			error:function(){     
+				window.location.reload();
+			}
+		});
+                 
+       
+	}
+</script>

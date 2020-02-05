@@ -1,0 +1,59 @@
+/* ??3y?¨²¨ªa¡À??¨¤ */
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, /* structural elements ?¨¢11?a?? */
+dl, dt, dd, ul, ol, li, /* list elements ¨¢D¡À¨ª?a?? */
+pre, /* text formatting elements ??¡À???¨º??a?? */
+fieldset, button, input, textarea, /* form elements ¡À¨ª¦Ì£¤?a?? */
+th, td { /* table elements ¡À¨ª???a?? */
+    margin: 0;
+    padding: 0;
+}
+
+ /*¨¦¨¨????¨¨?¡Á?¨¬?*/
+body,
+button, input, select, textarea { /* for ie */
+    /*font: 12px/1 Tahoma, Helvetica, Arial, "??¨¬?", sans-serif;*/
+    font: 12px/1 Tahoma, Helvetica, Arial, "\5b8b\4f53", sans-serif; /* ¨®? ascii ¡Á?¡¤?¡À¨ª¨º?¡ê?¨º1¦Ì??¨²¨¨?o?¡À¨¤???????T?¨º¨¬a */
+}
+
+h1 { font-size: 18px; /* 18px / 12px = 1.5 */ }
+h2 { font-size: 16px; }
+h3 { font-size: 14px; }
+h4, h5, h6 { font-size: 100%; }
+
+address, cite, dfn, em, var { font-style: normal; } /* ??D¡À¨¬?¡¤??y */
+code, kbd, pre, samp, tt { font-family: "Courier New", Courier, monospace; } /* ¨ª3¨°?¦Ì¨¨?¨ª¡Á?¨¬? */
+small { font-size: 12px; } /* D?¨®¨² 12px ¦Ì??D??o¨¹?????¨¢¡ê?¨¨? small ?y3¡ê?¡¥ */
+
+/* ????¨¢D¡À¨ª?a?? */
+ul, ol { list-style: none; }
+
+/* ??????¡À???¨º??a?? */
+a { text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+abbr[title], acronym[title] { /* ¡Á¡é¡êo1.ie6 2??¡ì3? abbr; 2.?a¨¤?¨®?¨¢?¨º?D?????¡¤?¡ê?ie6 ???TD¡ì1? */
+    border-bottom: 1px dotted;
+    cursor: help;
+}
+
+q:before, q:after { content: ''; }
+
+/* ????¡À¨ª¦Ì£¤?a?? */
+legend { color: #000; } /* for ie6 */
+fieldset, img { border: none; } /* img ¡ä?3¦Ì¡êo¨¨?¨¢¡ä?¨®¨¤?¦Ì? img ?T¡À??¨° */
+/* ¡Á¡é¡êooptgroup ?T¡¤¡§¡¤??y */
+button, input, select, textarea {
+    font-size: 100%; /* ¨º1¦Ì?¡À¨ª¦Ì£¤?a???¨² ie ???¨¹?¨¬3D¡Á?¨¬?¡ä¨®D? */
+}
+
+/* ????¡À¨ª???a?? */
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* ???? hr */
+hr {
+    border: none;
+    height: 1px;
+}

@@ -1,0 +1,131 @@
+﻿<!DCOTYPE html>
+<html>
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<meta content="user-scalable=0, maximum-scale=1.0, width=device-width,initial-scale=1.0" name="viewport" />
+		<title>找回密码</title>
+		<!--	<link rel="stylesheet" type="text/css" href="resetPw.css" />-->
+		<link href="__ROOT__/Public/media/css/resetPw.css" rel="stylesheet" type="text/css"/>
+	    	<link rel="shortcut icon" href="__ROOT__/Public/media/images/xunxinLogo.ico" type="/favicon.ico"/>
+		<!--	<link rel="shortcut icon" type="/favicon.ico" href="images/xunxinLogo.ico" />-->
+		<!--	<script type="text/javascript" src="js/jquery-2.1.3.js"></script>-->
+		<script type="text/javascript" src="__ROOT__/Public/media/js/jquery-2.1.3.js"></script>
+	</head>
+	<body>
+		<div class="resetMain">
+			<img src="__ROOT__/Public/media/image/xunxin_logo.png" class="xunxinLog"/>
+			
+			<div class="formContent">
+			<header class="forget_header">
+				<h3>找回密码</h3>
+				<ul class="forget-header-guide">
+					<li class="cur ">
+						<i class="num nowNum">1</i>
+						<span class="curText nowText">验证密保手机</span>
+					</li>
+					<li class="line"></li>
+					<li class="cur ">
+						<i class="num">2</i>
+						<span class="curText">重置密码</span>
+					</li>
+				</ul>
+			</header>
+			<!--步骤1开始-->
+			<div class="forget_tip">请填写您需要找回的{:C('site_name')}账号信息</div>
+			<form action="{:U('FindPasswd/code')}" method="post" name="resetPw" class="forgetForm" onSubmit="return checkTel();">	
+				<div class="forgetInput">
+					<label class="forgetLabel  mibTel">密保电话</label>
+					<input type="text" name="tel" placeholder="输入密保手机号码"  />
+					<label class="note telNote"></label>
+				</div>
+				<div class="forgetInput ">
+					<label class="forgetLabel xunxinAccount">账号</label>
+					<input type="text" name="username" placeholder="输入{:C('site_name')}账号" />
+					<label class="note accountNote"></label>
+				</div>
+				<div class="forgetInput codeInput">
+					<label class="forgetLabel checkCode">验证</label>
+					<input type="text" name="code" placeholder="验证码" maxlength="4" value=""/>
+					<input type="button" formaction="{:U('FindPasswd/index')}"  value="免费获取验证码" id="btn"  class="codeBtn" />
+					<label class="note codeNote"></label>
+				</div>
+				<div class="forgetInput"><input type="submit" value="下一步" name="fistBtn" id="firstBtn"/></div>
+			</form>
+			<!--步骤1结束-->
+			
+			</div>
+			<footer>
+				<p class="footerLink">
+					<a href="http://app.xunxin.org/main/index.php" target="_blank" >了解{:C('site_name')}</a>|
+					<a href="http://app.xunxin.org/main/example.php" target="_blank">看案例</a>|
+					<a href="http://app.xunxin.org/main/league.php" target="_blank">加盟</a>
+				</p>
+				<p class="copyRight">{$Think.config.company}Copyright©   2014-2016Xunxin.All Rights Reserved 闽ICP备14002883号 商户登陆联系我们 全国统一加盟热线：0592-8988998</p>
+			</footer>
+		</div>
+	</body>
+	<!--输入电话号码-->
+	<script type="text/javascript"> 
+		var wait=120;                  //定义计时时间
+		function time(o) { 
+			if (wait == 0) { 
+			o.removeAttribute("disabled"); //删除属性o
+			o.value="重新获取验证码"; 
+			wait = 120; 
+			} else { 
+			o.setAttribute("disabled", true); 			
+			o.value="重新发送(" + wait + ")"; 
+			wait--; 
+			setTimeout(function() {
+				time(o) 
+			}, 
+			1000) 
+			} 
+		} 
+		document.getElementById("btn").onclick=function(){time(this);} 
+	</script>
+	<script type="text/javascript">
+		function checkTel(){
+			var tel = $("input[name=tel]").val();
+			var account = $("input[name=account]").val();
+			var code = $("input[name=code]").val();
+			//console.log("电话：" +tel + "-账户：" + account + "-验证码：" + code );
+			if(tel == ' ' || tel.length == 0 ){
+				$("label.telNote").text("*请输入密保手机");
+				return false;
+			}else if(account == ' ' || account.length == 0){
+				$("label.accountNote").text("请输入{:C('site_name')}账号");
+				return false;
+			}else if(code == ' ' || code.length == 0){
+				$("label.codeNote").text("*请输入验证码");
+				return false;
+			}else{					
+					return true;
+			}
+		}
+		$("input[name=tel]").keyup(function (){
+			var thisVa = $("input[name=tel]").val();			
+			if(thisVa == ''){
+				$("label.telNote").text("*请输入密保手机");
+			}else{
+				$("label.telNote").empty();
+			}
+		});	
+		$("input[name=account]").keyup(function (){
+			var thisVa = $("input[name=account]").val();			
+			if(thisVa == ''){
+				$("label.accountNote").text("*请输入账号");
+			}else{
+				$("label.accountNote").empty();
+			}
+		});
+		$("input[name=code]").keyup(function (){
+			var thisVa = $("input[name=code]").val();			
+			if(thisVa == ''){
+				$("label.codeNote").text("*请输入验证码");
+			}else{
+				$("label.codeNote").empty();
+			}
+		});
+	</script>
+</html>

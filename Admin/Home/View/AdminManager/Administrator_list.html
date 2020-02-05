@@ -1,0 +1,42 @@
+<include file="Public:head"/>
+<link href="__ROOT__/Public/media/css/layout.css" rel="stylesheet" type="text/css"/>  
+<div class="container-fluid">
+	<!-- BEGIN PAGE HEADER-->
+	<div class="title">
+		<ul class="breadcrumb" >
+			<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> <i class="icon-angle-right"></i></li>
+			<li><a href="#">系统管理</a><i class="icon-angle-right"></i></li>
+			<li><a href="#"><strong>管理员列表</strong></a></li>
+		</ul>    
+	</div>
+	  <div class="nav-tabs">
+        <ul >
+            <li class="{$ui.admin_list}"> <a href="{:U('AdminManager/Administrator_list')}"> 管理员列表</a> </li>
+            <li class="{$ui.award_config}"> <a href="{:U('System/award_config')}"> 运营商设置</a> </li> 
+			<li class="{$ui.log_list}"> <a href="{:U('System/AdminLogList')}"> 管理员日志</a> </li>
+        </ul>
+    </div><!-- END PAGE HEADER-->
+	<!-- BEGIN PAGE CONTENT-->          
+	<div class="main-content" >
+		<table  name="table-list">
+			<tr>
+				<!--<td>用户ID</td>-->
+				<th >用户名</th>
+				<th>级别</th>
+				<th >加入时间</th>
+				<th>最后登陆时间</th>
+				<th>操作</th>				
+			</tr>  
+			<foreach name='lists' item='list' >
+			<tr >
+				<td >{$list.loginname}</td>
+				<td ><if condition="$list['role'] eq 0">总部<else />运营商</if></td>
+				<td >{$list.addtime|date="Y-m-d H:i:s",###}</td>
+				<td >{$list.lasttime}</td>
+				<td ><a href="{:U('AdminManager/Administrator_info',array('id'=>$list['id']))}">编辑</a></td>
+			</tr>       
+			</foreach>
+		</table> 	
+	</div>
+</div>
+<include file="Public:foot" />

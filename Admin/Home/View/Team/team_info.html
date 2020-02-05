@@ -1,0 +1,155 @@
+<include file="Public:head"/>
+<link type="text/css" rel="stylesheet" href="__ROOT__/Public/media/css/layout.css" />
+<div class="container-fluid">
+	<div class="title"  >
+		 <h4 class="page-title">团队管理<small>   Team management</small></h4>
+		 <ul class="breadcrumb" >
+			<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> <i class="icon-angle-right"></i></li>
+			<li><a href="#">团队管理</a><i class="icon-angle-right"></i></li>
+			<li><a href="{:U('Team/team_info')}"><strong>新增成员</strong></a></li>
+		</ul>  		
+	</div><!-- END PAGE TITLE & BREADCRUMB-->
+    <div class="nav-tabs">
+        <ul>
+            <li class="{$ui.team_list}"> <a href="{:U('Team/team_list')}" > 成员列表</a> </li>
+            <li class="{$ui.team_info}"> <a href="{:U('Team/team_info')}"> 新增成员</a> </li>
+        </ul>
+    </div><!-- END PAGE HEADER-->
+
+	<!--员工详情开始-->
+	<div style="position:fixed;line-height:0px;z-index:-2">  <!--解决360浏览器自动填充账号密码问题-->    
+		<input style="line-height:0px" type='text'  /><input style="line-height:0px" type='password' >
+	</div>
+	<div class="main-content">
+		<form action="{:U('Team/team_edit')}" enctype="multipart/form-data" method="post" name="add-submit" onsubmit="return checkTabel();">
+			<table name="add_table">
+				<tr>
+					<td><b class="needed_icon">*</b> 登录账号</td>
+					<td><input type="text"  value="{$info.shareholder_sn}" readonly  name="shareholder_sn"  /></td>
+				</tr>
+				<tr> 
+				<td><font style="color:red; font-size:15px ;">* </font>登录密码</td>
+				<td style="position:relative;">
+					<input type="text"  name="password" value="" />
+				</td> 
+			</tr>
+			<tr>
+				<td><font style="color:red; font-size:15px ;">* </font>成员身份</td>
+				<td style="position:relative;">
+					<input type="text" name="shareholder_role" value="{$info.shareholder_role}" />
+				</td>
+			</tr>
+			<tr>
+				<td><font style="color:red; font-size:15px ;">* </font>成员名称</td>
+				<td style="position:relative;">
+					<input type="text" value="{$info.shareholder_name}" name="shareholder_name"  />
+				</td>
+			</tr>
+			<tr>   
+				<td><font style="color:red; font-size:15px ;">* </font>手机号码</td>
+				<td style="position:relative;">
+					<input type="text" name="shareholder_tel" value="{$info.shareholder_tel}" />
+				</td>
+			</tr>
+			<tr>   
+				<td>持股比例</td>
+				<td style="position:relative;">
+					<input type="text" name="share_rate" value="{$info.share_rate}"/>%
+				</td>
+			</tr>
+			<tr>    
+				<td>推广收益</td>
+				<td style="position:relative;">
+					代理利润的<input type="text" name="recommend_rate" value="{$info.recommend_rate}"/>% &nbsp;&nbsp;&nbsp;客户价-代理价=利润
+				</td>
+			</tr>
+			<tr>   
+				<td>开户银行名称</td>
+				<td style="position:relative;">
+					<input type="text" name="bank_name" value="{$info.bank_name}" />
+				</td>
+			</tr>
+			<tr>   
+				<td>收款人名称</td>
+				<td style="position:relative;">
+					<input type="text" name="bank_username" value="{$info.bank_username}" />
+				</td>
+			</tr>
+			<tr>   
+				<td>银行卡号</td>
+				<td style="position:relative;">
+					<input type="text" name="bank_sn" value="{$info.bank_sn}" />
+				</td>
+			</tr>
+			<tr>   
+				<td><font style="color:red; font-size:15px ;"> </font>绑定会员账号</td>
+				<td style="position:relative;">
+					<input readonly type="text" name="member_name" value="{$info.member_name}" />
+					<input  type="hidden" name="member_id" value="{$info.member_id}" />
+					<a onclick="cancel_bind({$info.id})">取消绑定</a>
+				</td>          
+			</tr> 
+			</table>
+			<div class="info-input">
+				<input type="hidden" value="{$act}" name="act"/>
+				<if condition="$act eq 'info' ">
+					<input type="hidden" value="{$info.id}" name="id"/>
+				</if>  
+			   <input class="sub_button" type="submit"   value="保存"/>
+			</div>
+		</form> 
+	</div>
+	<div></div>   
+</div>
+
+<script type="text/javascript">
+	function checkTabel(){
+		var shareholder_role = $("input[name=shareholder_role]").val();	
+		var shareholder_name = $("input[name=shareholder_name]").val();	
+		var shareholder_tel = $("input[name=shareholder_tel]").val();
+		var recommend_rate = $("input[name=recommend_rate]").val();
+		var share_rate = $("input[name=share_rate]").val();
+		var password = $("input[name=password]").val().length;
+		var act = $("input[name=act]").val();			
+		if(shareholder_role == ''){
+			alert("请输入成员身份");
+			return false;
+		}   
+		else if(shareholder_name == ''){
+			alert("股东名称不能为空");
+			return false;
+		}
+		else if(Number(recommend_rate) > 100 || Number(recommend_rate)<0){
+			alert('推广收益比例错误'); 
+			return false;	
+		}
+		else if(Number(share_rate) > 100 || Number(share_rate)<0){
+			alert('持股比例错误');	
+			return false;
+		}
+		else if((Number(share_rate) + Number(recommend_rate))>100){
+			alert('推广收益与持股比例之和不能大于100%');	
+			return false;
+		}
+		else if(act == 'insert' || password != 0){
+			if(password < 6){
+				alert("请输入六位及六位以上密码");
+				return false;
+			}     
+		}   
+		else if(shareholder_tel == ''){
+			alert("手机号码不能为空");
+			return false;
+		}
+		else{
+			return true;
+		}       
+		
+	}   
+	function cancel_bind(id){
+		$("input[name=member_name]").val('');	
+		$("input[name=member_id]").val('');		 
+	}
+</script>
+
+<include file="Public:foot" />

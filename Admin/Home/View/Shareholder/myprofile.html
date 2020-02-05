@@ -1,0 +1,89 @@
+<include file="Public:head"/>
+<link type="text/css" rel="stylesheet" href="__ROOT__/Public/media/css/layout.css" />
+<div class="container-fluid">
+	<!-- BEGIN PAGE HEADER-->
+	<div class="title">
+		<h4 class="page-title">我的资料<small>   Myprofile</small></h4>
+		<ul class="breadcrumb">
+			<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> <i class="icon-angle-right"></i></li>
+			<li><a href="#">我的资料</a></li>
+		</ul>  		
+	</div><!-- END PAGE TITLE & BREADCRUMB-->	
+
+	<!--员工详情开始-->
+	<div style="position:fixed;line-height:0px;z-index:-2">  <!--解决360浏览器自动填充账号密码问题-->    
+		<input style="line-height:0px" type='text'  /><input style="line-height:0px" type='password' >
+	</div>
+	<div class="main-content">
+		<form action="{:U('Shareholder/operate_edit')}" enctype="multipart/form-data" method="post" name="add-submit" onsubmit="return checkTabel();">
+			<table name="add_table">
+				<tr>  
+					<td><b class="needed_icon">*</b> 我的账号</td>
+					<td><input type="text" value="{$info.login_name}" name="login_name"  readonly /></td>
+				</tr> 
+				<tr>  
+					<td> 登录密码</td>
+					<td><input type="text" name="login_password"  Placeholder="请输入登录密码"  /></td>
+				</tr>
+				<tr>
+					<td><b class="needed_icon">*</b>联系人</td>
+					<td><input type="text"  name="link_name"  value="{$info.link_name}"  <if condition="$info.is_edit eq '0'">readonly</if>/></td>
+				</tr>
+				<tr>
+					<td><b class="needed_icon">*</b>手机号码</td>
+					<td><input type="text"  name="link_tel"  value="{$info.link_tel}"  <if condition="$info.is_edit eq '0'">readonly</if>/></td>
+				</tr>
+				<tr>
+					<td>开户银行名称</td>
+					<td><input type="text"  name="bank_name"  value="{$info.bank_name}" <if condition="$info.is_edit eq '0'">readonly</if>/></td>
+				</tr>
+				<tr>
+					<td>收款人姓名</td>
+					<td><input type="text"  name="bank_username"  value="{$info.bank_username}"   <if condition="$info.is_edit eq '0'">readonly</if>/></td>
+				</tr>
+				  
+				<tr>
+					<td>银行卡号</td>
+					<td><input type="text"  name="bank_sn"  value="{$info.bank_sn}"  <if condition="$info.is_edit eq '0'">readonly</if>/></td>
+				</tr>
+			</table>
+			<div class="info-input">  
+			    <input type="hidden" value="{$info.id}" name="id"/>
+			   <input type="submit"  value="保存"/>
+			</div> 
+		</form> 
+	</div>
+	<div></div>   
+</div>
+
+
+<script type="text/javascript">
+function checkTabel(){
+	var login_password = $("input[name=login_password]").val().length;
+	var link_name = $("input[name=operate_name]").val();	
+	var link_tel = $("input[name=link_tel]").val();	
+	if(login_password != 0){
+		if(login_password < 6){
+			alert("请输入六位及六位以上密码");
+			return false;
+		}   
+	}  
+	else if(link_name == ''){
+		alert("联系人不能为空");
+		return false;
+	}
+	else if(link_tel == ''){
+		alert("手机号码不能为空");
+		return false;
+	}
+	else{
+		return true;
+	}      
+	   
+} 
+
+</script>
+
+
+
+<include file="Public:foot" />

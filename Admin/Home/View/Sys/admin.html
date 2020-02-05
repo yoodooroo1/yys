@@ -1,0 +1,116 @@
+ 
+<include file="Public:head"/>
+<div class="container-fluid">
+
+				<!-- BEGIN PAGE HEADER-->   
+
+  <div class="row-fluid">
+
+					<div class="span12 blog-page">
+
+						<!-- BEGIN STYLE CUSTOMIZER --><!-- END BEGIN STYLE CUSTOMIZER -->  
+
+						<h4 class="page-title">
+
+							管理员管理
+
+							 <small>advance form layout samples</small>
+
+					  </h4>
+
+						<ul class="breadcrumb">
+
+							<li>
+
+								<i class="icon-home"></i>
+
+								<a href="./admin.php">首页</a> 
+
+								<span class="icon-angle-right"></span>
+
+							</li>
+
+							<li>
+
+								<a href="#">用户管理</a>
+
+								<span class="icon-angle-right"></span>
+
+							</li>
+
+							<li><a href="#">管理员管理</a></li>
+
+						</ul>
+
+	</div>
+
+				</div>
+
+				<!-- END PAGE HEADER-->
+                
+           
+               <div class="tabbable tabbable-custom tabbable-full-width">
+							<ul class="nav nav-tabs">
+			 <li class="{$ui.sys_admin}"> <a href="{:U('sys/admin')}"> 管理员管理</a> </li>
+		   <?php if($role =='1') { ?>     <li class="{$ui.sys_add}"> <a href="{:U('sys/add')}"> 添加管理员</a> <?php  } ?></li>
+                 <li class="{$ui.sys_edit}"> <a href="./admin.php?c=sys&a=edit&id={$Adminuserid}"> 修改密码</a> </li>
+							</ul>
+                        
+                </div>
+            
+           
+
+										<div class="portlet-body form ">
+                                        
+                                        
+                                         <foreach name='select' item='user' >
+                                        
+
+
+									<div class="media-body">
+
+
+										<hr>
+
+										<!-- Nested media object -->
+
+										<div class="media">
+
+											<a href="#" class="pull-left">
+
+											<img src="__PUBLIC__/media/img/admin.png" alt=""  class="media-object" style="width:60px; height:60px">
+
+											</a>
+
+											<div class="media-body">
+
+												<h4 class="media-heading">用户ID：<strong class="text-error">{{$user.userid}}</strong> &nbsp;  登陆名：<strong class="text-error">{$user.username}</strong>&nbsp;  所属联盟：<strong class="text-error">{$user.from}</strong><span  class="pull-right"><a href="./admin.php?c=sys&a=edit&id={$user.userid}" class="btn blue "><i class="icon-remove icon-pencil"></i>  修改</a><?php   if($Adminuserid ==1 && $user['role']!=1) {    ?><a href="./admin.php?c=sys&a=del&id={$user.userid}" class="btn black"><i class="icon-remove icon-white"></i>  删除</a> <?php } ?></span>	
+<span><a  href="#" class="btn purple-stripe">状态：<?php if($user['is_open']==1) echo '启用'; else { echo '停用'; }  ?></a> 
+					</span></h4>
+
+												<p>登录次数：{$user.loginnum} ，最后一次登录时间：<php>if($user[logintime] >0):</php>  {$user.logintime|date='Y-m-d H:i',###}<php>else: </php> 未曾登录过<php>endif;</php>&nbsp;&nbsp; 角色：<eq name="user['role']" value="1"> 超级管理员<else/> 联盟管理员</eq> </p>
+ 
+										  </div>
+
+									  </div>
+
+										<!--end media-->
+
+									
+										<!--end media-->
+
+									</div>
+											<!-- END FORM-->  
+    </foreach>
+    <hr />
+										</div>
+
+									</div>
+
+								</div>
+
+				<!-- BEGIN PAGE CONTENT-->
+                
+
+			</div></div>
+<include file="Public:foot"/>

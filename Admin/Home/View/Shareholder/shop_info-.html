@@ -1,0 +1,327 @@
+<include file="Public:head"/>
+<link type="text/css" rel="stylesheet" href="__ROOT__/Public/media/css/layout.css" />
+<script src="__ROOT__/Public/layer/layer.js"></script><!--弹出层-->
+<script src="__ROOT__/Public/distpicker/jquery.min.js"></script><!--省市区三级联动-->
+<script src="__ROOT__/Public/distpicker/bootstrap.min.js"></script><!--省市区三级联动-->
+<script src="__ROOT__/Public/distpicker/distpicker.data.js"></script><!--省市区三级联动-->
+<script src="__ROOT__/Public/distpicker/distpicker.js"></script><!--省市区三级联动-->
+<script src="__ROOT__/Public/distpicker/main.js"></script><!--省市区三级联动-->
+<script type="text/javascript">  
+//定义了分类的二维数组，里面的顺序跟外表的顺序是相同的。通过selectedIndex获得不同大类的下标值来得到相应的分类数组  
+     var item=[  
+                [["shuxue","数学类"],["wuli","物理类"],["huaxue","化学类"],["shengwu","生物类"],["dizhi","地质类"],["dili","地理类"]],  
+                [["computer","计算机类"],["tongxun","通讯工程类"],["auto","机械及其自动化类"],["tumu","土木类"],["huanjing","环境类"],["chelaing","车辆类"],["jianzhu","建筑类"]],  
+                [["economy","经济类"],["low","法律类"],["manage","管理类"],["language","语言类"]],  
+                [["kaoyangE","考研英语"],["kaoyansM","考研数学"],["kanyanP","考研政治"]]     
+              ];  
+     function getItem(){  
+         //获得大类下拉框的对象  
+         var sltarea=document.getElementsByName('area')[0];		 
+         //获得小类下拉框的对象   
+		 var sltItem=document.getElementsByName('item')[0];		
+         //得到对应大类的城市数组  
+         var areaItem=item[sltarea.selectedIndex - 1];  
+         //清空小类下拉框，仅留提示选项  
+         sltItem.length=1;  
+         //将小类数组中的值填充到城市下拉框中  
+         for(var i=0;i<areaItem.length;i++){        
+         //获得小类名称值areaItem[i][1]        //获得小类名称的下标areaItem[i][0]  
+         //如果都选值 sltItem[i+1]=new Option(areaItem[i][1],areaItem[i][1]);  
+             sltItem[i+1]=new Option(areaItem[i][1],areaItem[i][0]);  
+         }  
+     }  
+</script>
+<div class="container-fluid">
+	<!-- BEGIN PAGE HEADER-->
+	<div class="title">
+		<h4 class="page-title">店铺管理<small>   Shop management</small></h4>
+		<ul class="breadcrumb">
+			<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> <i class="icon-angle-right"></i></li>
+			<li><a href="#">店铺管理</a><i class="icon-angle-right"></i></li>
+			<li><a href="#"><strong>添加店铺</strong></a></li>
+		</ul>  		
+	</div><!-- END PAGE TITLE & BREADCRUMB-->	
+	<div class="nav-tabs">
+        <ul >
+            <li class="{$ui.shop_list}"> <a href="{:U('Shop/shop_list')}"> 店铺列表</a> </li>
+            <li class="{$ui.shop_info}"> <a href="{:U('Shop/shop_info')}"> 添加店铺</a> </li> 
+        </ul>
+    </div><!-- END PAGE HEADER-->	
+	<!--员工详情开始-->
+	<div style="position:fixed;line-height:0px;z-index:-2">  <!--解决360浏览器自动填充账号密码问题-->    
+		<input style="line-height:0px" type='text'  /><input style="line-height:0px" type='password' >
+	</div>
+	<div class="main-content">
+		<form action="{:U('shop/shop_insert',array('action'=>$act))}" enctype="multipart/form-data" method="post" name="add-submit" onsubmit="return checkTabel();">
+			<table name="add_table">
+			   <tr><th colspan="2">店铺开户必填</th></tr>
+				<tr>
+					<td><b class="needed_icon">*</b> 店铺名称</td>
+					<td><input type="text"  value="{$shopinfo['name']}" id="name"  name="name"  Placeholder="请输入店铺名称"/></td>
+				</tr>
+				<tr>
+					<td><b class="needed_icon">*</b> 手机号码</td>
+					<td><input type="text"  value="{$shopinfo['name']}" id="name"  name="name"  Placeholder="请输入店铺名称"/> <i>重要：通过后，系统会向此手机号发送登录账号与密码</i> </td>
+				</tr>
+				<tr>  
+					<td><b class="needed_icon">*</b> 选择行业</td>
+					<td><select name="area" onChange="getItem()">  
+							<option value="null" selected="selected">请选择</option>  
+							<option value="like">理科类</option>  
+							<option value="gongke">工科类</option>  
+							<option value="wenke">文科类</option>  
+							<option value="other">其他类</option>  
+						  </select>  
+						  <select name="item">  
+							<option selected="selected" value="null">请选择二层分类</option>  
+						  </select>
+					</td>
+				 </tr>
+				 <tr>
+					<td><b class="needed_icon">*</b> 套餐方案</td>
+					<td >
+						<select name="jobSelect" id="jobSelect" style="width:415px;">
+								<option value="">请选择套餐方案</option>
+							<foreach name="group_list" item="group">
+								<option value="{$group['group_id']}" group_name="{$group['group_name']}">{$group['group_name']}</option>
+							</foreach>
+						</select>
+					</td>
+				 </tr>
+				 <tr>
+					<td><b class="needed_icon">*</b> 所属商城</td>
+					<td >
+						<select name="jobSelect" id="jobSelect" >
+								<option value="" >请选择所属商城</option>
+								<option value="">请选择所属商城</option>
+								<option value="">请选择所属商城</option>
+								<option value="">请选择所属商城</option>
+								<option value="">请选择所属商城</option>
+							
+						</select>	<input type="text" value="" style="width:100px;" />
+							<span style="border-radius:5px;background:red;padding:4px 23px;margin:auto 10px;color:#fff"  onclick="func7();" >查找</span>
+
+					</td>
+				 </tr>
+				 <tr style="display:none" id="shopattribution">
+					<td><b class="needed_icon">*</b> 店铺归属</td>
+					<td >
+						<select name="jobSelect" id="jobSelect" style="width:415px;" >
+							<foreach name="group_list" item="group">
+								<option value="{$group['group_id']}" group_name="{$group['group_name']}">{$group['group_name']}</option>
+							</foreach>
+						</select>
+					</td>
+				 </tr>
+				 <tr>
+					<td><b class="needed_icon">*</b> 商户账号</td>
+					<td>
+						<select name="jobSelect" id="jobSelect" style="width:415px;">
+								<option value="">请选择账号</option>
+							<foreach name="group_list" item="group">
+								<option value="{$group['group_id']}" group_name="{$group['group_name']}">{$group['group_name']}</option>
+							</foreach>
+						</select>
+						<i>确定后无法修改</i>
+					</td>
+				</tr>
+				<tr>
+					<td><b class="needed_icon">*</b> 登录密码</td>
+					<td><input type="text"  value="{$shopinfo['name']}" id="name"  name="name"  Placeholder="请输入登录密码"/></td>
+				</tr>
+				<tr><th colspan="2" style="background:#fff;text-align:left;height:45px;line-height:45px;">店铺资料选填</th></tr>
+			<tr>
+					<td>店铺区域</td>
+					<td>
+						<form class="form-inline">
+					<div id="distpicker6">			   
+						<select class="form-control" id="province6"><option value="" data-code="">—---- 所在省 ----</option></select>  <select class="form-contro6" id="city1"><option value="" data-code="">---- 所在市 ----</option></select>
+						<select class="form-control" id="district6"><option value="" data-code="">---- 所在区 ----</option></select>
+					</div>
+				</form>
+					</td>
+				</tr> 
+				<tr>
+					<td>详细地址</td>
+					<td><input type="text" value="{$shopinfo['']}" id=""  name="" /></td>
+				</tr>
+				<tr>
+					<td>负责人姓名</td>
+					<td><input type="text" value="{$shopinfo['']}" id=""  name="" /></td>
+				</tr>
+				<tr>
+					<td>负责人身份证</td>
+					<td><input type="text" value="{$shopinfo['']}" id=""  name="" /></td>
+				</tr>
+				<tr>
+					<td>负责人联系电话</td>
+					<td><input type="text" value="{$shopinfo['']}" id=""  name="" /></td>
+				</tr>
+				<tr>
+					<td>社会统一信用代码</td>
+					<td><input type="text" value="{$shopinfo['']}" id=""  name="" /></td>
+				</tr>
+				<tr>
+					<td> 资料上传</td>
+					<td>
+						 <div  class="imgWrap">
+							<div class="sellerImg">
+								<img src="<?php echo (empty ($shopinfo['purl']))?'__ROOT__/Public/images/imglogo.png':$shopinfo['purl']; ?>" id="memberImg1" class="seller_img"/>
+							</div>
+							<label class="imgBtn" >
+								<input type="file" name="fileImg1" id="fileImg1" multiple="multiple" style="display:none;"/>营业执照上传
+							</label>
+					   </div>
+						<div class="imgWrap">
+							<div class="sellerImg">
+								<img src="<?php echo (empty ($shopinfo['purl']))?'__ROOT__/Public/images/imglogo.png':$shopinfo['purl']; ?>" id="memberImg2" class="seller_img"/>
+							</div>
+							<label class="imgBtn" >
+								<input type="file" name="fileImg2" id="fileImg2" multiple="multiple" style="display:none;"/>法人身份正面上传
+							</label>
+					   </div>
+						<div class="imgWrap">
+							<div class="sellerImg">
+								<img src="<?php echo (empty ($shopinfo['purl']))?'__ROOT__/Public/images/imglogo.png':$shopinfo['purl']; ?>" id="memberImg3" class="seller_img"/>
+							</div>
+							<label class="imgBtn" >
+								<input type="file" name="fileImg3" id="fileImg3" multiple="multiple" style="display:none;"/>法人身份证背面上传
+							</label>
+					   </div>
+						<div class="imgWrap">
+							<div class="sellerImg">
+								<img src="<?php echo (empty ($shopinfo['purl']))?'__ROOT__/Public/images/imglogo.png':$shopinfo['purl']; ?>" id="memberImg4" class="seller_img"/>
+							</div>
+							<label class="imgBtn" >
+								<input type="file" name="fileImg4" id="fileImg4" multiple="multiple" style="display:none;"/>上传其他图片
+							</label>
+					   </div> 
+			 
+					</td>
+				</tr>
+				<tr>
+					<td>备注说明</td>
+					<td><input type="text" value="{$shopinfo['']}" id=""  name="" /></td>
+				</tr>
+				<tr>
+					<td>业务编号</td>
+					<td><input type="text" value="{$shopinfo['']}" id=""  name="" /></td>
+				</tr>
+                <tr><th colspan="2" style="background:#fff;text-align:left;height:35px;line-height:35px;">提现银行信息</th></tr>
+				 <tr>
+					<td>开户银行</td>
+					<td >
+						<select name="jobSelect" id="jobSelect" style="width:415px;">
+								<option value="">请选择开户银行</option>
+							<foreach name="group_list" item="group">
+								<option value="{$group['group_id']}" group_name="{$group['group_name']}">{$group['group_name']}</option>
+							</foreach>
+						</select>
+					</td>
+				</tr>
+		<tr>
+		    <td>开户地点</td>
+			<td>
+				<form class="form-inline">
+					<div id="distpicker5">			   
+						<select class="form-control" id="province5"><option value="" data-code="">—— 省 ——</option></select>  <select class="form-control" id="city5"><option value="" data-code="">—— 市 ——</option></select>
+						<select class="form-control" id="district5"><option value="" data-code="">—— 区 ——</option></select>
+					</div>
+				</form>
+			</td>
+		</tr>
+				<tr>
+					<td>开户银行名称</td>
+					<td><input type="text" value="{$shopinfo['']}" id=""  name="" /></td>
+				</tr>
+                <tr>
+					<td>对公银行帐号</td>
+					<td><input type="text" value="{$shopinfo['']}" id=""  name="" /></td>
+				</tr>			
+			
+			</table>
+			<div class="info-input">
+				<if condition="$act eq 'info' ">
+				<input type="hidden" value="{$shopinfo.shop_id}" name="shop_id"/>
+				<input type="hidden" value="{$shopinfo.store_id}" name="store_id"/>
+				<input type="hidden" value="{$shopinfo.version}" name="version"/>
+				</if>
+				<input type="hidden" value="{$act}" name="act"/>
+			   <input type="button" id="func"  onclick="func()"  value="确认开户"/>
+			</div>
+		</form> 
+	</div>
+	<div></div>
+</div>
+<script type="text/javascript">
+ function func() {
+ alert(23);
+	layer.alert('恭喜您！开通商城成功', {
+	  skin: 'layui-layer-molv' //样式类名
+	  ,closeBtn: 0
+	});
+}
+
+</script>
+ <!--更改图片-->
+
+<script>	
+    $("#fileImg1").change(function(){			
+		var objUrl = getObjectURL(this.files[0]) ;
+		if (objUrl) {
+			$("#memberImg1").attr("src", objUrl) ;
+		}			
+	}) ;
+	$("#fileImg2").change(function(){			
+		var objUrl = getObjectURL(this.files[0]) ;
+		if (objUrl) {
+			$("#memberImg2").attr("src", objUrl) ;
+		}			
+	}) ;
+	$("#fileImg3").change(function(){			
+		var objUrl = getObjectURL(this.files[0]) ;
+		if (objUrl) {
+			$("#memberImg3").attr("src", objUrl) ;
+		}			
+	}) ;
+	$("#fileImg4").change(function(){			
+		var objUrl = getObjectURL(this.files[0]) ;
+		if (objUrl) {
+			$("#memberImg4").attr("src", objUrl) ;
+		}			
+	}) ;
+
+	//建立一個可存取到該file的url
+	function getObjectURL(file) {
+		var url = null ; 
+		if (window.createObjectURL!=undefined) { // basic
+			url = window.createObjectURL(file) ;
+		} else if (window.URL!=undefined) { // mozilla(firefox)
+			url = window.URL.createObjectURL(file) ;
+		} else if (window.webkitURL!=undefined) { // webkit or chrome
+			url = window.webkitURL.createObjectURL(file) ;
+		}
+		return url ;
+	}
+
+
+</script>
+<script type="text/javascript">
+
+ function func7() {
+ var a="qq"
+		layer.confirm(a, {
+		  btn: ['确定','取消'] //按钮
+		}, function(){
+		  layer.msg('添加成功', {icon: 1});
+		  $('#shopattribution').show();
+		}, function(){
+		  layer.closeAll();
+		});
+		}
+
+</script>
+
+
+
+<include file="Public:foot" />

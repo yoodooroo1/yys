@@ -1,0 +1,118 @@
+<include file="Public:head"/>
+<script type="text/javascript" src="__ROOT__/Public/media/js/area.min.js"></script>
+<link href="__ROOT__/Public/media/css/layout.css" rel="stylesheet" type="text/css"/>
+<style>
+.small_input input[type="text"]{
+	max-width:65px;
+}
+</style>   
+<div class="container-fluid"> 
+	<!-- BEGIN PAGE HEADER-->
+	<div class="title">
+		<ul class="breadcrumb">
+			<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> <i class="icon-angle-right"></i></li>
+			<li><a href="#">系统管理</a><i class="icon-angle-right"></i></li>
+			<li><a href="#"><strong>奖金设置</strong></a></li>
+		</ul>   
+	</div>
+	<div  class="nav-tabs">
+        <ul >
+            <li class="{$ui.admin_list}"> <a href="{:U('AdminManager/Administrator_list')}"> 管理员列表</a> </li>
+            <li class="{$ui.award_config}"> <a href="{:U('System/award_config')}"> 运营商设置</a> </li> 
+			<li class="{$ui.log_list}"> <a href="{:U('System/AdminLogList')}"> 管理员日志</a> </li>
+        </ul>
+    </div><!-- END PAGE HEADER-->
+    <div class="main-content" >
+	    <form action="{:U('System/award_config')}" method="post" name="add-submit" enctype="multipart/form-data" onSubmit="return checkMust()">  
+		    <table name="add_table">           
+				<tr>
+					<td>运营商提现手续</td>
+					<td><input type="text" name="drawmoney_percent" value="{$info.drawmoney_percent}" style="width:65px;"/>%</td> 
+				</tr>	
+				<tr>   
+					<td>设置运营商代理折扣</td>			
+					<td class="small_input">
+						初级 首年 <input  type="text" name="first_discount" value="{$info.first_discount}"/> 折 折扣，推广金额达到 <input  type="text" name="first_upprice" value="{$info.first_upprice}"/> 元后自动升下一级； 次年续费 <input  type="text" name="first_morediscount" value="{$info.first_morediscount}"/> 折 折扣<br/>
+						
+						铜牌 首年 <input  type="text" name="secend_discount" value="{$info.secend_discount}"/> 折 折扣，推广金额达到 <input  type="text" name="secend_upprice" value="{$info.secend_upprice}"/> 元后自动升下一级； 次年续费 <input  type="text" name="secend_morediscount" value="{$info.secend_morediscount}"/> 折 折扣<br/>
+						
+						银牌 首年 <input  type="text" name="third_discount" value="{$info.third_discount}"/> 折 折扣，推广金额达到 <input  type="text" name="third_upprice" value="{$info.third_upprice}"/> 元后自动升下一级； 次年续费 <input  type="text" name="third_morediscount" value="{$info.third_morediscount}"/> 折 折扣<br/>
+						
+						金牌 首年 <input  type="text" name="fourth_discount" value="{$info.fourth_discount}"/> 折 折扣，推广金额达到 <input  type="text" name="fourth_upprice" value="{$info.fourth_upprice}"/> 元后自动升下一级； 次年续费 <input  type="text" name="fourth_morediscount" value="{$info.fourth_morediscount}"/> 折 折扣<br/>
+						
+						白金 首年 <input  type="text" name="fifth_discount" value="{$info.fifth_discount}"/> 折 折扣，推广金额达到 <input  type="text" name="fifth_upprice" value="{$info.fifth_upprice}"/> 元后自动升下一级； 次年续费 <input  type="text" name="fifth_morediscount" value="{$info.fifth_morediscount}"/> 折 折扣<br/>
+						 
+						钻石 首年 最低价； 次年续费 <input  type="text" name="sixth_morediscount" value="{$info.sixth_morediscount}"/> 折 折扣<br/>
+						 
+					</td>    
+				</tr>
+	        </table>      
+			<div  class="info-input" >
+				<input type="submit" value="提交"/>
+			</div>		
+	    </form>
+	</div>
+</div>   
+
+<script type="text/javascript">
+	function checkMust(){
+		var drawmoney_percent = $("input[name=drawmoney_percent]").val();   //提现手续费
+		
+		var first_discount = $("input[name=first_discount]").val();  
+		var first_upprice = $("input[name=first_upprice]").val();   
+		var first_morediscount = $("input[name=first_morediscount]").val();  
+
+		var secend_discount = $("input[name=secend_discount]").val();  
+		var secend_upprice = $("input[name=secend_upprice]").val();   
+		var secend_morediscount = $("input[name=secend_morediscount]").val(); 
+
+		var third_discount = $("input[name=third_discount]").val();  
+		var third_upprice = $("input[name=third_upprice]").val();   
+		var third_morediscount = $("input[name=third_morediscount]").val();	
+
+		var fourth_discount = $("input[name=fourth_discount]").val();  
+		var fourth_upprice = $("input[name=fourth_upprice]").val();    
+		var fourth_morediscount = $("input[name=fourth_morediscount]").val();
+
+		var fifth_discount = $("input[name=fifth_discount]").val();  
+		var fifth_upprice = $("input[name=fifth_upprice]").val();    
+		var fifth_morediscount = $("input[name=fifth_morediscount]").val();
+		
+		var sixth_morediscount = $("input[name=sixth_morediscount]").val();		
+		    
+		if(isNaN(drawmoney_percent) || drawmoney_percent>100 || drawmoney_percent<0){
+			alert("提现手续格式错误");
+			return false;    
+		}	
+		else if(isNaN(first_discount) || isNaN(first_upprice) || isNaN(first_morediscount) || first_discount<0 || first_discount>10 || first_upprice<0 || first_morediscount<0 || first_morediscount >10 ){
+			alert("一级代理商设置格式错误");
+			return false;
+		}
+		else if(isNaN(secend_discount) || isNaN(secend_upprice) || isNaN(secend_morediscount) ||secend_discount<0 || secend_discount>10 || secend_upprice<0 || secend_morediscount<0 || secend_morediscount >10 ){
+			alert("二级代理商设置格式错误");
+			return false;
+		}
+		else if(isNaN(third_discount) || isNaN(third_upprice) || isNaN(third_morediscount) || third_discount<0 || third_discount>10 || third_upprice<0 || third_morediscount<0 || third_morediscount >10 ){
+			alert("三级代理商设置格式错误");
+			return false;
+		}
+		else if(isNaN(fourth_discount) || isNaN(fourth_upprice) || isNaN(fourth_morediscount) ||fourth_discount<0 || fourth_discount>10 || fourth_upprice<0 || fourth_morediscount<0 || fourth_morediscount >10 ){
+			alert("四级代理商设置格式错误");
+			return false;
+		} 
+		else if(isNaN(fifth_discount) || isNaN(fifth_upprice) || isNaN(fifth_morediscount) || fifth_discount<0 || fifth_discount>10 || fifth_upprice<0 || fifth_morediscount<0 || fifth_morediscount >10 ){
+			alert("五级代理商设置格式错误");
+			return false;
+		}
+		else if(isNaN(sixth_morediscount) || sixth_morediscount<0 || sixth_morediscount >10 ){
+			alert("六级代理商设置格式错误");
+			return false;
+		}	
+		else{  
+			return true;   
+		}  
+	}
+</script>
+<!--查找地图-->
+
+<include file="Public:foot" />

@@ -1,0 +1,218 @@
+<include file="Public:head"/>
+<link type="text/css" rel="stylesheet" href="__ROOT__/Public/media/css/add_seller.css" />
+<style type="text/css">
+	.diyCheckBox input + label{
+		padding:0 20px;
+		background:url('__ROOT__/Public/media/image/no-check.png')left center no-repeat;
+		background-size:14px;
+		margin:0;
+	}
+	.diyCheckBox input:checked + label{
+		padding:0 20px;
+		background:url('__ROOT__/Public/media/image/check.png')left center no-repeat;
+		background-size:14px;
+		margin:0;
+	}
+</style>
+<div class="container-fluid">
+	<!-- BEGIN PAGE HEADER-->
+	<div class="row-fluid">
+		<div class="span12">
+		<h4 class="page-title">商家管理 <small>   User management</small></h4>
+			<ul class="breadcrumb" style="margin:0;">
+				<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> 
+					<i class="icon-angle-right"></i></li>
+
+				<li><a href="#">商家管理</a><i class="icon-angle-right"></i></li>				
+				<if condition="$act eq 'info'">
+					
+					<li><a href="#"><strong>配置详情</strong></a></li>				
+				<else />
+					<li><a href="#"><strong>配置详情</strong></a></li>
+				</if>
+			</ul>  
+			<!-- END PAGE TITLE & BREADCRUMB-->
+		</div>
+	</div>
+	<hr>
+	<!-- END PAGE HEADER-->
+
+
+	<form action="{:U('Store/storeitem_update')}" method="post" enctype="multipart/form-data" name="member_submit" onSubmit="return checkInf();"> 
+	
+	<div style="position:fixed;line-height:0px;z-index:-2">  <!--解决360浏览器自动填充账号密码问题-->    
+	<input style="line-height:0px" type='text'  /><input style="line-height:0px" type='password' >    
+	</div>	  
+	<div class="">
+	
+		<table name="add_infor" border="1px" style="border:1px dotted #EEE;">
+			<tr>
+				<td>图标</td>
+				<td>
+					<div class="sellerImg">
+						<img src="<?php echo (empty ($imgurl))?'__ROOT__/Public/media/image/commom_goods.png':$imgurl; ?>" id="memberImg" class="seller_img"/>
+					</div>
+				    <label class="imgBtn" style="line-heihgt:auto;">
+	        			<input type="file" name="fileImg" id="fileImg" multiple="multiple" style="display:none;"/>上传图标
+	    			</label>	
+				</td>
+			</tr>			
+			<tr>
+				<td>类型</td>
+				<td style="position:relative;">
+					<input type="text" value="{$mtype}" name="position" placeholder="图标项类型" readonly="readonly"/>
+					<if condition="$storetype eq 'alonestore'">
+						<select name="jobSelect">	
+						    <option value="0">默认/option>					
+							<option value="1">网址</option>
+							<option value="2">积分商城</option>
+							<option value="3">摇奖品</option>
+							<option value="4">我的收藏</option>
+							<option value="5">直接付款</option>
+							<option value="6">服务中心</option>
+							
+						</select>
+					</if>
+					
+                    <if condition="$storetype eq 'store'">
+						<select name="jobSelect">	
+						    <option value="0">默认/option>					
+							<option value="1">网址</option>
+							<option value="2">积分商城</option>
+							<option value="3">摇奖品</option>
+							<option value="4">我的收藏</option>
+							<option value="5">直接付款</option>
+							<option value="6">联盟商家</option>
+							
+						</select>
+					</if>
+					<if condition="$storetype eq 'mallstore'">
+						<select name="jobSelect">	
+						    <option value="0">默认/option>					
+							<option value="1">网址</option>
+							<option value="2">积分商城</option>
+							<option value="3">摇奖品</option>
+							<option value="4">我的收藏</option>
+							<option value="5">服务中心</option>
+							<option value="6">活动公告</option>
+						</select>
+					</if>
+					<if condition="$storetype eq 'mall'">
+                         <select name="jobSelect">	
+                            <option value="0">默认/option>						
+							<option value="1">网址</option>
+							<option value="2">精划算</option>
+							<option value="3">逛商品</option>
+							<option value="4">地图</option>
+							<option value="5">我的足迹</option>
+							<option value="6">市场公告</option>
+							<option value="7">积分商城</option>
+							<option value="8">摇奖品</option>
+							<option value="9">服务中心</option>
+							<option value="10">找好店</option>
+							<option value="11">精品购</option>
+							<option value="12">每日购</option>
+						</select>
+                    </if>
+
+                    <if condition="$storetype eq 'lian'">
+                         <select name="jobSelect">		
+                           <option value="0">默认/option>					
+							<option value="1">网址</option>
+							<option value="2">积分商城</option>
+							<option value="3">摇奖品</option>
+							<option value="4">服务中心</option>
+							<option value="5">每日签到</option>
+							<option value="6">{:C('site_name')}消息</option>
+						</select>
+                    </if>
+
+				</td>
+			</tr>
+			<tr>
+				<td>标题</td>
+				<td>								
+					<input type="text"  id="title_name" name="title_name"  value="{$title}"/>	
+				</td>
+			</tr>
+			<tr>   
+				<td>链接</td>
+				<td>
+					<input type="text"  id="weburl" name="weburl"  value="{$weburl}"/>
+				</td>   
+			</tr>
+			
+			
+		</table>
+	        <div style="margin:15px 5px; text-align:right; padding-right:50px">
+			
+			<input type="hidden" value="{$store_id}" name="store_id"/>
+			<input type="hidden" value="{$dbname}" name="dbname"/>
+	          	<input type="submit" value="确定"/>
+         	</div>
+	</div>
+	</form>
+</div>
+<!--更改图片-->
+<script>	
+	$("#fileImg").change(function(){			
+		var objUrl = getObjectURL(this.files[0]) ;
+		//console.log("objUrl = "+objUrl) ;					
+		if (objUrl) {
+			$("#memberImg").attr("src", objUrl) ;
+		}			
+	}) ;
+	//建立一個可存取到該file的url
+	function getObjectURL(file) {
+		var url = null ; 
+		if (window.createObjectURL!=undefined) { // basic
+			url = window.createObjectURL(file) ;
+		} else if (window.URL!=undefined) { // mozilla(firefox)
+			url = window.URL.createObjectURL(file) ;
+		} else if (window.webkitURL!=undefined) { // webkit or chrome
+			url = window.webkitURL.createObjectURL(file) ;
+		}
+		return url ;
+	}
+</script>
+<script type="text/javascript">
+	$("select[name='jobSelect']").change(function (){
+		var valS = $("select[name='jobSelect'] option:selected").val();
+		//console.log(valS);
+		$("input[name='position']").val(valS);
+	});
+</script>
+<script type="text/javascript">
+	function checkTabel(){
+		var name = $("input[name=seller_name]").val();			
+		var newMPass = $("input[name=newMem_passwd]").val().length;
+		var nick = $("input[name=member_nickname]").val();
+		
+		if(name == ''){
+				alert("请输入{:C('site_name')}账号");
+				return false;
+			}else if(!/\D/g.test(name)){
+				alert("账号不能全为数字");
+				return false;
+			}else if(newMPass < 6){
+					alert("请输入六位及六位以上密码");
+					return false;
+				}else if(nick == ''){
+							alert("请填写昵称");
+							return false;
+						}else{
+							return true;
+							}							
+		}
+</script>
+<script type="text/javascript">
+	function checkInf(){
+		var name = $("input[name=title_name]").val();
+		if(name == ''){
+				alert("请输入标题名称");
+				return false;
+			}				
+		
+	}
+</script>
+<include file="Public:foot" />

@@ -1,0 +1,637 @@
+<include file="Public:head"/>
+<link type="text/css" rel="stylesheet" href="__ROOT__/Public/media/css/layout.css" />
+<script src="__ROOT__/Public/layer/layer.js"></script><!--弹出层-->
+<script src="__ROOT__/Public/distpicker/jquery.min.js"></script><!--省市区三级联动-->
+<script src="__ROOT__/Public/distpicker/bootstrap.min.js"></script><!--省市区三级联动-->
+<script src="__ROOT__/Public/distpicker/distpicker.data.js"></script><!--省市区三级联动-->
+<script src="__ROOT__/Public/distpicker/distpicker.js"></script><!--省市区三级联动-->
+<script src="__ROOT__/Public/distpicker/main.js"></script><!--省市区三级联动-->
+<script type="text/javascript">  
+//定义了分类的二维数组，里面的顺序跟外表的顺序是相同的。通过selectedIndex获得不同大类的下标值来得到相应的分类数组  
+     var item={$childs};
+      function getItem(){  
+         //获得大类下拉框的对象  
+         var sltarea=document.getElementsByName('store_parenttype_id')[0];		 
+         //获得小类下拉框的对象   
+		 var sltItem=document.getElementsByName('store_childtype_id')[0];		
+         //得到对应大类的城市数组  
+         var areaItem=item[sltarea.selectedIndex - 1];  
+         //清空小类下拉框，仅留提示选项    
+         sltItem.length=1;         
+         //将小类数组中的值填充到城市下拉框中  
+         for(var i=0;i<areaItem.length;i++){        
+         //获得小类名称值areaItem[i][1]        //获得小类名称的下标areaItem[i][0]  
+         //如果都选值 sltItem[i+1]=new Option(areaItem[i][1],areaItem[i][1]);  
+             sltItem[i+1]=new Option(areaItem[i][1],areaItem[i][0]);  
+         }  
+     }  
+</script>
+<div class="container-fluid">
+	<!-- BEGIN PAGE HEADER-->
+	<div class="title">
+		<ul class="breadcrumb">
+			<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> <i class="icon-angle-right"></i></li>
+			<li><a href="#">店铺管理</a><i class="icon-angle-right"></i></li>
+			<li><a href="#"><strong>添加店铺</strong></a></li>
+		</ul>  		
+	</div><!-- END PAGE TITLE & BREADCRUMB-->	
+	<div class="nav-tabs">
+        <ul >
+            <li class="{$ui.shop_list}"> <a href="{:U('Shop/shop_list')}"> 店铺列表</a> </li>
+			<if condition="$act eq  'insert'">
+            <li class="{$ui.shop_info}"> <a href="{:U('Shop/shop_info')}"> 添加店铺</a> </li> 
+			<else />
+			<li class="{$ui.shop_info}"> <a href="{:U('Shop/shop_info',array('shop_id'=>$shopinfo['store_id']))}"> 编辑店铺</a> </li> 
+			</if>    
+        </ul>
+    </div><!-- END PAGE HEADER-->	 
+	<!--员工详情开始-->
+	<div style="position:fixed;line-height:0px;z-index:-2">  <!--解决360浏览器自动填充账号密码问题-->    
+		<input style="line-height:0px" type='text'  /><input style="line-height:0px" type='password' >
+	</div>    
+	<div class="main-content">    
+		<form id="data_submit" action="{:U('shop/shop_edit')}" enctype="multipart/form-data" method="post" name="add-submit" onsubmit="return checkTabel();">
+			<table name="add_table">
+			   <tr><th colspan="2">店铺开户必填</th></tr>
+				<tr>
+					<td><b class="needed_icon">*</b> 店铺名称</td>
+					<td><input type="text"  value="{$shopinfo['store_name']}" id="shopName"  name="shopName"  Placeholder="请输入店铺名称" <if condition="$act eq 'info'"> readonly </if>/></td>
+				</tr>
+				<!-- <tr>
+					<td><b class="needed_icon">*</b> 手机号码</td>
+					<td><input type="text"  value="{$shopinfo['name']}" id="name"  name="name"  Placeholder="请输入店铺名称"/> <i>重要：通过后，系统会向此手机号发送登录账号与密码</i> </td>
+				</tr> -->
+				<tr>  
+					<td><b class="needed_icon">*</b> 选择行业</td>
+					<td><select name="store_parenttype_id" onChange="getItem()" <if condition="$act eq 'info'"> disabled </if> >
+							<if condition="$act eq 'info'">
+								<option value="" selected="selected" >{$shopinfo.parenttype_name}</option> 	 
+							</if> 
+							<option value="">请选择</option> 
+							<volist name="commontype_parent" id="parent">		
+							<option value="{$parent.id}">{$parent.store_type_name}</option>
+							</volist>							
+						  </select>   
+						  <select name="store_childtype_id" <if condition="$act eq 'info'"> disabled </if> >  
+							<if condition="$act eq 'info'">
+								<option value="" selected="selected" >{$shopinfo.childtype_name}</option> 	 
+							</if>    
+							<option  value="">请选择</option>  
+						  </select>
+					</td>
+				 </tr>    
+				 <tr>
+					<td><b class="needed_icon">*</b> 套餐方案</td>
+					<td >
+						<select name="package_id" id="package_id" style="width:415px;" onchange="ajax_get_memberlist()" <if condition="$act eq 'info'"> disabled </if> >
+							<foreach name="package_list" item="package">
+								<option value="{$package['packageid']}" vip_data="{$package['up_level']}" <if condition="$shopinfo['package_id'] eq $package['packageid']"> selected </if>>{$package['name']}</option>
+							</foreach>
+						</select> 
+					</td>  
+				 </tr>
+				 <tr>
+					<td><b class="needed_icon">*</b> 套餐年限</td>
+					<td> 
+					<input type="radio" name="age_limit" value='1' <if condition="($shopinfo['age_limit'] eq '1') OR ($shopinfo['age_limit'] eq '') "> checked</if> <if condition="$act eq 'info'"> disabled </if>  /> 一年 &nbsp;&nbsp;
+					<input type="radio" name="age_limit" value='2' <if condition="($shopinfo['age_limit'] eq '2') "> checked</if> <if condition="$act eq 'info'"> disabled </if>   /> 两年 &nbsp;&nbsp;
+					<input type="radio" name="age_limit" value='3' <if condition="($shopinfo['age_limit'] eq '3') "> checked</if> <if condition="$act eq 'info'"> disabled </if>   /> 三年 
+					
+					<if condition="$shopinfo['vip_endtime'] neq ''">
+					&nbsp;&nbsp;&nbsp;&nbsp;套餐到期时间：{$shopinfo.vip_endtime|date="Y-m-d",###}
+					</if>
+					</td>
+				</tr>    
+				 <tr>
+					<td><b class="needed_icon">*</b> 商户账号</td>
+					<td>
+						<select name="xunxin_num" id="memberSelect" style="width:415px;" <if condition="$act eq 'info'"> disabled </if>>
+							<if condition="$act eq 'info'">
+							<option value="{$shopinfo['member_name']}" >{$shopinfo['member_name']}</option>
+							</if> 
+							<foreach name="member_name_list" item="member_list">
+								<option value="{$member_list['xunxin_num_name']}" >{$member_list['xunxin_num_name']}</option>
+							</foreach>
+						</select>    
+						<i>确定后无法修改</i>
+					</td>
+				</tr> 
+				<tr>
+					<td><b class="needed_icon">*</b> 登录密码</td>
+					<td><input type="password" id="password"  name="password"  Placeholder="请输入登录密码"/></td>
+				</tr>
+				<tr><th colspan="2" style="background:#fff;text-align:left;height:45px;line-height:45px;">店铺资料 </th></tr>
+				<tr>    
+					<td>店铺区域</td>
+					<td>
+					
+					<div id="distpicker6">			   
+						<select name="store_provincename" class="form-control" id="province6" data-province="{$shopinfo['store_province']}">
+						<option value="" data-code="">—---- 所在省 ----</option>
+						</select>  
+						<select class="form-control" id="city6" name="store_cityname" data-city="{$shopinfo['store_city']}"><option value="" data-code="">---- 所在市 ----</option>
+						</select>
+						<select class="form-control" id="district6" name="store_areaname" data-district="{$shopinfo['store_area']}"><option value="" data-code="">---- 所在区 ----</option></select>
+					</div>
+					
+					</td>   
+				</tr> 
+				<tr>
+					<td>详细地址</td>
+					<td><input type="text" value="{$shopinfo['store_address']}"  name="account_storeaddress" /></td>
+				</tr>
+				<tr>
+					<td><b class="needed_icon">*</b> 负责人姓名</td>
+					<td><input type="text" value="{$shopinfo['lianxi_member_name']}"  name="account_membername" /></td>
+				</tr>
+				<tr>
+					<td>负责人身份证</td>
+					<td><input type="text" value="{$shopinfo['lianxi_id_number']}" id=""  name="id_card" /></td>
+				</tr>
+				<tr>
+					<td><b class="needed_icon">*</b> 负责人联系电话</td>
+					<td><input type="text" value="{$shopinfo['lianxi_member_tel']}"   name="account_membertel" />
+					<i>重要：通过后，系统会向此手机号发送登录账号与密码</i>
+					</td>
+				</tr>
+				<tr>
+					<td>社会统一信用代码</td>
+					<td><input type="text" value="{$shopinfo['account_zhucehao']}" name="account_zhucehao" /></td>
+				</tr>
+				<tr>
+					<td> 资料上传</td>
+					<td>
+						 <div  class="imgWrap">
+							<div class="sellerImg">
+								<img src="<?php echo (empty ($shopinfo['store_license']))?'__ROOT__/Public/images/imglogo.png':$shopinfo['store_license']; ?>" id="memberImg1" class="seller_img"/>
+							</div>
+							<label class="imgBtn" >
+								<input type="file" name="fileImg1" id="fileImg1" multiple="multiple" style="display:none;"/>营业执照上传
+							</label>
+					   </div>
+						<div class="imgWrap">
+							<div class="sellerImg">
+								<img src="<?php echo (empty ($shopinfo['lianxi_id_img1']))?'__ROOT__/Public/images/imglogo.png':$shopinfo['lianxi_id_img1']; ?>" id="memberImg2" class="seller_img"/>
+							</div>
+							<label class="imgBtn" >
+								<input type="file" name="fileImg2" id="fileImg2" multiple="multiple" style="display:none;"/>法人身份正面上传
+							</label>
+					   </div>
+						<div class="imgWrap">
+							<div class="sellerImg">
+								<img src="<?php echo (empty ($shopinfo['lianxi_id_img2']))?'__ROOT__/Public/images/imglogo.png':$shopinfo['lianxi_id_img2']; ?>" id="memberImg3" class="seller_img"/>
+							</div>
+							<label class="imgBtn" >
+								<input type="file" name="fileImg3" id="fileImg3" multiple="multiple" style="display:none;"/>法人身份证背面上传
+							</label>
+					   </div>
+						<div class="imgWrap">
+							<div class="sellerImg">
+								<img src="<?php echo (empty ($shopinfo['other_img']))?'__ROOT__/Public/images/imglogo.png':$shopinfo['other_img']; ?>" id="memberImg4" class="seller_img"/>
+							</div>
+							<label class="imgBtn" > 
+								<input type="file" name="fileImg4" id="fileImg4" multiple="multiple" style="display:none;"/>上传其他图片
+							</label>
+					   </div> 
+			 
+					</td>
+				</tr>
+				<tr>
+					<td>备注说明</td>
+					<td><input type="text" value="{$shopinfo['store_remark']}"   name="remark" /></td>
+				</tr>
+				<tr > 
+					<td>业务编号</td>
+					<td><select name="operate_num" id="operate_num"  style="width:415px;" onchange="check_try()" <if condition="$act eq 'info'"> disabled </if>>
+							<if condition="$act eq 'info'">
+								<option value="" selected="selected" >{$shopinfo.operation_number}</option> 	  
+							</if> 
+							<foreach name="operate_list" item="olist">
+							<option value="{$olist['operate_sn']}" try_data="{$olist['try_time']}">{$olist['operate_sn']}</option>
+							</foreach> 
+						</select> 
+					</td> 
+				</tr>
+
+				<tr id="is_try" <if condition="$operate_list[0]['try_time'] eq '0'"> style="display:none;" </if> > 
+					<td>是否试用</td> 
+					<td>
+					<input type="radio" name="is_try" value="0"  <if condition="($shopinfo['is_try'] eq '0') OR ($shopinfo['is_try'] eq '') "> checked</if>  <if condition="$act eq 'info'"> disabled </if>> 否 &nbsp; &nbsp;
+					<input type="radio" name="is_try" value='1' <if condition="$shopinfo['is_try'] eq '1'"> checked</if> <if condition="$act eq 'info'"> disabled </if>>是 &nbsp;  &nbsp;
+					试用时间 &nbsp;
+					<input style="width:30px;" type="text" name="try_time" value="{$shopinfo.try_time}" <if condition="$act eq 'info'"> disabled </if>> 小时（不超过<font id='set_time'>{$operate_list[0]['try_time']}</font>小时 ）
+					</td> 
+				</tr>   
+				 
+                <tr><th colspan="2" style="background:#fff;text-align:left;height:35px;line-height:35px;">提现银行信息</th></tr>
+				 <!-- <tr>
+					<td>开户银行</td>
+					<td >
+						<select name="jobSelect" id="jobSelect" style="width:415px;">
+								<option value="">请选择开户银行</option>
+							<foreach name="group_list" item="group">
+								<option value="{$group['group_id']}" group_name="{$group['group_name']}">{$group['group_name']}</option>
+							</foreach>
+						</select>
+					</td>
+				</tr> --> 
+			<tr>
+				<td>开户银行名称</td>
+				<td><input type="text" value="{$shopinfo['bank_name']}" name="bank_name" /></td>
+			</tr>		
+		<tr> 
+		    <td>开户地点</td> 
+			<td>
+				  
+					<div id="distpicker5">			   
+						<select name="bank_provincenae" class="form-control" id="province5" data-province="{$shopinfo['bank_provincenae']}"><option value="" data-code="">—---- 所在省 ----</option></select>  <select class="form-control" id="city5" name="bank_cityname" data-city="{$shopinfo['bank_city']}"><option value="" data-code="">---- 所在市 ----</option></select>
+						<select class="form-control" id="district5" name="bank_areaname" data-district="{$shopinfo['bank_area']}"><option value="" data-code="" >---- 所在区 ----</option></select>
+						
+					</div>      
+				
+			</td>   
+		</tr> 
+				
+                <tr>
+					<td>对公银行帐号</td>
+					<td><input type="text" value="{$shopinfo['bank_num']}" id=""  name="bank_num" /></td>
+				</tr>			
+			
+			</table>   
+			<div class="info-input">
+				<if condition="$act eq 'info' ">
+				<input type="hidden" value="{$shopinfo.store_id}" name="store_id"/>
+				</if> 
+				<input type="hidden" value="{$act}" name="act"/>
+				<if condition="$act eq 'info' ">
+					 <input type="submit" id="func"   value="确认编辑"/>
+					 <input type="button"  onclick="renews(this)" value="续约">
+				<else />
+					<input type="button" id="func"  onclick="checkmoney()"  value="确认开户"/>
+				</if>
+			</div>
+		</form>   
+	</div>     
+	<div></div>  
+</div>
+<script type="text/javascript">
+	function checkmoney(){
+	
+		var url = "{:U('Shop/ajax_check_operate_money')}";
+		var package_id  = $("select[name=package_id] option:selected").val();
+		var operate_num  = $("select[name=operate_num] option:selected").val();
+		var age_limit = $("input[name=age_limit]:checked").val();
+		var is_try = $("input[name=is_try]:checked").val();
+		if(is_try == 0){
+			$.ajax({
+				type:'POST',
+				url:''+url+'',
+				data:'age_limit=' + age_limit + '&operate_num=' + operate_num+ '&package_id=' + package_id,
+				dataType:'text',
+				success:function(msg){
+					if(msg.indexOf("预存资金不足") > 0){
+						layer.msg(msg);
+					}
+					else{
+						layer.confirm('<div class="refundLayer" style="padding: 1rem; text-align:center"><p>'+msg+'</p><p>输入登录密码确认开户：<br/><input id="login_pass1" type="password" name="login_pass"></p></div>',{
+							title:'确认开户',
+							type:1,   
+							area:['500px','auto'] 
+						},function (index) {
+							var pass = $("#login_pass1").val();
+							var url2 = "{:U('Shop/ajax_check_password')}";
+							$.ajax({
+								type:'POST',
+								url:''+url2+'',
+								data:'login_pass=' + pass ,
+								dataType:'text',
+								success:function(msg){
+									layer.closeAll(); 
+									if(msg == 1){
+										$("#data_submit").submit();
+									}else{
+										layer.msg('登录密码错误');
+									}
+								},
+								error:function(){
+									alert('访问失败');     
+								} 
+                            })							
+						});
+					}
+				}, 
+				error:function(){
+					alert('访问失败');     
+				}  
+			}); 
+		}else{
+			$("#data_submit").submit();
+		}
+		  
+	} 
+	function checkTabel(){
+		var load = layer.load(2); 
+		$("#func").attr('disabled',true);
+		var act = "{$act}";
+		var img1 = $("#memberImg1").attr("src");
+		var img2 = $("#memberImg2").attr("src");
+		var img3 = $("#memberImg3").attr("src");
+		var shopName = $("#shopName").val();
+		var store_parenttype_id  = $("select[name=store_parenttype_id] option:selected").val();
+		var store_childtype_id  = $("select[name=store_childtype_id] option:selected").val();
+		var package_id  = $("select[name=package_id] option:selected").val();
+		var xunxin_num  = $("select[name=xunxin_num] option:selected").val();
+		var password = $("input[name=password]").val(); 
+		var store_provincename  = $("select[name=store_provincename] option:selected").val();
+		var bank_provincenae  = $("select[name=bank_provincenae] option:selected").val();  
+		var store_cityname  = $("select[name=store_cityname] option:selected").val();
+		var store_areaname  = $("select[name=store_areaname] option:selected").val();
+		var account_storeaddress = $("input[name=account_storeaddress]").val();
+		var account_membername = $("input[name=account_membername]").val();
+		var id_card = $("input[name=id_card]").val();
+		var account_membertel = $("input[name=account_membertel]").val();
+		var account_zhucehao = $("input[name=account_zhucehao]").val();
+		var operate_num  = $("select[name=operate_num] option:selected").val();
+		var is_try = $("input[name=is_try]:checked").val();
+		var try_time = $("input[name=try_time]").val();
+		var set_time = $("#set_time").html();
+		if(act == 'insert'){
+			if(shopName == ''){
+				alert('店铺名称不能为空!');
+				layer.close(load);   
+				$("#func").attr('disabled',false);
+				return false;
+			}else if(store_parenttype_id == '' || store_childtype_id == ''){
+				alert('店铺行业必须选择!');
+				layer.close(load);   
+				$("#func").attr('disabled',false);
+				return false;
+			}else if(package_id == '' ){
+				alert('套餐必须选择!');
+				layer.close(load);   
+				return false;
+			}else if(xunxin_num == ''){
+				alert('商户账号必须选择!');
+				layer.close(load);  
+				$("#func").attr('disabled',false);				
+				return false;
+			}else if(password.length >0 && (password.length < 6 ||  password.length > 13)){
+				alert('密码必须为6~13位');
+				layer.close(load);   
+				$("#func").attr('disabled',false);
+				return false;
+			}else if(act == 'insert' && password.length == '0'){
+				alert('登录密码必填');
+				layer.close(load);  
+				$("#func").attr('disabled',false);	
+				return false;
+			}
+			/*else if(store_provincename == '' || store_cityname == '' || store_areaname == ''){
+				alert('店铺区域必须选择');
+				return false;
+			}else if(account_storeaddress == ''){
+				alert('店铺详细地址不能为空');
+				return false;
+			}*/
+			else if(account_membername == ''){
+				alert('店铺负责人不能为空');
+				layer.close(load);   
+				$("#func").attr('disabled',false);
+				return false;
+			}
+			/*else if(id_card == ''){
+				alert('负责人身份证不能为空');
+				return false;
+			}*/
+			else if(account_membertel == ''){
+				alert('负责人身联系方式不能为空');
+				layer.close(load);   
+				$("#func").attr('disabled',false);
+				return false;
+			}
+			/*else if(account_zhucehao == ''){
+				alert('社会统一信用代码不能为空');
+				return false;
+			}*/
+			else if(operate_num == ''){
+				alert('业务编号不能为空');
+				layer.close(load); 
+				$("#func").attr('disabled',false);	
+				return false;   
+			}else if(is_try == 1 && try_time == ''){
+				alert('试用时间不能为空');
+				layer.close(load);   
+				return false;
+			}else if(is_try == 1 && Number(try_time) > Number(set_time)){
+				alert('试用时间超过允许范围');
+				layer.close(load);   
+				$("#func").attr('disabled',false);
+				return false;
+			}  
+			/*else if(img1 == '' || img1 == '/Public/images/imglogo.png' ){
+				alert('营业执照必须上传！');
+				return false;
+			}else if(img2 == '' || img2 == '/Public/images/imglogo.png'){
+				alert('法人身份证正面必须上传！');
+				return false;
+			}else if(img3 == '' || img3 == '/Public/images/imglogo.png'){   
+				alert('法人身份证反面必须上传！');
+				return false; 
+			}*/
+			else{ 
+				return true; 
+			}
+		}else{
+			/*if(id_card == ''){
+				alert('负责人身份证不能为空');
+				return false;
+			}else */
+			if(account_membertel == ''){
+				alert('负责人身联系方式不能为空');
+				layer.close(load);  
+				$("#func").attr('disabled',false);	
+				return false;
+			} 
+			/*
+			else if(store_provincename == '' || store_cityname == '' || store_areaname == ''){
+				alert('店铺区域必须选择');
+				return false;
+			}else if(account_storeaddress == ''){
+				alert('店铺详细地址不能为空');
+				return false;
+			}*/
+			else if(password.length >0 && (password.length < 6 ||  password.length > 13)){
+				alert('密码必须为6~13位');
+				layer.close(load);  
+				$("#func").attr('disabled',false);	
+				return false;
+			}
+			/*
+			else if(img1 == '' || img1 == '/Public/images/imglogo.png' ){
+				alert('营业执照必须上传！');
+				return false;
+			}else if(img2 == '' || img2 == '/Public/images/imglogo.png'){
+				alert('法人身份证正面必须上传！');
+				return false;
+			}else if(img3 == '' || img3 == '/Public/images/imglogo.png'){   
+				alert('法人身份证反面必须上传！');
+				return false; 
+			}*/
+			   
+			else{ 
+				return true; 
+			}	 
+		}
+	
+	
+	}
+
+
+ function func() {
+	
+	layer.alert('恭喜您！开通商城成功', {
+	  skin: 'layui-layer-molv' //样式类名
+	  ,closeBtn: 0
+	});
+}
+
+</script>
+ <!--更改图片-->
+
+<script>	
+    $("#fileImg1").change(function(){			
+		var objUrl = getObjectURL(this.files[0]) ;
+		if (objUrl) {
+			$("#memberImg1").attr("src", objUrl) ;
+		}			
+	}) ;
+	$("#fileImg2").change(function(){			
+		var objUrl = getObjectURL(this.files[0]) ;
+		if (objUrl) {
+			$("#memberImg2").attr("src", objUrl) ;
+		}			
+	}) ;
+	$("#fileImg3").change(function(){			
+		var objUrl = getObjectURL(this.files[0]) ;
+		if (objUrl) {
+			$("#memberImg3").attr("src", objUrl) ;
+		}			
+	}) ;
+	$("#fileImg4").change(function(){			
+		var objUrl = getObjectURL(this.files[0]) ;
+		if (objUrl) {
+			$("#memberImg4").attr("src", objUrl) ;
+		}			
+	}) ;
+
+	//建立一個可存取到該file的url
+	function getObjectURL(file) {
+		var url = null ; 
+		if (window.createObjectURL!=undefined) { // basic
+			url = window.createObjectURL(file) ;
+		} else if (window.URL!=undefined) { // mozilla(firefox)
+			url = window.URL.createObjectURL(file) ;
+		} else if (window.webkitURL!=undefined) { // webkit or chrome
+			url = window.webkitURL.createObjectURL(file) ;
+		}
+		return url ;
+	}
+
+
+</script>
+<script type="text/javascript">
+
+	function func7() {
+		var a="qq"
+		layer.confirm(a, {
+		  btn: ['确定','取消'] //按钮
+		}, function(){
+		  layer.msg('添加成功', {icon: 1});
+		  $('#shopattribution').show();
+		}, function(){
+		  layer.closeAll();
+		});
+	}
+	
+	function check_try(){
+		var try_time = $("#operate_num").find("option:selected").attr('try_data');
+		if(try_time == '0'){
+			$("#is_try").hide();
+			$(':radio[name="is_try"]').eq(0).attr('checked',true);
+		}else{ 
+			$(':radio[name="is_try"]').eq(0).attr('checked',true);
+			$("input[name=try_time]").val(try_time);
+			$("#set_time").html(try_time); 
+			$("#is_try").show();
+		}  
+	}     
+	
+	function ajax_get_memberlist(){
+		var vip = $("#package_id").find("option:selected").attr('vip_data');
+		var  url  = "{:U('Shop/ajax_get_memberlist')}";
+		$.ajax({  
+			type: "POST",
+			url: url, 
+			data: {vip:vip},   
+			dataType: "json",
+			success: function(data){    
+				$("#memberSelect").empty();
+				var length = data.length;
+				for(var i = 0 ; i < length ;i++){ 
+					var name = data[i]['xunxin_num_name'];
+					$("<option value='"+name + "'> " +name +"</option>").appendTo("#memberSelect");
+				}        
+			},    
+			error:function(){
+				alert('访问失败');     
+			}  
+		});  
+	}
+ 
+</script>
+<script>
+	function renews(obj) {
+		    layer.confirm('<div class="refundLayer" style="padding: 1.5rem; "><p><input type="radio" name="agelimit" value="1" > 一年 (费用：￥'+"{$packageinfo.market_price}"+'）<br/><input type="radio" name="agelimit" value="2" > 两年 （费用：￥'+"{$packageinfo.market_price2}"+'）<br/><input type="radio" name="agelimit" value="3" > 三年 （费用：￥'+"{$packageinfo.market_price3}"+'）</p><br/>登录密码<input type="password" id="login_pass2" ></div>',{
+				title:'选择套餐年限',
+				type:1,    
+				area:['300px','auto'] 
+			},function (index) {
+				var agelimit = $(':radio[name="agelimit"]:checked').val();
+				if(agelimit == undefined || agelimit == ''){
+					layer.msg('请选择套餐年限',{time: 1500});
+				}else{
+					layer.closeAll();
+					var index = layer.load();
+					var url="{:U('Shop/ajax_renews')}"; 
+					var store_id = "{$shopinfo.store_id}";
+					var pass = $("#login_pass2").val();
+					$.ajax({
+						type:'POST', 
+						url:''+url+'',
+						data:{agelimit:agelimit,store_id:store_id,login_pass:pass},
+						dataType:'json', 
+						success:function(datas){
+							layer.close(index);
+							if(datas['status'] == 1){
+								alert('续约成功！');
+								window.location.reload();
+							}else{ 
+								layer.msg(datas['error'],{time: 1500});
+							}  
+						},  
+						error:function(){
+							layer.close(index);
+							alert('访问失败');     
+						}     
+					}) 
+				} 
+				
+				
+            }) 
+			$('.layui-layer-btn').css('text-align','center');
+			
+        }
+
+</script>
+
+<include file="Public:foot" />

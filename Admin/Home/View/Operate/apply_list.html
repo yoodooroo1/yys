@@ -1,0 +1,119 @@
+<include file="Public:head"/>
+<link href="__ROOT__/Public/media/css/layout.css" rel="stylesheet" type="text/css"/>
+<link href="__PUBLIC__/times/mobiscroll.css" rel="stylesheet" />
+<link href="__PUBLIC__/times/mobiscroll_date.css" rel="stylesheet" />
+<script src="__PUBLIC__/times/mobiscroll_date.js" charset="gb2312"></script> 
+<script src="__PUBLIC__/times/mobiscroll.js"></script> 
+<div class="container-fluid">  
+	<!-- BEGIN PAGE HEADER-->
+		<div class="title">
+			<ul class="breadcrumb">
+				<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> <i class="icon-angle-right"></i></li>
+				<li><a href="#">运营商管理</a><i class="icon-angle-right"></i></li>
+				<li><a href="{:U('Operate/operate_list')}">运营商列表</a><i class="icon-angle-right"></i></li>
+				<li><a href="#"><strong>运营商申请</strong></a></li>							
+			</ul>  		 
+	</div><!-- END PAGE TITLE & BREADCRUMB-->	
+	<div  class="nav-tabs">
+        <ul >
+            <li class="{$ui.operate_list}"> <a href="{:U('Operate/operate_list')}"> 运营商列表</a> </li>
+            <li class="{$ui.operate_info}"> <a href="{:U('Operate/operate_info')}"> 运营商店铺</a> </li> 
+			 <li class="{$ui.operate_apply}"> <a href="{:U('Operate/operate_apply_list')}"> 运营商申请</a> </li> 
+        </ul>
+    </div><!-- END PAGE HEADER-->  
+	<div class="main-content" >
+		<form name="searchForm" action="__URL__/operate_apply_list" method="get" >
+			<input type="text" name="operate_name"   value="" placeholder="企业名称" />
+			<input type="text" name="link_name"   value=""   placeholder="申请人"/>
+			<input type="text" name="link_tel"   value=""  placeholder="联系电话" />
+			<input type="text" name="e_mail"   value=""   placeholder="邮箱"/>	
+			申请时间：<input type="text" id="Time1"  readonly name="Time1" /> 至 <input type="text"  readonly id="Time2" name="Time2"  />
+			<input type="submit" name="button" id="button" value="搜索" />           		   
+		</form>  
+	    <table name="table-list">
+			<tr> 
+			    <th>申请编号</th>
+			    <th>企业名称</th>
+				<th>申请人</th>
+				<th>联系电话</th>   
+				<th>邮箱</th>
+				<th>申请时间</th>
+				<th>备注</th>
+				<th>操作</th>
+				<th>处理结果</th>
+			</tr>   
+			<volist name ="lists" id ="list">
+			<tr>
+				<td>{$list.id}</td>   
+				<td>{$list.operate_name}</td>   
+				<td>{$list.link_name}</td>  
+				<td>{$list.link_tel}</td> 
+				<td>{$list.e_mail}</td> 			
+				<td>{$list.addtime|date="Y-m-d H:i",###}</td>   
+				<td>{$list.remark}</td>   
+				<td><if condition="$list.status eq 0">  
+					<a onclick="deal({$list.id})">未处理</a>
+					<else />
+					({$list.editor})已处理
+					</if>				
+				</td> 
+				<td>{$list.deal_result}</td>						
+			</tr>                      
+			</volist>
+		</table>
+		<div class="pagination pagination-right">
+			<ul class="pageNumber">
+				{$page}
+			</ul>
+		</div> 
+	</div>
+</div>
+<script type="text/javascript">
+$(function () {   
+	var currYear = (new Date()).getFullYear();	
+	var opt={};
+	opt.date = {preset : 'date'};
+	opt.datetime = {preset : 'datetime'};
+	opt.time = {preset : 'time'};
+	opt.default = {
+		theme: 'android-ics light', //皮肤样式
+		display: 'modal', //显示方式 
+		mode: 'scroller', //日期选择模式
+		dateFormat: 'yyyy-mm-dd',
+		lang: 'zh',
+		showNow: true,
+		nowText: "今天",
+		startYear: currYear - 50, //开始年份
+		endYear: currYear + 10 //结束年份
+	};
+  
+	$("#Time1").mobiscroll($.extend(opt['date'], opt['default']));
+	$("#Time2").mobiscroll($.extend(opt['date'], opt['default']));
+
+});
+</script>
+<script>
+function deal(id){
+	var remark = prompt('填写处理结果');
+	if(remark != null ){	
+		url= "{:U('Operate/ajax_operate_apply_deal')}"; 
+		$.ajax({
+			type:'post',
+			url:''+url+'',
+			data:{id:id, remark:remark},
+			dataType:'json',
+			success:function(msg){ 
+				if(msg.status == '-1'){
+					alert(msg.desc);
+				}else{
+					location.replace(location.href);
+				}
+			}, 
+			error:function(){
+				alert('访问失败');     
+			}  
+		});
+	}
+}
+</script>
+<include file="Public:foot" />

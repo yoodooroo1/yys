@@ -1,0 +1,77 @@
+/*购物车*/
+.rightLink{	position:fixed;top:0;right:0;padding:0 4.5%;background:url('../mimages/back_right_btn.png')no-repeat;background-position:88% center;	background-size:0.4rem;
+}@media(min-width:600px){
+	.rightLink{	background-position:78% center;}
+}
+.add_sc{background:url('../mimages/order_detail_iv.png')bottom center repeat-x;background-size:100% 0.22rem;padding:0.28rem 0.6rem 0.5rem 0.6rem;background-color:rgba(255,255,255,0.89);}
+.top_bg{padding:0.11rem 50%; background:url('../mimages/order_detail_iv.png')bottom center repeat-x;background-size:100% 0.22rem; position:fixed; top:0; z-index:335;}
+.add_sc{position:fixed;top:0;width:100%;max-width:640px;z-index:33;}
+.lackAdd{line-height:34px;}
+.sc_leftimg{width:1rem;margin-right:0.3rem;margin-top:0.1rem;}
+.cartMart{margin-top:72px;}
+.msg_sc_add{display:inline-block;width:calc(100% - 1.4rem);}
+.msg_sc_add p,.muchAddLi p{margin:0.2rem 0;}
+.addGo,.msg_sc_add,.sc_leftimg{vertical-align:middle;	}
+.addGo{width:0.55rem;margin-left:0.5rem;}
+.add_Tel{float:right;text-align:right; padding-right:2rem;}
+.add_Tel i{ padding:0 0.5rem; background:url('../mimages/shop_tel.png')center center no-repeat; background-size:0.97rem;}
+.firstAdd{ line-height:30px;}
+.firstAdd span{display:inline-block;	width:50%; box-sizing:border-box;}
+.shop_receiver{ background:url('../mimages/shop_receiver.png')left center no-repeat; background-size:0.94rem; padding-left:1.15rem; }
+.shop_addDetail{ background:url('../mimages/shop_add.png')left center no-repeat; background-size:1rem; padding-left:1.15rem; width:100%; box-sizing:border-box;}
+.link_add{display:block;}
+.del_btn{width:1.2rem;	padding:0 0 0 1rem;	cursor:pointer;}
+.vipBar{width:3.6rem;margin-left:0.3rem;}
+.subTotalBar{padding:0.5rem 0.6rem;overflow:hidden;position:fixed;bottom:50px;width:100%;max-width:640px;text-align:right;background:#FFF;border-top:1px solid #efefef;}
+.subTotalBar span{vertical-align:middle;	display:inline-block;}
+.subTotalBar>.redInput{cursor:pointer;}
+.tot_bar_btn{padding:3px 6px;border-radius:5px;letter-spacing:1px;}
+.sc_bottom{margin-bottom:90px;}
+.startPrice{float:left;line-height:25px;}
+.giveAMsg{padding:0.5rem 0.8rem;background:#FFF; border-top:5px solid #f9f9f9;}
+.giveAMsg span,.giveAMsg textarea{vertical-align:middle;}
+.giveAMsg textarea{border-radius:5px;width:calc(100% - 3rem);	border:0;}
+.greyBtn{background:rgba(0,0,0,0.4);color:#FFF;}
+.sc_vip{text-align:center;}
+.sc_vip h4,.vipBtn_con a{line-height:35px;}
+.sc_vip h4{font-weight:normal;	font-size:1.1rem;}
+.centerVip{font-size:0.85rem;border:1px solid #a1a1a1;	text-align:left;padding:0.3rem;background:#F2f2f2;margin:0 0.6rem;}
+.vipProBar{margin:0.8rem 0;}
+.vipProBar>#pbBar{width:36.8%;	border-radius:4px;	margin-left:0.5rem;}
+.maxVal{margin-left:0.5rem;}
+.vipBtn_con a{display:inline-block;	width:50%;box-sizing:border-box;	color:#000;background:#eaeaea;}
+.vipBtn_con a:nth-child(2){border-left:1px solid #FFF;}
+.lack_title{font-size:1rem; font-weight:normal; line-height:1.3rem; margin:1.4rem 2rem 1.69rem; text-align:center; }
+.new_btn_content{line-height:3rem; border-top:1px solid #dfdfdf;}
+.new_btn_content a{display:inline-block; width:50%; box-sizing:border-box; text-decoration:none; text-align:center;}
+.red_btn_add{background:#d83838; color:#FFF; border-bottom-right-radius:15px; }
+/*添加地址*/
+.add_add,.position_add{	display:block;line-height:40px;position:fixed;width:100%;max-width:640px;	box-sizing:border-box;}
+.position_add{padding:0 3rem 0 1.2rem;}
+.add_add{bottom:0; background:#d83838; color:#FFF; text-align:center; line-height:43px;
+}
+.position_add{background:#FFF url('../mimages/storelist_address.png') no-repeat;background-size:1rem;	background-position:95% center;}
+.addList{box-sizing:border-box; margin-bottom:46px;}
+.addList li{	overflow:hidden;margin-bottom:0.4rem;box-sizing:border-box;}
+.muchAddLi{padding:0.4rem 1rem 0.5rem 1rem; border-bottom:1px solid #efefef;}
+.addressLi{background:#FFF;}
+.processBar{ padding:0 1rem; height:40px; line-height:40px; border-bottom:1px solid #efefef;}
+.processBar span,.processBar a{ display:inline-block;  }
+
+.myRadio{ width:50%}
+.processBar a{ width:25%;text-align:center;}
+.add_delete{margin-left:-6px;}
+/*radio*/
+.myRadio input{display:none;}
+.myRadio label{text-align:center; }
+.myRadio label i{padding:0.4rem;}
+.myRadio label i{ border:1px solid #a1a1a1; display:inline-block; box-sizing:border-box; border-radius:2px; vertical-align:middle; margin:0 0.6rem}
+.myRadio em{ font-weight:normal; font-size:normal; font-style:normal; vertical-align:middle}
+.myRadio input:checked + label{color:#d83838;}
+.myRadio input:checked + label i{border:1px solid #d83838; background:#d83838 url('../mimages/add_checked.png')center center no-repeat; background-size:0.7rem;}
+.editAdd i,.add_delete i{ padding:0 0.55rem; margin-right:0.3rem;}
+.editAdd i{background:url('../mimages/add_edit.png')center center no-repeat; background-size:100%;}
+.add_delete i{background:url('../mimages/add_del.png')center center no-repeat; background-size:100%;}
+.addDeleteCont{ padding:5px 10px}
+.leftBtn{text-align:center}
+

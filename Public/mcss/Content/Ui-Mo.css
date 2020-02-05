@@ -1,0 +1,117 @@
+@charset "utf-8";
+/***********************************
+ *                                 *
+ *    作者: 卢榕                    *
+ *    E-mail: lurong@350580.net    *
+ *                                 *     
+ ***********************************/
+@import url("Iconfont/iconfont.css");
+
+/* @import url("Ui/Ui.css"); 2016-0713注释jun*/
+
+
+/*===== 公共样式 =====*/
+/*背景*/
+html, body { margin: 0px; padding: 0px; font-size: 14px; height: 100%; width: 100%; }
+.bg-pic-a { background: url(Images/site_bg_01.jpg) no-repeat fixed; background-size: 100% 100%; }
+.bg-pic-b { background: url(Images/site_bg_03.jpg) no-repeat fixed; background-size: 100% 100%; }
+/*========== 初始化样式 ==========*/
+html, body { font-family: "Microsoft YaHei"; }
+/*===== 页面框架主样式 =====*/
+.wrap { display: table; width: 100%; }  /*用于最外层*/
+.header { } /*用于头部*/
+.main { }  /*用于主体内容（中部）*/
+.main-left { }  /*左侧布局*/
+.main-right { }  /*右侧布局*/
+.nav { }  /*网页菜单导航条*/
+.content { }  /*用于网页中部主体*/
+.footer { } /*用于底部*/
+/*按钮颜色*/
+.btn-blue { color: #FFF; background: #50ACEC; }
+.btn-orange { color: #333; background: #FED23A; }
+/*文字颜色*/
+.c-1FB, .c-1FB a, a.c-1FB { color: #1FB0ED; }
+.c-1FB a:hover, a.c-1FB:hover { color: #1FB0ED; }
+/*===== 弹窗UI =====*/
+.layer_ui { box-shadow: 0 0 0 rgba(0,0,0,0); border-radius: 0px; background-color: transparent; }
+.layer-list-links { }
+.layer-list-links a { display: block; text-align: center; padding: 12px 0px; color: #333; background: #FFF; border-top: 1px solid #DDD; }
+.layer-list-links a.active { background-color: #ccc }
+.layer-list-links a:first-child { border: none; }
+.layer-list-links a:last-child { border: none; margin-top: 5px; }
+.layer_msg { border-radius: 0px; }
+.layer_msg .layui-layer-content { text-align: center; font-size: 16px; padding: 40px 0px; }
+.layer_msg .layui-layer-btn { padding: 0px; }
+.layer_msg .layui-layer-btn a { padding: 7px 0px; margin: 0px; width: 50%; border: 0px; text-align: center; border-radius: 0px; }
+.layer_msg .layui-layer-btn0 { background-color: #595757; }
+.layer_msg .layui-layer-btn1 { background-color: #FED23A; }
+/*===== =====*/
+.logo { padding: 25% 0px 25%; display: block; }
+.login_form { padding: 0px 12.5%; }
+.login_form i { display: inline-block; position: absolute; line-height: 42px; text-align: center; height: 42px; width: 45px; color: #999; }
+.login_form input[type="text"], .login_form input[type="password"] { text-indent: 35px; }
+/**/
+.sys_form { }
+.sys_form input { height: 44px; }
+.sys_form input[disabled] { color: #333; }
+/**/
+
+.sys_tips { }
+.sys_tips i.iconfont { font-size: 70px; }
+/**/
+.Head_pic { display: inline-block; height: 94px; width: 94px; margin: 0px auto; background: #FFF; }
+/**/
+
+.ui-tiled-diy { margin: 5px 0px; height: 40px; display: table; }
+.ui-tiled-diy li { height: 40px; line-height: 40px; margin: 0px 0px 0px -1px; border-left: 1px solid #FFF; }
+.ui-tiled-diy li a { color: #FFF; font-size: 27px; }
+.ui-tiled-diy li.on a { color: #FED136; }
+/**/
+
+.Huifold .item {  }
+.Huifold .item h4 { margin: 0; font-weight: normal; position: relative; border-top: 1px solid #efefef; font-size: 14px; padding: 12px 10px; background-color: #F9F9F9; cursor: pointer; }
+.Huifold .item h4 span { display: inline-block; }
+.Huifold .item h4 b { display: inline-block; cursor: pointer; width: 18px; height: 18px; text-align: center; color: #a1a1a1; font-weight: normal; vertical-align:middle;}
+.Huifold .item .info { display: none;  padding:0 0.6rem;  font-size: 12px; color: #666; }
+/* .Huifold .item .info img { width: 100%; margin: 10px 0px 0px; } */
+/**/
+.home-banner { background: url(Images/site_bg_04.jpg) no-repeat center -5px; background-size: 100% auto; }
+.sys_list { }
+.sys_list ul { background: #FFF; }
+.sys_list ul li { float: left; width: 67%; padding: 3% 3% 0px 0px; font-size: 13px; color: #666; }
+.sys_list ul li:first-child { float: left; width: 30%; text-align: center; padding: 10px 0px; }
+.sys_list ul li:first-child img { width: 80%; }
+.sys_list ul li:nth-child(2) { font-size: 14px; color: #333; }
+.sys_list ul li:last-child { float: left; width: 100%; padding: 5px 0px; border-top: 1px solid #D9D9D9; }
+.sys_list ul li:last-child a { float: left; width: 33%; display: inline-block; padding: 3px 0px; font-size: 20px; text-align: center; color: #9FA0A0; vertical-align: middle; border-left: 1px solid #959595; }
+.sys_list ul li:last-child a i { font-size: 12px; font-style: normal; margin: 0px 0px 0px 5px; vertical-align: middle; }
+.sys_list ul li:last-child a:first-child { border: none; }
+/**/
+.no-data { padding: 5% 20%; font-size: 12px; text-align: center; color: #999; line-height: 25px; }
+.no-data p:nth-child(1) { font-size: 100px; color: #D2D2D2; width: 100%; height: 80px; margin: 0px; padding: 0px; overflow: hidden; line-height: 90px; }
+.no-data p:nth-child(2) { font-size: 14px; color: #666; }
+/**/
+.share_one { }
+.share_one div:nth-child(1) { position: absolute; height: 84px; width: 84px; }
+.share_one div:nth-child(1) img { height: 84px; width: 84px; }
+.share_one div:nth-child(2) { padding: 0px 0px 0px 95px; }
+/**/
+.share_two { }
+.share_two li { display: inline-block; float: left; width: 25%; text-align: center; padding: 0px 0px 20px; }
+
+.share_two li a { display: inline-block; width: 50px; text-align: center; height: 50px; color: #FFF; background: #6C59F1; line-height: 50px; font-size: 30px; border-radius: 100% }
+.share_two li b { display: inline-block; width: 100%; font-weight: normal; font-size: 12px; color: #666; margin: 5px 0px 0px; }
+.share_two li:nth-child(2) a { background: #51C231; }
+.share_two li:nth-child(3) a { background: #4DAFEA; }
+.share_two li:nth-child(4) a { background: #FDAC1D; }
+.share_two li:nth-child(5) a { background: #DF4D69; }
+.share_two li:nth-child(6) a { background: #2E9E3B; }
+.share_two li:nth-child(7) a { background: #45AAF2; }
+.share_two li:nth-child(8) a { background: #00E397; }
+
+
+/**/
+.upload-btn { display: inline-block; height: 94px; width: 94px; margin: 0px auto; font-size: 36px; overflow: hidden; position: absolute; z-index: 2; }
+.upload-btn input { font-size: 100px; float: left; opacity: 0; }
+.upload-img { display: inline-block; height: 94px; width: 94px; margin: 0px auto; background: #FFF; border-radius: 100%; position: relative; z-index: 1; }
+.upload-img img { height: 94px; width: 94px; border-radius: 100%; }

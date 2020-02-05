@@ -1,0 +1,239 @@
+<include file="Public:head"/>
+<style type="text/css">
+	hr{margin:0; padding:0;}
+	table tr:nth-child(1){
+		background:#eee;
+		font-size:0.75rem;
+		font-weight:bold;
+		color:#333;
+	}
+	td{
+		padding:5px;
+		text-align:center;
+		border:1px solid #ddd;
+	}
+	.pageNumber div a,.pageNumber div span{
+		display:inline-block;
+		padding:3px 5px;
+		border:1px solid #DDD;
+		margin:2px;
+	}
+	input[type=submit],input[type=button]{
+		background:#4D90FE;
+		color:#FFF;
+		border:1px solid #4D90FE;
+		padding:4px 14px; 
+		margin:0 5px;
+	}
+</style>
+<div class="container-fluid">
+	<!-- BEGIN PAGE HEADER-->
+	<div class="row-fluid">
+		<div class="span12">
+		<h4 class="page-title">商家管理<small>User management</small></h4>
+			<ul class="breadcrumb" style="margin:0;">
+				<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> 
+					<i class="icon-angle-right"></i></li>
+				<li><a href="#">商家管理</a><i class="icon-angle-right"></i></li>
+				<li><a href="{:U('Seller/seller_list')}"><strong>动态配置</strong></a></li>				
+			</ul>  
+			<!-- END PAGE TITLE & BREADCRUMB-->
+		</div>
+	</div>
+	<hr>
+	<!-- END PAGE HEADER-->
+
+	<!-- BEGIN PAGE CONTENT-->          
+	<div class="row-fluid" >
+		<table style="border:1px solid #ddd; width:100%" border="1px">
+			<tr>
+			    <td>图标</td>
+				<td>标题</td>
+				<td>链接</td>
+				<!--<td>姓名</td>-->
+				<td>类型</td>
+				
+				<td>操作</td>
+			</tr>
+			<foreach name='storeitem_data' item='storeitem' >
+			<tr>
+				<td>
+					<div style="width:40px; height:40px; display:inline-block;">
+						<img src="<?php echo (empty($storeitem['imgurl'])) ? '__ROOT__/Public/media/image/commom_goods.png': $storeitem['imgurl']; ?>"  width="100%"/>
+					</div>
+				</td>
+				<td>{$storeitem.title}</td>
+				<td>{$storeitem.weburl}</td>
+				<!--	<td>{$user.member_truename}</td>-->
+				<td>{$storeitem.type}
+					<label style="display:none" class="seller_id">{$storeitem.type}</label>
+				</td>
+				
+				<td style="letter-spacing:3px;">
+					<a href="{:U('store/storeitem_info',array('dbname'=>$storeitem['dbname'],'store_id'=>$store_id,'title'=>$storeitem['title']))}">修改|</a>
+					
+					<a href="{:U('store/storeitem_old',array('dbname'=>$storeitem['dbname'],'store_id'=>$store_id))}">还原</a>
+					
+					<!--
+                   	<if condition="$user.isserver eq 0">
+						<a href="{:U('seller/seller_server',array('seller_id'=>$user['seller_id'],'is_server'=>'1'))}">开启</a>
+					<else />
+                   	 	<a href="{:U('seller/seller_server',array('seller_id'=>$user['seller_id'],'is_server'=>'0'))}">关闭</a>
+					</if>-->
+				</td>
+				
+			</tr>
+			</foreach>
+		</table>
+		<if condition="$storetype eq 'store'">
+         <form action="{:U('Store/storesome_update')}" method="post" enctype="multipart/form-data" name="member_submit" onSubmit="return checkInf2();" > 
+         </br>
+		 热卖商品&nbsp;&nbsp;&nbsp;<input type="text"  id="hotgoods" name="hotgoods"  value="{$hotgoods}"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		 查看商品&nbsp;&nbsp;&nbsp;<input type="text"  id="lookgoods" name="lookgoods"  value="{$lookgoods}"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		 全部商品&nbsp;&nbsp;&nbsp;<input type="text"  id="allgoods" name="allgoods"  value="{$allgoods}"/><br/>
+		 返现&nbsp;&nbsp;&nbsp;<input type="text"  id="fanxian" name="fanxian"  value="{$store_config.fanxian}"/><br/>  
+		 分销开关&nbsp;&nbsp;&nbsp;<input type="radio" name="rateswitch" value="1" <?php if($store_config['rateswitch']=='1') echo 'checked="checked"'; ?> />是 
+         <input type="radio" name="rateswitch" value="0" <?php if($store_config['rateswitch']=='0') echo 'checked="checked"'; ?> />否 <br/>  <br/>  
+		 自己返现比例&nbsp;&nbsp;&nbsp;<input type="text"  id="rate0" name="rate0"  value="{$store_config.rate0}"/><br/>
+		 一级返现比例&nbsp;&nbsp;&nbsp;<input type="text"  id="rate1" name="rate1"  value="{$store_config.rate1}"/><br/>
+		 二级返现比例&nbsp;&nbsp;&nbsp;<input type="text"  id="rate2" name="rate2"  value="{$store_config.rate2}"/><br/>
+		 三级返现比例&nbsp;&nbsp;&nbsp;<input type="text"  id="rate3" name="rate3"  value="{$store_config.rate3}"/><br/> 
+		 域名&nbsp;&nbsp;&nbsp;<input type="text"  id="store_domain" name="store_domain"  value="{$store_domain}"/><br/>     
+		  APPID&nbsp;&nbsp;&nbsp;<input type="text"  id="appid" name="appid"  value="{$wxinfo.appid}"/><br/>          
+		  APPSECRIPT&nbsp;&nbsp;&nbsp;<input type="text"  id="appsecript" name="appsecript"  value="{$wxinfo.appsecret}"/><br/>       
+		 <input type="hidden" value="{$store_id}" name="store_id"/>
+		 <input type="submit" value="提交"/>  
+        </form>           
+        </if>      
+		<if condition="$storetype eq 'mallstore'">
+         <form action="{:U('Store/storesome_update')}" method="post" enctype="multipart/form-data" name="member_submit" onSubmit="return checkInf2();" > 
+         </br>
+		 热卖商品&nbsp;&nbsp;&nbsp;&nbsp;<input type="text"  id="hotgoods" name="hotgoods"  value="{$hotgoods}"/>
+		 查看商品&nbsp;&nbsp;&nbsp;&nbsp;<input type="text"  id="lookgoods" name="lookgoods"  value="{$lookgoods}"/>
+		 全部商品&nbsp;&nbsp;&nbsp;&nbsp;<input type="text"  id="allgoods" name="allgoods"  value="{$allgoods}"/><br/>
+		 返现&nbsp;&nbsp;&nbsp;<input type="text"  id="fanxian" name="fanxian"  value="{$store_config.fanxian}"/><br/>  
+		 分销开关&nbsp;&nbsp;&nbsp;<input type="radio" name="rateswitch" value="1" <?php if($store_config['rateswitch']=='1') echo 'checked="checked"'; ?> />是 
+         <input type="radio" name="rateswitch" value="0" <?php if($store_config['rateswitch']=='0') echo 'checked="checked"'; ?> />否 <br/>  <br/>  
+		 自己返现比例&nbsp;&nbsp;&nbsp;<input type="text"  id="rate0" name="rate0"  value="{$store_config.rate0}"/><br/>
+		 一级返现比例&nbsp;&nbsp;&nbsp;<input type="text"  id="rate1" name="rate1"  value="{$store_config.rate1}"/><br/>
+		 二级返现比例&nbsp;&nbsp;&nbsp;<input type="text"  id="rate2" name="rate2"  value="{$store_config.rate2}"/><br/>
+		 三级返现比例&nbsp;&nbsp;&nbsp;<input type="text"  id="rate3" name="rate3"  value="{$store_config.rate3}"/><br/> 
+		 域名&nbsp;&nbsp;&nbsp;<input type="text"  id="store_domain" name="store_domain"  value="{$store_domain}"/><br/>     
+		  APPID&nbsp;&nbsp;&nbsp;<input type="text"  id="appid" name="appid"  value="{$store_config.appid}"/><br/>          
+		  APPSECRIPT&nbsp;&nbsp;&nbsp;<input type="text"  id="appsecript" name="appsecript"  value="{$store_config.appsecript}"/><br/> 
+		 <input type="hidden" value="{$store_id}" name="store_id"/>
+		 <input type="submit" value="提交"/>   
+        </form>    
+        </if>
+        <if condition="$storetype eq 'mall'">
+              <form action="{:U('Store/storeone_update')}" method="post" enctype="multipart/form-data" name="member_submit" onSubmit="return checkInf3();" > 
+		         </br>
+				 商城店铺&nbsp;&nbsp;&nbsp;&nbsp;<input type="text"  id="hotgoods" name="hotgoods"  value="{$hotgoods}"/></br>
+				 返现&nbsp;&nbsp;&nbsp;<input type="text"  id="fanxian" name="fanxian"  value="{$store_config.fanxian}"/><br/>  
+				 分销开关&nbsp;&nbsp;&nbsp;<input type="radio" name="rateswitch" value="1" <?php if($store_config['rateswitch']=='1') echo 'checked="checked"'; ?> />是 
+				 <input type="radio" name="rateswitch" value="0" <?php if($store_config['rateswitch']=='0') echo 'checked="checked"'; ?> />否 <br/>  <br/>  
+				 自己返现比例&nbsp;&nbsp;&nbsp;<input type="text"  id="rate0" name="rate0"  value="{$store_config.rate0}"/><br/> 
+				 一级返现比例&nbsp;&nbsp;&nbsp;<input type="text"  id="rate1" name="rate1"  value="{$store_config.rate1}"/><br/>
+				 二级返现比例&nbsp;&nbsp;&nbsp;<input type="text"  id="rate2" name="rate2"  value="{$store_config.rate2}"/><br/>
+				 三级返现比例&nbsp;&nbsp;&nbsp;<input type="text"  id="rate3" name="rate3"  value="{$store_config.rate3}"/><br/> 
+				 域名&nbsp;&nbsp;&nbsp;<input type="text"  id="store_domain" name="store_domain"  value="{$store_domain}"/><br/>     
+				  APPID&nbsp;&nbsp;&nbsp;<input type="text"  id="appid" name="appid"  value="{$store_config.appid}"/><br/>          
+				  APPSECRIPT&nbsp;&nbsp;&nbsp;<input type="text"  id="appsecript" name="appsecript"  value="{$store_config.appsecript}"/><br/> 
+				 <input type="hidden" value="{$store_id}" name="store_id"/>
+				 <input type="submit" value="提交"/>
+		        </form>
+        </if>
+		<!-- BEGIN PAGE CONTENT-->
+		<div class="pagination pagination-right">
+			<ul class="pageNumber">
+				{$page}
+			</ul>
+		</div>
+	</div>
+</div></div>
+<include file="Public:foot" />
+<script type="text/javascript">
+	$(".serverJudge").click(function (){
+		$this = $(this);
+		var typeN = $(this).attr("id");
+		var typeK;		
+		var typeKey = typeN.substr(0,1); 
+		var textKey = typeN.substr(3,1);
+		var seller_id = $(this).parent().parent().find(".seller_id").text();
+		//console.log("最后一个字：" + textKey + "——类型：" + typeKey + "-seller_id:" + seller_id);
+		if(typeKey == 's'){
+			typeK = "isserver";
+		}else{  
+			typeK = "is_consult";
+		}        
+		//console.log("类型key："+ typeK);
+		
+		$.post("./admin.php?c=Seller&a=ajax",
+			{type:typeK, text:textKey,seller_id:seller_id},
+			function (data,status){
+				//console.log(data);
+				dataVal = eval('('+data+')');  
+				code = dataVal.result;
+				type = dataVal.type;
+				text = dataVal.text;
+				//console.log( "code:"+ code + "--type:" + type);
+				if(code == '0'){
+					if(type == "isserver"){
+						if(text == 0){
+							$this.text("已关闭");
+							$this.attr("id","sv_0");   
+						}else{
+							$this.text("已开启");
+							$this.attr("id","sv_1");
+						}  
+					}
+					if(type == "is_consult"){
+						location.reload();
+					}
+				}  
+				else
+				{
+					alert(dataVal.error);
+				}
+				
+			}
+		);
+	});
+
+  function checkInf2(){
+		var hotgoods = $("input[name=hotgoods]").val();
+		var lookgoods = $("input[name=lookgoods]").val();
+		var allgoods = $("input[name=allgoods]").val();
+		if(hotgoods == ''){
+				alert("请输入热卖商品项标题");
+				return false;
+			}				
+		if(lookgoods == ''){
+				alert("请输入查看商品标题");
+				return false;
+			}
+			if(allgoods == ''){
+				alert("请输入全部商品标题");
+				return false;
+			}
+
+			var rate0 = $("#rate0").val();
+			var rate1 = $("#rate1").val();
+			var rate2 = $("#rate2").val();
+			var rate3 = $("#rate3").val();
+			var rate_all = parseInt(rate0) + parseInt(rate1) + parseInt(rate2) + parseInt(rate3);
+			if(rate_all > 1){
+				alert("返现比例之和不能大于1");
+				return false;
+			}
+	}
+	function checkInf3(){
+		
+		var hotgoods = $("input[name=hotgoods]").val();
+		
+			if(hotgoods == ''){
+				alert("请输入商城店铺标题");
+				return false;
+			}
+	}
+</script>

@@ -1,0 +1,107 @@
+<include file="Public:head"/>
+<link href="__PUBLIC__/times/mobiscroll.css" rel="stylesheet" />
+<link href="__PUBLIC__/times/mobiscroll_date.css" rel="stylesheet" />
+<script src="__PUBLIC__/times/mobiscroll_date.js" charset="gb2312"></script> 
+<script src="__PUBLIC__/times/mobiscroll.js"></script> 
+<link type="text/css" rel="stylesheet" href="__ROOT__/Public/media/css/layout.css" />
+<div class="container-fluid" >
+	<!-- BEGIN PAGE HEADER-->
+	<div class="title" >
+		 <ul class="breadcrumb" >
+			<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> <i class="icon-angle-right"></i></li>
+			<li><a href="#">资金管理</a><i class="icon-angle-right"></i></li>
+			<li><a href="{:U('Fund/history_detail')}"><strong>运营商推广历史明细</strong></a></li>
+			 
+		</ul>  		
+	</div><!-- END PAGE TITLE & BREADCRUMB-->
+    <div  class="nav-tabs">
+        <ul>
+            <li class="{$ui.history_detail}"> <a href="{:U('Fund/history_detail')}" > 运营商推广历史明细</a> </li>
+            <li class="{$ui.according_month}"> <a href="{:U('Fund/according_month')}"> 运营商收益按月</a> </li>
+            <li class="{$ui.according_name}"> <a href="{:U('Fund/according_name')}"> 运营商收益按名称</a> </li>
+			<li class="{$ui.recharge_detail}"> <a href="{:U('Fund/recharge_detail')}"> 运营商充值明细</a> </li>
+			 <li  class="mub">{$info.num}条记录，运营商总利润￥{$info.totalmoney} &nbsp;&nbsp;      		    已打款￥{$info.getmoney}</li> 
+        </ul> 
+    </div><!-- END PAGE HEADER-->  
+    <div class="main-content">
+		<form name="searchForm" action="__URL__/history_detail" method="get" >  
+				 <input type="text" name="operate_name"   value="" placeholder="运营名称"/>
+				 <input type="text" name="operate_sn"   value="" placeholder="业务编号"/>
+				<select name="type">
+							<option value=''> 账单类目</option>
+							<option value='1'>推广收益</option>
+							<option value='2'>收益打款</option>
+							</select>  
+				<input type="text" name="link_orderid"   value="" placeholder="充值编号"/>
+				触发时间：<input type="text" id="Time1"  readonly name="Time1" /> 至 <input type="text"  readonly id="Time2" name="Time2"  />
+				<input type="submit" name="button" id="button" value="搜索" />  
+		</form>	<!-- BEGIN PAGE CONTENT-->       
+		<table name="table-list">			
+			<tr>	   
+				<th>编号</th>				
+				<th>运营商名称</th>
+				<th>业务编号</th>
+				<th>充值订单编号</th>
+				<th>类目</th>
+				<th>触发金额</th>
+				<th>触发时间</th>
+				<th>操作</th>				
+			</tr>
+			<foreach name='lists' item='list' >
+			<tr>
+				<td>{$list.id}</td>
+				<td>{$list.operate_name} </td>
+				<td>{$list.operate_sn}</td>
+				<td>{$list.link_orderid}</td>
+				<td>{$list.desc}</td>
+				<td>{$list.value}</td>
+				<td>{$list.addtime|date="Y-m-d H:i:s",###}</td>
+				<td style="letter-spacing:3px;">
+					<if condition="$list.type eq 1">
+					<a href="{:U('Package/order',array('order_id'=>$list['link_orderid']))}">查看</a>
+					<else />  
+					<a onclick="show_img('{$list.payment_img}')">查看凭证</a>
+					</if>
+				</td>   
+			</tr>
+			</foreach>
+		</table>
+		<div class="pagination pagination-right">
+			<ul class="pageNumber">
+			{$page}
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- 自动选中搜索条件-->   
+<script>
+	function show_img(url){
+		alert(url);
+	}
+</script>
+<script type="text/javascript">
+$(function () {
+	var currYear = (new Date()).getFullYear();	
+	var opt={};
+	opt.date = {preset : 'date'};
+	opt.datetime = {preset : 'datetime'};
+	opt.time = {preset : 'time'};
+	opt.default = {
+		theme: 'android-ics light', //皮肤样式
+		display: 'modal', //显示方式 
+		mode: 'scroller', //日期选择模式
+		dateFormat: 'yyyy-mm-dd',
+		lang: 'zh',
+		showNow: true,
+		nowText: "今天",
+		startYear: currYear - 50, //开始年份
+		endYear: currYear + 10 //结束年份
+	};
+  
+	$("#Time1").mobiscroll($.extend(opt['date'], opt['default']));
+	$("#Time2").mobiscroll($.extend(opt['date'], opt['default']));
+
+});
+</script>
+<include file="Public:foot" />
+

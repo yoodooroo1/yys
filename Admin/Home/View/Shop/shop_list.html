@@ -1,0 +1,178 @@
+<include file="Public:head"/>
+<link href="__PUBLIC__/times/mobiscroll.css" rel="stylesheet" />
+<link href="__PUBLIC__/times/mobiscroll_date.css" rel="stylesheet" />
+<script src="__PUBLIC__/times/mobiscroll_date.js" charset="gb2312"></script> 
+<script src="__PUBLIC__/times/mobiscroll.js"></script> 
+<link type="text/css" rel="stylesheet" href="__ROOT__/Public/media/css/layout.css" />
+<div class="container-fluid" >
+	<!-- BEGIN PAGE HEADER-->
+	<div class="title"  >
+		 <ul class="breadcrumb" >
+			<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> <i class="icon-angle-right"></i></li>
+			<li><a href="#">店铺管理</a><i class="icon-angle-right"></i></li>
+			<li><a href="{:U('Shop/shop_list')}"><strong>店铺列表</strong></a></li>
+		</ul>  		
+	</div><!-- END PAGE TITLE & BREADCRUMB-->
+    <div class="nav-tabs">
+        <ul>
+            <li class="{$ui.shop_list}"> <a href="{:U('Shop/shop_list')}" > 店铺列表</a> </li>
+            <li class="{$ui.shop_info}"> <a href="{:U('Shop/shop_info')}"> 添加店铺</a> </li>
+			<li  class="mub">店铺量数：{$count}家</li>
+        </ul>
+    </div><!-- END PAGE HEADER-->
+
+	<div class="main-content">
+	<!-- END PAGE HEADER-->	
+		<form name="searchForm" action="__URL__/shop_list" method="get" >  
+				 <input type="text" name="member_name"  placeholder="商家账号"/>
+				<input type="text" name="store_name" placeholder="店铺名称"/>
+				 <input type="text" name="lianxi_member_name" placeholder="商家姓名"/>
+				 <input type="text" name="lianxi_member_tel" placeholder="联系电话" />
+				 <select name="choose_level">
+							<option value=''>选择套餐方案</option>
+							<option value='-1'>试用期</option>
+							<volist name="package_list" id='plist'>
+							<option value="{$plist.packageid}">{$plist.name}</option>
+					 		</volist>      
+							</select>  
+								  
+				<select name="store_parenttype_id" onChange="getItem()">  
+							<option value="" selected="selected">请选择店铺行业</option> 
+							<volist name="commontype_parent" id="parent">		
+							<option value="{$parent.id}">{$parent.store_type_name}</option>
+							</volist>							
+						  </select>   
+						  <select name="store_childtype_id">  
+							<option selected="selected" value="">请选择</option>  
+						  </select> 
+					
+				<select name="endtime"> 
+							<option value=''>到期时间</option>
+							<option value='1'>已到期</option>
+							<option value='2'>7天内</option>
+							<option value='3'>一月内</option>
+						   </select> 
+				<select name="opentype">
+							<option value=''>开户方式</option>
+							<option value='1'>推广开户</option> 
+							<option value='2'>直接开户</option>
+							<option value='3'>其他方式</option>
+						   </select>
+				 <input type="text" name="operate_id" placeholder="运营商ID"/>
+				 <input type="text" name="operate_name" placeholder="运营商名称" />
+				<input type="text" name="operation_number"  placeholder=" 业务编号"/>
+				 开户时间：<input type="text" id="Time1"  readonly name="Time1" /> 至 <input type="text"  readonly id="Time2" name="Time2"  />
+				<input type="submit" name="button" id="button" value="搜索" />
+		</form>	<!-- BEGIN PAGE CONTENT-->          
+		<table name="table-list">			
+			<tr>	
+				<th>编号</th>				
+				<th>店铺名称/账号</th>
+				<th>商家姓名/联系号码</th>
+				<th>行业类别</th>
+				<th>套餐方案</th>
+				<th>开户方式</th>
+				<th>运营商名称</th>
+				<th>业务编号</th>
+				<th>开户时间</th>
+				<th>到期时间</th>
+				<th>操作</th>				
+			</tr>
+			<volist name="lists" id="list">
+			<tr>
+				<td ><input type="checkbox" class="checks">{$list.store_id}</td>
+				<td>{$list.store_name}/{$list.member_name} </td>
+				<td>{$list.lianxi_member_name}/{$list.lianxi_member_tel} </td>
+				<td>{$list.store_parenttype_name}>{$list.store_childtype_name}</td>
+				<td>{$list.package_name}</td>
+				<td><if condition="$list.opentype eq '1'"> 
+					推广开户 
+					<elseif condition="$list.opentype eq '2'" />
+					推荐开户
+					<else /> 
+					其它开户
+					</if>     
+				</td>
+				<td>{$list.operate_name}</td>
+				<td>{$list.operation_number}</td>
+				<td><if condition="$list.account_time neq ''">
+					{$list.account_time|date="Y-m-d H:i:s",###}
+					<else />
+					{$list.recharge_time|date="Y-m-d H:i:s",###}
+					</if>
+				</td> 
+				<td>{$list.vip_endtime|date="Y-m-d H:i:s",###}</td>
+				<td style="letter-spacing:3px;">
+					<a href="{:U('shop/shop_info',array('shop_id'=>$list['store_id']))}">查看</a>
+				</td>  
+			</tr>   
+			</volist>	
+		</table>
+		<div  class="checkbox"> 
+			<label for="quan_xuan" class="all_lable"><input type="checkbox" id="quan_xuan" onclick="checkall()" /> 全选	</label>	    
+			<input type="hidden" id="classid" value="{$rt.classid}" name="classid" />
+			<a  onclick="export()"  class="act_button" >导出</a>
+		 </div>
+		<div class="pages">  
+            {$page}  
+        </div>
+    </div>		
+</div>
+<script>
+	function checkall(){
+		if($('.allcheck').prop("checked"))
+		{
+			$(".checks").attr('checked',true);	
+		}
+		else{
+			$(".checks").attr('checked',false);	
+		}
+	}
+</script>
+<script type="text/javascript">
+$(function () {
+	var currYear = (new Date()).getFullYear();	
+	var opt={};
+	opt.date = {preset : 'date'};
+	opt.datetime = {preset : 'datetime'};
+	opt.time = {preset : 'time'};
+	opt.default = {
+		theme: 'android-ics light', //皮肤样式
+		display: 'modal', //显示方式 
+		mode: 'scroller', //日期选择模式
+		dateFormat: 'yyyy-mm-dd',
+		lang: 'zh',
+		showNow: true,
+		nowText: "今天",
+		startYear: currYear - 50, //开始年份
+		endYear: currYear + 10 //结束年份
+	};
+  
+	$("#Time1").mobiscroll($.extend(opt['date'], opt['default']));
+	$("#Time2").mobiscroll($.extend(opt['date'], opt['default']));
+
+});
+</script>
+
+<script type="text/javascript">  
+//定义了分类的二维数组，里面的顺序跟外表的顺序是相同的。通过selectedIndex获得不同大类的下标值来得到相应的分类数组  
+     var item={$childs};    
+     function getItem(){  
+         //获得大类下拉框的对象  
+         var sltarea=document.getElementsByName('store_parenttype_id')[0];		 
+         //获得小类下拉框的对象   
+		 var sltItem=document.getElementsByName('store_childtype_id')[0];		
+         //得到对应大类的城市数组  
+         var areaItem=item[sltarea.selectedIndex - 1];  
+         //清空小类下拉框，仅留提示选项    
+         sltItem.length=1;         
+         //将小类数组中的值填充到城市下拉框中  
+         for(var i=0;i<areaItem.length;i++){        
+         //获得小类名称值areaItem[i][1]        //获得小类名称的下标areaItem[i][0]  
+         //如果都选值 sltItem[i+1]=new Option(areaItem[i][1],areaItem[i][1]);  
+             sltItem[i+1]=new Option(areaItem[i][1],areaItem[i][0]);  
+         }  
+     }  
+</script>  
+<include file="Public:foot" />
+

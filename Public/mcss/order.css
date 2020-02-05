@@ -1,0 +1,43 @@
+/*订单*/
+/*订单快照*/
+.orderN,.spanRight,.listBtn{float:right;}
+.shoperMsg,.toShopOS,.topTOp{margin-top:0.4rem;}
+.shoperMsg{padding:0.4rem 4.44%;background:#FFF;position:relative;border-top:1px solid #efefef;border-bottom:1px solid #efefef;}
+.ordAdd{background:#FFF url('../mimages/orderPhotoBg.png')left 0.35rem no-repeat;background-size:0.8rem;}
+.ordAdd,.nameTel{padding-left:1.3rem;}
+.colorLine{padding:1px 0;height:2px;background:#FFF url('../mimages/order_detail_iv.png')center center repeat-x;
+	background-size:100%;position:absolute;	left:4.44%;	right:4.44%;}
+.lineTop{top:0;}
+.lineBottom{bottom:0;}
+.ordTel{float:right;margin-right:2rem;}
+.toShopOS{display:block;text-decoration:none;background: #FFF url('../mimages/ad_right.png') no-repeat;    background-size: 0.5rem;  background-position: 95% center;border-top:1px solid #efefef;}
+
+/*我的订单*/
+.orderTabs{white-space:nowrap;overflow-x:auto;padding:0 4.44%;}
+.oderFixed{position:fixed;top:0;z-index:4;width:100%;max-width:640px;}
+::-webkit-scrollbar{width:1px; display:none}
+.orderTabs span{width:20%;display:inline-block;text-align:center;line-height:38px;}
+.orderActive{height:37px;margin-bottom:-1px;border-bottom:1px solid #d83838;}
+.order_tabs{margin-top:.2rem;border-top:1px solid #efefef;}
+.orderHead{overflow:hidden;position:relative;}
+.deleteBtn{position:absolute;right:0;top:0;padding:0 4.44%;height:37px;line-height:37px;}
+.timeF{float:right;margin-right:2.5rem;line-height:21px;
+}@media(min-width:600px){
+	.timeF{margin-right:3rem;}
+}
+.ol_goods{background:#F9f9f9;display:block;color:#000;}
+.ol_goodMsg,.ol_goods img,.orderStatus,.orderTot_line,.orderStatus_payed{vertical-align:middle;}
+.ol_goods img{width:4.7rem;}
+.ol_goodMsg{display:inline-block;width:calc(100% - 4.7rem); margin-left:-6px; padding-left:10px;}
+.orderStatus,.listBtn{width:4.2rem;}
+.orderStatus_payed{width:2.1rem;}
+.orderTot_line,.listBtn{display:inline-block;}
+.listBtn{line-height:27px;border:1px solid #efefef;border-radius:3px;text-align:center;}
+.order_tabs li{margin-bottom:0.3rem;position:relative;}
+.orderProcess h4{font-weight:normal;margin:0.3rem 0;}
+.orderProcess p{font-size:0.9rem;}
+.order_det_footer{height:40px;margin-top:;}
+.topTOp{border-top:1px solid #efefef;}	
+.order_btn{min-width:4rem;text-align:center;padding:0.3rem;display:inline-block;border-radius:3px;margin-top:5px;}
+.footer_padd{padding:0 4.44%;}
+

@@ -1,0 +1,126 @@
+<include file="Public:head"/>
+<div class="container-fluid">
+				<!-- BEGIN PAGE HEADER-->
+				<div class="row-fluid">
+					<div class="span12">
+					<h4 class="page-title">
+							商家管理
+							   <small>   User management</small></h4>
+						<ul class="breadcrumb">
+							<li><i class="icon-home"></i><a href="./admin.php">首页</a> 
+								<i class="icon-angle-right"></i></li>   
+    
+							<li><a href="#">商家管理</a><i class="icon-angle-right"></i></li>
+							<li><a href="{:U('Store/store_apply')}">提现申请</a></li> 
+						</ul> 
+						<!-- END PAGE TITLE & BREADCRUMB-->
+					</div>
+				</div>
+				<!-- END PAGE HEADER-->
+
+				<!-- BEGIN PAGE CONTENT-->
+	<!-- END PAGE HEADER-->
+                <div class="tabbable tabbable-custom tabbable-full-width">
+							<ul class="nav nav-tabs">
+			  <li class="{$ui.store_list}"> <a href="{:U('Store/store_list')}"> 商家列表</a> </li>
+		       <li class="{$ui.store_apply}"> <a href="{:U('Store/store_apply')}"> 提现申请</a> </li>
+							</ul>  
+			</br>			 
+			<form class="login-form" action="{:U('Store/store_apply')}" method="post">
+			根据用户名搜索&nbsp(支持模糊查询)&nbsp:&nbsp&nbsp&nbsp <input type="text" name="keyname" id="id"  value="" />
+			
+			&nbsp&nbsp&nbsp <input type="submit" name="button" id="button" value="搜索">   
+			</form>
+							
+                            <hr>
+                </div>
+				<!-- BEGIN PAGE CONTENT-->          
+				<div class="row-fluid">
+					<div class="span12 ">
+						<!-- BEGIN EXAMPLE TABLE PORTLET-->
+							<div class="portlet-body">
+
+				<!-- END PAGE HEADER-->
+                
+               
+
+										<div class="portlet-body form ">
+                                        
+            <?php  $num =1; ?>  
+            <form action = "{:U('Store/updata_store_paid')}" method="post" id = 'myform'>	
+            <input type="hidden" id ='replayid' name = 'replayid'>	 		
+           <foreach name='list' item='user' >    
+									<div class="media-body">
+									<div style = "position:relative;border:solid #ccc 1px;border-bottom:none;line-height:30px;background-color:#f1f8f0">
+								   <div style = "float:left;margin-left:1%"><font size="3.5px"><b>&nbsp;&nbsp;</b></font></div> 
+									<div style = "float:left;margin-left:2%"><font size="3.5px"><b>商家账号：{$user.member_name}</b></font></div>
+									<div style = "float:left;margin-left:4%"><font size="3.5px"><b>提现金额：￥<?php echo (0-$user['amount']) ; ?></b></font></div>
+									<div style = "float:left;margin-left:4%"><b><?php    if($user['commission']=='0') echo "(资金提现)"; else { echo "(佣金提现)" ;} ?> </b></div>
+									<div style = "clear:both"></div> 
+									</div> 
+									<div style = "position:relative;border:solid #ccc 1px;border-top:none;border-bottom:none;line-height:30px;background-color:#f1f8f0">
+	                                <div style = "float:left;margin-left:1%"><font size="3.5px"><b><?php echo $num; ?></b></font></div>									
+									<div style = "float:left;margin-left:2%">提现时间：{$user.add_time|date='Y-m-d H:i',###}</div>
+									<div style = "float:left;margin-left:4%">所属联盟：{$user.from}</div> 
+									<div style = "float:left;margin-left:4%">所属运营：{$user.mall_name}</div> 
+									<div style= "position:absolute; margin-left:50%;"><button type="button" <?php  if($user['is_paid']=='1') echo "disabled=disabled";  ?> style="line-height:200%;width:100px;color:#000" onclick = "checkapply({$user.id})">
+									<?php    if($user['is_paid']=='0') echo "提现审核"; else { echo "已审核" ;} ?>   </button></div>
+									<div style = "clear:both"></div>      
+									</div>   
+									<div style = "position:relative;border:solid #ccc 1px;border-top:none;line-height:30px;background-color:#f1f8f0">
+									<div style = "float:left;margin-left:1%"><font size="3.5px"><b>&nbsp;&nbsp;</b></font></div>  
+									<div style = "float:left;margin-left:2%">提现说明：{$user.user_note}</div>   
+									<div style = "clear:both"></div>  
+									</div> 
+									
+										<!-- Nested media object --> 
+										
+
+										<!--end media-->
+
+									
+										<!--end media-->
+                                    
+									</div>    
+
+<hr>
+<?php   $num = $num+1;  ?>
+    </foreach>  
+	</form>
+										</div>
+
+									</div>
+
+								</div> 
+
+				<!-- BEGIN PAGE CONTENT-->
+                <div class="pagination pagination-right">
+
+							<ul>
+                            
+                           
+                              {$page}
+
+						
+							</ul>
+
+						</div>
+ 
+			</div></div></div>
+<script>
+function checkapply(id)
+{
+
+    var a=confirm("是否确认提现？");     
+	if(a==true)
+	{
+		document.getElementById('replayid').value= id;    
+		document.getElementById('myform').submit();  
+	}
+	else
+	{ 
+	return false;
+	}	
+}
+</script>
+<include file="Public:foot" />

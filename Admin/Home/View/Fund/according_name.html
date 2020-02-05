@@ -1,0 +1,67 @@
+<include file="Public:head"/>
+<link type="text/css" rel="stylesheet" href="__ROOT__/Public/media/css/layout.css" />
+<div class="container-fluid" >
+	<!-- BEGIN PAGE HEADER-->
+	<div class="title" >
+		
+		 <ul class="breadcrumb" >
+			<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> <i class="icon-angle-right"></i></li>
+			<li><a href="#">资金管理</a><i class="icon-angle-right"></i></li>
+			<li><a href="{:U('Fund/according_name')}"><strong>运营商收益按名称</strong></a></li>
+		</ul>  		
+	</div><!-- END PAGE TITLE & BREADCRUMB-->	 
+    <div class="nav-tabs">
+        <ul >
+            <li class="{$ui.history_detail}"> <a href="{:U('Fund/history_detail')}" > 运营商推广历史明细</a> </li>
+            <li class="{$ui.according_month}"> <a href="{:U('Fund/according_month')}"> 运营商收益按月</a> </li>
+            <li class="{$ui.according_name}"> <a href="{:U('Fund/according_name')}"> 运营商收益按名称</a> </li>
+			<li class="{$ui.recharge_detail}"> <a href="{:U('Fund/recharge_detail')}"> 运营商充值明细</a> </li>
+        </ul>
+    </div><!-- END PAGE HEADER-->
+    <div class="main-content"> 
+	   <form name="searchForm" action="__URL__/according_name" method="get" >  
+				 <input type="text" name="operate_id" placeholder="运营商ID"/>
+				 <input type="text" name="operate_name"  placeholder="运营商名称"/>
+				 <input type="text" name="link_name"  placeholder="运营商联系人"/>
+				<input type="text" name="link_tel" placeholder=" 运营商手机号" />
+				<input type="submit" name="button" id="button" value="搜索" />
+		</form>	 
+        <table name="table-list">			 
+			<tr>	
+				<th>运营商ID</th>				
+				<th>运营商名称</th>  
+				<th>联系人</th>
+				<th>手机号码</th>
+				<th>累计推广收益</th>
+				<th>已打款</th>
+				<th>操作</th>				
+			</tr>
+			<foreach name='lists' item='list' >
+			<tr>
+				<td>{$list.operate_id}</td>
+				<td>{$list.operate_name} </td>
+				<td>{$list.link_name}</td>
+				<td>{$list.link_tel}</td>
+				<td>{$list.all_money}</td> 
+				<td>{$list.get_money}</td>
+				<td style="letter-spacing:3px;">
+					 <a href="{:U('Fund/history_detail',array('operate_sn'=>$list['operate_sn']))}">明细</a>
+					<a href="{:U('Fund/operate_month_price_record',array('operate_id'=>$list['operate_id']))}">查看</a> 
+				</td>  
+			</tr>
+			</foreach>
+		</table>
+		<div class="pagination pagination-right">
+			<ul class="pageNumber">
+			{$page}
+			</ul>
+		</div>    
+	</div>
+</div>
+<!-- 自动选中搜索条件-->
+<script>
+	var status = "{$money_status}";
+	$('#money_status').val(status);
+</script>
+<include file="Public:foot" />
+

@@ -1,0 +1,123 @@
+<include file="Public:head"/>
+<link href="__PUBLIC__/times/mobiscroll.css" rel="stylesheet" />
+<link href="__PUBLIC__/times/mobiscroll_date.css" rel="stylesheet" />
+<script src="__PUBLIC__/times/mobiscroll_date.js" charset="gb2312"></script> 
+<script src="__PUBLIC__/times/mobiscroll.js"></script> 
+<link type="text/css" rel="stylesheet" href="__ROOT__/Public/media/css/layout.css" />
+<div class="container-fluid">
+	<!-- BEGIN PAGE HEADER-->
+	<div class="title">
+		<ul class="breadcrumb">
+			<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> <i class="icon-angle-right"></i></li>
+			<li><a href="#">套餐管理</a><i class="icon-angle-right"></i></li>
+			<li><a href="{:U('Package/lists')}"><strong>套餐列表</strong></a></li>
+		</ul>      
+	</div><!-- END PAGE TITLE & BREADCRUMB-->
+    <div  class="nav-tabs">
+        <ul>
+            <li class="{$ui.package_list}"> <a href="{:U('Package/lists')}" > 套餐列表</a> </li>
+            <li class="{$ui.package_info}"> <a href="{:U('Package/info')}"> 添加套餐</a> </li>
+			<li class="{$ui.package_order}"> <a href="{:U('Package/order')}"> 套餐订单</a> </li>
+        </ul>
+    </div><!-- END PAGE HEADER-->	
+	<div class="main-content" >
+		<div  class="data">
+			<ul>
+				<li> 历史商家充值总额：<b>{$info.total_saleprice}元</b></li>
+				<li> 应付运营商利润：<b>{$info.total_operate_profit}元 </b></li>
+				<li> 预收运营商总额：<b>{$info.total_recharge}元</b></li>
+				<li> 已使用预收：<b>{$info.total_usedprice}元</b></li>
+			</ul>	         
+		</div>
+		<!-- END PAGE HEADER-->  
+		<form name="searchForm" action="{:U('')}" method="post" >  
+			<input type="text" name="orderSn"  placeholder="业务编号" />
+				<select name="packageid">
+							<option value=''>全部套餐</option>
+							<volist name="package_list" id='plist'>
+							<option value="{$plist.packageid}">{$plist.name}</option>
+							</volist>   
+							</select>
+			<select name="paytype">
+							<option value=''>付款</option>
+							<option value='2'>微信支付</option>
+							<option value='1'>线下支付</option>
+							</select>
+				<select name="issettlement">
+							<option value=''>状态</option>
+							<option value='1'>已结算</option>
+							<option value='0'>未结算</option>
+							</select>
+				<input type="text" name="member_name"   placeholder=" 商家账号"/>
+				 <input type="text" name="tel"   placeholder="联系电话" />
+				 <input type="text" name="operate_name"  placeholder="运营商名称" /> 
+				 <input type="text" name="recommend_code"  placeholder="业务编号" />
+				 充值时间：<input type="text" id="Time1"  readonly name="Time1" /> 至 <input type="text"  readonly id="Time2" name="Time2"  />
+				<input type="submit" name="button" id="button" value="搜索" />
+		</form>	<!-- BEGIN PAGE CONTENT-->          
+		<table name="table-list">
+			<tr>
+				<!--<td>用户ID</td>-->
+				<th>充值编号</th>
+				<th>套餐名称</th>
+				<th>套餐年限</th>
+				<th>客户价格</th>
+				<th>付款方式</th>  
+				<th>充值商家账号</th>				
+				<th>商家联系电话</th>
+				<th>运营商名称</th>
+				<th>业务编号</th>
+				<th>运营商利润</th>
+				<th>充值时间</th>
+				<th>操作</th>  
+			</tr>   
+			<volist name='lists' id='list' >
+			<tr>     
+				<!--<td>{$user.member_id}</td>--> 
+				<td>{$list.ordersn}</td>   
+				<td>{$list.name}</td>   
+				<td><if condition="$list.sale_price eq 0"> 试用 <else />{$list.age_limit}年 </if></td>				
+				<td>{$list.sale_price}</td>
+				<td><if condition="$list.paytype eq '1'">预存款扣除<elseif condition="$list.paytype eq '2'" />微信支付<elseif condition="$list.paytype eq '3' "/>余额支付<else />支付宝支付</if></td>         
+				<td>{$list.member_name}</td>         
+				<td>{$list.tel}</td>  
+				<td>{$list.operate_name}</td>  
+				<td>{$list.recommend_code}</td>    
+				<td>{$list.operate_profit}</td>  
+				<td>{$list.rechargetime|date="Y-m-d H:i:s",###}</td>   
+				<td><if condition="$list.issettlement eq '0'">未结算<else />已结算</if></td>  
+			</tr>  
+			</volist>
+		</table>  
+		<div class="pagination pagination-right">
+			<ul class="pageNumber">
+				{$page}
+			</ul>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+$(function () {
+	var currYear = (new Date()).getFullYear();	
+	var opt={};
+	opt.date = {preset : 'date'};
+	opt.datetime = {preset : 'datetime'};
+	opt.time = {preset : 'time'};
+	opt.default = {
+		theme: 'android-ics light', //皮肤样式
+		display: 'modal', //显示方式 
+		mode: 'scroller', //日期选择模式
+		dateFormat: 'yyyy-mm-dd',
+		lang: 'zh',
+		showNow: true,
+		nowText: "今天",
+		startYear: currYear - 50, //开始年份
+		endYear: currYear + 10 //结束年份
+	};
+  
+	$("#Time1").mobiscroll($.extend(opt['date'], opt['default']));
+	$("#Time2").mobiscroll($.extend(opt['date'], opt['default']));
+
+});
+</script>
+<include file="Public:foot" />

@@ -1,0 +1,71 @@
+<include file="Xunxin:head"/>
+<div class="container-fluid">
+				<!-- BEGIN PAGE HEADER-->
+				<div class="row-fluid">
+					<div class="span12">
+					<h4 class="page-title">
+							商品管理
+							   <small>   Goods management</small></h4>
+		
+						<!-- END PAGE TITLE & BREADCRUMB-->
+					</div>
+				</div>
+				<!-- END PAGE HEADER-->
+
+				<!-- BEGIN PAGE CONTENT-->
+	<!-- END PAGE HEADER-->
+   
+				<!-- BEGIN PAGE CONTENT-->          
+				<div class="row-fluid">
+					<div class="span12 ">
+						<!-- BEGIN EXAMPLE TABLE PORTLET-->
+							<div class="portlet-body">
+
+				<!-- END PAGE HEADER-->
+                
+               
+
+										<div class="portlet-body form ">
+                                        
+                                        
+           <foreach name='list' item='goods' >
+		   
+									<div class="media-body">
+									<div style = "position:relative;border:solid #ccc 1px;line-height:30px;background-color:#f1f8f0">
+									<div style = "float:left;"><font size="3.5px"><b>商品ID：{$goods.goods_id}</b></font></div>
+									<div style = "float:left;"><font size="3.5px"><b>商品名称：{$goods.goods_name}</b></font></div>
+
+									<div style = "float:left;margin-left:4%">商品价格：{$goods.goods_price}</div>   
+									<div style = "float:left;"><font size="3.5px"><b>商品描述：{$goods.goods_desc}</b></font></div>
+                                   
+									<div style = "clear:both"></div> 
+									</div>
+										<!-- Nested media object -->
+										
+
+									</div>    
+
+<hr>
+    </foreach>
+										</div>
+
+									</div>
+
+								</div>
+
+				<!-- BEGIN PAGE CONTENT-->
+                <div class="pagination pagination-right">
+
+							<ul>
+                            
+                           
+                              {$page}
+
+						
+							</ul>
+
+						</div>
+
+			</div></div></div>
+
+<include file="Xunxin:foot" />

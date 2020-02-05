@@ -1,0 +1,36 @@
+*{margin: 0;padding: 0;}
+body{font-size: 16px;}
+.main{background: url(../image/backgroundImg.png)center center /100% 100% no-repeat;width: 100%;position: relative;min-width: 1000px;}
+@media screen and (max-height: 580px) {
+    .main{height: 568px;}
+}
+@media screen and (min-height: 600px) {
+    .main{height: 638px;}
+}
+.loginMian{float: right;    width: 30%;
+    position: absolute;right: 20%;
+    top:18%;}
+.loginMian .logiTtitle{color: #fff;font-size: 1.5rem;padding: 1rem 0;text-align: center}
+.loginMian .loginText{display: inline-block;padding:.5rem 2rem .5rem 2rem;background-color: #fff;    box-sizing: border-box;width: 100%}
+.loginMian .loginText input{width: 100%;border: none;padding: .5rem 0.5rem .5rem 2rem;box-sizing: border-box;/*outline:none*/}
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+    color: #D0D0D0;
+}
+input:-moz-placeholder, textarea:-moz-placeholder {
+    color: #D0D0D0;
+}
+input::-moz-placeholder, textarea::-moz-placeholder {
+    color: #D0D0D0;
+}
+input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+    color: #D0D0D0;
+}
+.loginMian .loginText div{border-bottom: 1px solid #EFEFEF;padding-top: 1.5rem}
+.loginMian .loginText .accountInput input{background: url(../image/account.png)left center no-repeat}
+.loginMian .loginText .passwordInput input{background: url(../image/password.png)left center no-repeat}
+.loginMian .loginText .codeInput input{background: url(../image/code.png)left center no-repeat;width: 60%}
+.loginMian .loginText .codeImg{width: 120px;height: 40px;float: right;position: absolute;right:0;top: .48rem;}
+.loginMian .loginText .checkBox{border: none}
+.loginMian .loginText .checkBox input{width: 15px;height: 15px;display: inline-block;vertical-align: middle;margin-left:.3rem;margin-right: .7rem}
+.loginMian .loginText .checkBox span{display: inline-block;vertical-align: middle;font-size: .8rem;color: #999}
+.loginMian .loginText .button{width: 100%;margin: 1.5rem 0;padding: 1rem 0;background-color: #20BAEC;border: none;color: #fff;font-size: 1rem;border-radius: 2px;}

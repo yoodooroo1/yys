@@ -1,0 +1,58 @@
+<include file="Public:head"/> 
+ <link href="__ROOT__/Public/media/css/layout.css" rel="stylesheet" type="text/css"/>
+    <div class="container-fluid">
+		<div class="title">
+
+			<ul class="breadcrumb">
+				<li><i class="icon-home"></i><a href="./admin.php">管理首页</a></li>  
+			</ul> 
+		</div>
+		<table  class="colorDiv" >			
+			<tr>
+				<!-- <th >会员退单审核<br>300.00元<br>查看</th></th> -->
+				<th >推广费用未打款<br>{$info.unset_price}元<br><a href="{:U('Fund/all_operate_onemonth_price_record',array('showtype'=>2,'month'=>$month))}">查看</a></th></th>
+			<!-- 	<th>商家提现待审核<br>300.00元<br>查看</th></th>
+				<th  >5分钟未接订单<br>300.00元<br>查看</th></th> -->
+			</tr>   	 		
+		</table>  
+		<table class="msgDiv">			
+			<tr>
+				<td>今日新增店铺<span>{$info.new_add_store}</span></td>
+				<td>店铺总数<span>{$info.all_store}</span></td>
+				<td>商城总数量<span>{$info.all_mall}</span></td>
+				<td>一个月内到期<span>{$info.onemonth_limit_store}</span></td>
+			</tr>  
+			<tr>
+				<td>试用期<span>{$info.try_store}</span></td>
+				<td>专业版<span>{$info.major_store}</span></td>
+				<td>企业版<span>{$info.company_store}</span></td>
+				<td>已过期店铺<span>{$info.overdue_store}</span></td>
+			</tr>
+			<tr>
+				<td>今日续费充值<span>{$info.today_rechage}</span></td>
+				<td>累计续费充值<span>{$info.total_rechage}</span></td>
+				<td>总计推广费用<span>{$info.total_price}</span></td>
+				<td>推广已打款<span>{$info.get_price}</span></td>
+			</tr>
+		<!-- 	<tr>
+				<td>今日新增会员<span>50</span></td>
+				<td>会员总数量<span>50</span></td>
+				<td>今日订单数量<span>50</span></td>
+				<td>累计订单数量<span>50</span></td>
+			</tr> -->
+			<tr>
+				<td>运营商数量<span>{$info.operate_num}</span></td>
+				<td>推广成员总计<span>{$info.shareholder_num}</span></td>
+				<td>运营商预存总计<span>{$info.prestore_price}</span></td>
+				<td>未使用预存款<span>{$info.unused_prestore_price}</span></td>
+			</tr>
+			<tr>
+				<td>运营商推广店铺<span>{$info.type1_store}</span></td>
+				<td>运营商直接开户<span>{$info.type2_store}</span></td>
+				<td>其他方式开户<span>{$info.type3_store}</span></td>
+				<td><span></span></td>
+			</tr>
+		</table>
+	
+    </div>   
+<include file="Public:foot"/>

@@ -1,0 +1,76 @@
+<include file="Public:head"/>
+<style type="text/css">
+	hr{margin:0; padding:0;}
+	table tr:nth-child(1){  
+		background:#eee;  
+		font-size:0.75rem;
+		font-weight:bold;
+		color:#333;
+	}
+	td{
+		padding:14px 10px;
+		text-align:center;
+		border:1px solid #DDD;
+	}     
+	button {
+		background: #4D90FE;
+		color: #FFF;
+		border: 1px solid #4D90FE;
+		padding: 5px 14px;
+		margin: 10px 5px;   
+		border-radius: 5px !important;
+	}
+</style>   
+<div class="container-fluid">  
+	<div class="title">
+		<ul class="breadcrumb">
+			<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> <i class="icon-angle-right"></i></li>
+			<li><a href="#">运营商管理</a><i class="icon-angle-right"></i></li>
+			<li><a href="{:U('Operate/operate_list')}">运营商列表</a><i class="icon-angle-right"></i></li>
+			<li><a href="#">团队成员</a></li>    
+		</ul>  		 
+	</div><!-- END PAGE TITLE & BREADCRUMB-->	  
+	<!-- BEGIN PAGE CONTENT-->          
+	<div class="row-fluid"  >
+		<a href="{:U('Operate/operate_shareholder_info',array('operate_id'=>$operate_id))}"><button >新增成员</button></a>  <!-- <button>内部分红明细</button>  -->  
+		<table style="border:1px solid #ddd; width:100%" border="1px">
+			<tr>
+			    <td>编号</td>   
+			    <td>账号</td>   
+			    <td >成员名称【手机号】</td>
+				<td>开户银行</td>
+				<td>收款名称</td>  
+				<td>卡号</td>
+				<td>成员身份</td>
+				<td>持股比例</td>
+				<td>推广收益</td>
+				<td>加入时间</td>
+				<td>操作</td>   
+				
+			</tr>
+			 
+				<volist name ="lists" id ="list">
+				<tr>
+				<td style="text-align:center">{$list.id}</td>   
+				<td style="text-align:center">{$list.shareholder_sn}</td>   
+				<td style="text-align:center">{$list.shareholder_name}【{$list.shareholder_tel}】</td>   
+				<td>{$list.bank_name}</td> 
+				<td>{$list.bank_username}</td>
+				<td>{$list.bank_sn}</td>	  
+				<td>{$list.shareholder_role}</td>	  
+				<td>{$list.share_rate}</td>	   
+				<td>{$list.recommend_rate}</td>	   
+				<td>{$list.addtime|date="Y-m-d H:i:s",###}</td>   
+				<td><a href="{:U('Fund/holder_month_price_record',array('shareholder_id'=>$list['id']))}">查看</a>&nbsp; 
+				<a href="{:U('Operate/operate_shareholder_info',array('id'=>$list['id'],'operate_id'=>$operate_id))}">编辑</a>&nbsp;
+				<a href="{:U('Operate/del_shareholder',array('id'=>$list['id']))}">删除</a>
+				</td>	       
+				</tr>                          
+				</volist>   
+		</table>
+		
+		<!-- BEGIN PAGE CONTENT-->
+		
+	</div>
+</div></div>
+<include file="Public:foot" />

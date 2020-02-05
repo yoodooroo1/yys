@@ -1,0 +1,190 @@
+<include file="Public:head"/>
+<style type="text/css">
+	hr{margin:0; padding:0;}
+	table tr:nth-child(1){
+		background:#eee;
+		font-size:0.75rem;
+		font-weight:bold;
+		color:#333;
+	}
+	td{
+		padding:5px;
+		text-align:center;
+		border:1px solid #ddd;
+	}
+	.pageNumber div a,.pageNumber div span{
+		display:inline-block;
+		padding:3px 5px;
+		border:1px solid #DDD;
+		margin:2px;
+	}
+	input[type=submit],input[type=button]{
+		background:#4D90FE;
+		color:#FFF;
+		border:1px solid #4D90FE;
+		padding:4px 14px; 
+		margin:0 5px;
+	}
+</style>
+<div class="container-fluid">
+	<!-- BEGIN PAGE HEADER-->
+	<div class="row-fluid">
+		<div class="span12">
+		<h4 class="page-title">商家管理<small>User management</small></h4>
+			<ul class="breadcrumb" style="margin:0;">
+				<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> 
+					<i class="icon-angle-right"></i></li>
+				<li><a href="#">商家管理</a><i class="icon-angle-right"></i></li>
+				<li><a href="{:U('Store/al_refund')}"><strong>支付宝退款</strong></a></li>		
+               <li style="color:red;"><strong>&nbsp;&nbsp;&nbsp;&nbsp;退款总金额: {$all_price}元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></li>		
+               <li ><a href="{:U('Store/refundAll',array('mchannelid'=>$channelid))}" style="color:red;"><strong>一键退款</strong></a></li>			   
+			</ul>  
+			<!-- END PAGE TITLE & BREADCRUMB-->
+		</div>
+	</div>
+	<hr>
+	<!-- END PAGE HEADER-->
+
+	<!-- BEGIN PAGE CONTENT-->          
+	<div class="row-fluid" >
+		<table style="border:1px solid #ddd; width:100%" border="1px">
+			<tr>
+			    <td>编号</td>
+				<td>商家编号</td>
+				<td>商家名称</td>
+				<td>退款方式</td>
+				<td>支付人</td>
+				<td>退款金额(元)</td>
+				<td>申请时间</td>
+				<td>审核</td>
+			</tr>
+			<foreach name='refund_list' item='cash_list_item' >
+			<tr>
+				
+				<td>{$cash_list_item.order_id}</td>
+				<td>{$cash_list_item.storeid}</td>
+				<td>{$cash_list_item.store_name}</td>
+				<td>支付宝退款</td>
+				<td>{$cash_list_item.order_membername}</td>
+				<td><?php echo 1.0*$cash_list_item['totalprice'];?></td>
+				<td><?php echo date('Y-m-d H:i:s',$cash_list_item['close_time']);?></td>
+			
+				
+				<td style="letter-spacing:3px;">
+					<a href="{:U('store/refundItem',array('order_id'=>$cash_list_item['order_id']))}">审核</a>
+					
+					
+					
+					<!--
+                   	<if condition="$user.isserver eq 0">
+						<a href="{:U('seller/seller_server',array('seller_id'=>$user['seller_id'],'is_server'=>'1'))}">开启</a>
+					<else />
+                   	 	<a href="{:U('seller/seller_server',array('seller_id'=>$user['seller_id'],'is_server'=>'0'))}">关闭</a>
+					</if>-->
+				</td>
+				
+			</tr>
+			</foreach>
+		</table>
+		<if condition="$storetype eq 'store'">
+         <form action="{:U('Store/storesome_update')}" method="post" enctype="multipart/form-data" name="member_submit" onSubmit="return checkInf2();" > 
+         </br>
+		 热卖商品&nbsp;&nbsp;&nbsp;&nbsp;<input type="text"  id="hotgoods" name="hotgoods"  value="{$hotgoods}"/></br>
+		 查看商品&nbsp;&nbsp;&nbsp;&nbsp;<input type="text"  id="lookgoods" name="lookgoods"  value="{$lookgoods}"/></br>
+		 全部商品&nbsp;&nbsp;&nbsp;&nbsp;<input type="text"  id="allgoods" name="allgoods"  value="{$allgoods}"/></br>
+		 <input type="hidden" value="{$store_id}" name="store_id"/>
+		 <input type="submit" value="提交"/>
+        </form>
+        </if>
+        <if condition="$storetype eq 'mall'">
+              <form action="{:U('Store/storeone_update')}" method="post" enctype="multipart/form-data" name="member_submit" onSubmit="return checkInf3();" > 
+		         </br>
+				 商城店铺&nbsp;&nbsp;&nbsp;&nbsp;<input type="text"  id="hotgoods" name="hotgoods"  value="{$hotgoods}"/></br>
+				 <input type="hidden" value="{$store_id}" name="store_id"/>
+				 <input type="submit" value="提交"/>
+		        </form>
+        </if>
+		<!-- BEGIN PAGE CONTENT-->
+		<div class="pagination pagination-right">
+			<ul class="pageNumber">
+				{$page}
+			</ul>
+		</div>
+	</div>
+</div></div>
+<include file="Public:foot" />
+<script type="text/javascript">
+	$(".serverJudge").click(function (){
+		$this = $(this);
+		var typeN = $(this).attr("id");
+		var typeK;		
+		var typeKey = typeN.substr(0,1); 
+		var textKey = typeN.substr(3,1);
+		var seller_id = $(this).parent().parent().find(".seller_id").text();
+		//console.log("最后一个字：" + textKey + "——类型：" + typeKey + "-seller_id:" + seller_id);
+		if(typeKey == 's'){
+			typeK = "isserver";
+		}else{  
+			typeK = "is_consult";
+		}        
+		//console.log("类型key："+ typeK);
+		
+		$.post("./admin.php?c=Seller&a=ajax",
+			{type:typeK, text:textKey,seller_id:seller_id},
+			function (data,status){
+				//console.log(data);
+				dataVal = eval('('+data+')');  
+				code = dataVal.result;
+				type = dataVal.type;
+				text = dataVal.text;
+				//console.log( "code:"+ code + "--type:" + type);
+				if(code == '0'){
+					if(type == "isserver"){
+						if(text == 0){
+							$this.text("已关闭");
+							$this.attr("id","sv_0");   
+						}else{
+							$this.text("已开启");
+							$this.attr("id","sv_1");
+						}  
+					}
+					if(type == "is_consult"){
+						location.reload();
+					}
+				}  
+				else
+				{
+					alert(dataVal.error);
+				}
+				
+			}
+		);
+	});
+
+  function checkInf2(){
+		var hotgoods = $("input[name=hotgoods]").val();
+		var lookgoods = $("input[name=lookgoods]").val();
+		var allgoods = $("input[name=allgoods]").val();
+		if(hotgoods == ''){
+				alert("请输入热卖商品项标题");
+				return false;
+			}				
+		if(lookgoods == ''){
+				alert("请输入查看商品标题");
+				return false;
+			}
+			if(allgoods == ''){
+				alert("请输入全部商品标题");
+				return false;
+			}
+	}
+	function checkInf3(){
+		
+		var hotgoods = $("input[name=hotgoods]").val();
+		
+			if(hotgoods == ''){
+				alert("请输入商城店铺标题");
+				return false;
+			}
+	}
+</script>

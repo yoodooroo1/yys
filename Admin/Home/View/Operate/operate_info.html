@@ -1,0 +1,271 @@
+<include file="Public:head"/>
+<link href="__ROOT__/Public/media/css/layout.css" rel="stylesheet" type="text/css"/>
+<script src="__ROOT__/Public/layer/layer.js"></script>
+<div class="container-fluid">
+	<!-- BEGIN PAGE HEADER-->
+	<div class="title">
+		<h4 class="page-title">运营商管理<small>   Operate management</small></h4>
+		<ul class="breadcrumb">
+			<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> <i class="icon-angle-right"></i></li>
+			<li><a href="#">运营商管理</a><i class="icon-angle-right"></i></li>
+			<if condition="$act eq 'info'">
+			<li><a href="{:U('Operate/operate_list')}">运营商列表</a><i class="icon-angle-right"></i></li>
+			<li><a href="#"><strong>运营商详情</strong></a></li>				
+			<else />
+			<li><a href="#"><strong>添加运营商</strong></a></li>
+			</if>
+		</ul>  		 
+	</div><!-- END PAGE TITLE & BREADCRUMB-->	
+	<if condition="$act neq 'info'">
+	<div class="nav-tabs">
+        <ul >
+             <li class="{$ui.operate_list}"> <a href="{:U('Operate/operate_list')}"> 运营商列表</a> </li>
+            <li class="{$ui.operate_info}"> <a href="{:U('Operate/operate_info')}"> 运营商店铺</a> </li> 
+			 <li class="{$ui.operate_apply}"> <a href="{:U('Operate/operate_apply_list')}"> 运营商申请</a> </li> 
+        </ul>
+    </div>
+	</if><!-- END PAGE HEADER-->
+	<div style="position:fixed;line-height:0px;z-index:-2">  <!--解决360浏览器自动填充账号密码问题-->    
+	<input style="line-height:0px" type='text'  /><input style="line-height:0px" type='password' >    
+	</div>	  
+	<div class="main-content" >
+	    <form action="{:U('operate/operate_edit')}" method="post"  name="add-submit"  id="form1" onSubmit="return checkTabel();">		
+			<table name="add_table">	
+				<tr>
+					<td><font style="color:red; font-size:15px ;">* </font>运营商名称</td>
+					<td>
+						<input type="text" name="operate_name" value="{$info.operate_name}" /><font style="color:#a1a1a1"> 备注： 运营商名称不能超过10个字</font>
+					</td>
+				</tr>
+				
+				<tr>
+					<td><font style="color:red; font-size:15px ;">* </font>代理商等级</td>
+					<td>
+						<select name="level" style="width:415px;"> 
+							<option value='1' <if condition="$info.level eq '1'"> selected='selected' </if>>初级</option>
+							<option value='2' <if condition="$info.level eq '2'"> selected='selected' </if>>铜牌</option>
+							<option value='3' <if condition="$info.level eq '3'"> selected='selected' </if>>银牌</option>
+							<option value='4' <if condition="$info.level eq '4'"> selected='selected' </if>>金牌</option>
+							<option value='5' <if condition="$info.level eq '5'"> selected='selected' </if>>白金</option>  
+							<option value='6' <if condition="$info.level eq '6'"> selected='selected' </if>>钻石</option>
+						</select>
+					</td>
+				</tr>   
+				<if condition="$act eq 'info' "> 
+				<tr>
+					<td><font style="color:red; font-size:15px ;">* </font>运营商账户</td>
+					<td>
+						<input type="text" value="{$info.login_name}" name="login_name" <if condition="$act eq 'info' "> readonly="readonly" </if> /><font style="color:#a1a1a1"> 备注： 运营商账户不能全为数字</font>
+					</td>
+				</tr>
+				</if>  
+				<tr>   
+					<td><font style="color:red; font-size:15px ;">* </font>登录密码</td>
+					<td>
+						<input type="text" name="login_password" value="{$info.login_password}"/><font style="color:#a1a1a1"> 备注：请输入六位及六位以上密码</font>
+					</td>
+				</tr>
+				<tr>
+					<td><font style="color:red; font-size:15px ;">* </font>联系人</td>
+					<td>  
+						<input type="text" name="link_name"  value="{$info.link_name}" />
+					</td>
+				</tr>
+				<tr>
+					<td><font style="color:red; font-size:15px ;">* </font>手机号码</td>
+					<td>  
+						<input type="text" name="link_tel"  value="{$info.link_tel}" />
+					</td>
+				</tr>
+				<tr>
+					<td>邮箱</td>
+					<td>  
+						<input type="text" name="e_mail"  value="{$info.e_mail}" />
+					</td>
+				</tr>
+				<tr>   
+					<td>开户银行名称</td>
+					<td>  
+						<input type="text" name="bank_name"  value="{$info.bank_name}" />
+					</td>
+				</tr>
+				<tr>
+					<td>收款人名称</td>
+					<td>  
+						<input type="text" name="bank_username"  value="{$info.bank_username}"  />
+					</td>
+				</tr>
+				<tr>
+					<td>银行卡号</td>
+					<td>  
+						<input type="text" name="bank_sn"  value="{$info.bank_sn}"  />
+					</td>
+				</tr>	
+			</table>
+		
+		<div class="info-input">
+			<input  type="submit" value="确定"/>
+			<if condition="$act eq 'info' ">
+			<input type="hidden" value="{$info.id}" name="id"/>
+			&nbsp;&nbsp;&nbsp;
+			<if condition="$info.is_edit eq 1">
+				<input id ="is_edit" attr_id ="1" type="button" onclick="change_edit()" value="已开启前端编辑"  style="width:200px;" />   
+			<else />
+				<input class="bg_red" id ="is_edit" attr_id ="0" type="button" onclick="change_edit()" value="已关闭前端编辑" style="width:200px;" />
+			</if>
+			</if>
+			<input type="hidden" value="{$act}" name="act">					  
+		</div> 
+		</form>	
+		<if condition="$act eq 'info' "> 
+		<table name="add_table" style="margin-bottom:80px">
+			<tr>   
+				<td>发展的店铺</td>   
+				<td>  
+					<font style="color:red ; margin:10px ;line-height:30px">{$info.store_num} </font> 
+					<a href=""> 查看 </a>
+				</td>
+			</tr>     
+			<tr> 
+				<td>运营总收益</td>  
+				<td>  
+					<font style="color:red;margin:10px ;line-height:30px" >{$info.total_price} </font> <a href="{:U('Fund/operate_month_price_record',array('operate_id'=>$info['id']))}"> 查看 </a>
+				</td>   
+			</tr>   
+		
+			<tr>
+				<td>未打款收益</td>   
+				<td>    
+					<font style="color:red; margin:10px ;line-height:30px" >{$info.unget_price}</font>
+					<a href=""> 查看 </a>
+				</td>
+			</tr>
+			<tr>
+				<td>预充值余额</td>   
+				<td >    
+					<font style="color:red; margin:10px ;line-height:30px" >{$info.money}</font>
+					<a href="{:U('Fund/recharge_detail',array('operate_name'=>$info['operate_name']))}"> 查看 </a>
+						<if condition="$act eq 'info' ">
+						<input type="text" id="recharge" value=""  placeholder="请输入充值金额" style="width:120px;margin-left:30px;"/><input type="button" id="func7" onclick="func7();" value="充值" />
+						</if>
+						
+				</td> 
+			</tr> 
+			</if>	
+	   </table>	   
+	</div>		
+</div>
+
+<script type="text/javascript">
+
+ function func7() {
+		var money = Number($("#recharge").val());
+		if(money > 0){  
+			//页面层
+			layer.open({
+				type: 1,
+				btn: ['确定'],
+				skin: 'layui-layer-rim', //加上边框
+				area: ['400px', '330px'], //宽高
+				content: '<div style="padding:20px "><p style="width:100%;text-align:center">确定给运营商充值'+money+'元吗？</p><br/><div style="width:100%;text-align:center;">备注：<input type="text" name="remark" value="" style="width:260px;"/></div><br/><div style="width:100%;text-align:center;">密码：<input type="text" name="recharge_pass" value="" placeholder="请输入管理员登录密码" style="width:260px;"/></div></div>',
+				yes: function(){ 
+					var operate_id = "{$info['id']}";
+					var remark = $("input[name=remark]").val();	
+					var recharge_pass = $("input[name=recharge_pass]").val();
+					var url="{:U('Operate/ajax_operate_recharge')}"; 
+					$.ajax({
+						type:'post',
+						url:''+url+'',
+						data:{operate_id:operate_id, remark:remark,recharge_pass:recharge_pass,money:money},
+						dataType:'json',
+						success:function(data){ 
+							if(data.status == '-1'){
+								alert(data.desc);
+							}else{
+								location.replace(location.href);
+							}       
+						}, 
+						error:function(){
+							alert('访问失败');     
+						}  
+					});
+					layer.closeAll();
+				}
+			});    
+		}else{
+			alert('充值金额必须大于0');
+		}
+		
+    }
+
+	function checkTabel(){
+		var operate_name = $("input[name=operate_name]").val();	
+		//var login_name = $("input[name=login_name]").val();	
+		var login_password = $("input[name=login_password]").val().length;
+		var link_name = $("input[name=link_name]").val();
+		var link_tel = $("input[name=link_tel]").val();
+		var member_name = $("input[name=member_name]").val();	
+	    var act = $("input[name=act]").val();	
+		
+		if(operate_name == ''){
+			alert("请输入运营商名称");
+			return false;
+		}
+		/*if(login_name == ''){
+			alert("运营商账户不能为空");
+			return false;
+		}
+		if(!/\D/g.test(login_name)){
+			alert("运营商账户不能全为数字");
+			return false;
+		}*/ 
+		if(act == 'insert' || login_password != 0){
+			if(login_password < 6){
+				alert("请输入六位及六位以上密码");
+				return false;
+			}   
+		}
+		if(link_name == ''){
+			alert("联系人不能为空");
+			return false;
+		}
+		if(link_tel == ''){
+			alert("手机号码不能为空");
+			return false;
+		}
+		
+		return true;
+	}
+</script>
+<script>
+function change_edit(){
+	var state = $("#is_edit").attr('attr_id');
+	var operate_id = "{$info.id}";
+	var url="{:U('Operate/ajax_change_edit')}"; 
+	$.ajax({
+		type:'get',
+		url:''+url+'',
+		data:'operate_id=' + operate_id + '&state=' + state,
+		dataType:'text',
+		success:function(msg){ 
+			if(msg == -1){
+				alert('更改状态失败');
+			}else{
+				if(state == 0){
+					$("#is_edit").attr('attr_id',1);
+					$("#is_edit").val('已开启前端编辑');
+					$("#is_edit").removeClass('bg_red');
+				}else{
+					$("#is_edit").attr('attr_id',0);
+					$("#is_edit").val('已关闭前端编辑');
+					$("#is_edit").addClass('bg_red');
+				}
+			}   
+		}, 
+		error:function(){
+			alert('访问失败');     
+		}  
+	})
+}
+</script>
+<include file="Public:foot" />

@@ -1,0 +1,133 @@
+<include file="Public:head"/>
+<link href="__PUBLIC__/times/mobiscroll.css" rel="stylesheet" />
+<link href="__PUBLIC__/times/mobiscroll_date.css" rel="stylesheet" />
+<script src="__PUBLIC__/times/mobiscroll_date.js" charset="gb2312"></script> 
+<script src="__PUBLIC__/times/mobiscroll.js"></script> 
+<style type="text/css">
+	hr{margin:0; padding:0;}
+	table tr:nth-child(1){  
+		background:#eee;  
+		font-size:0.75rem;
+		font-weight:bold;
+		color:#333;
+	}
+	td{
+		padding:14px 10px;
+		text-align:center;
+		border:1px solid #DDD;
+	}  
+	
+</style>
+<div class="container-fluid">  
+	<!-- BEGIN PAGE HEADER-->
+	
+
+	<!-- BEGIN PAGE CONTENT-->             
+	<div class="row-fluid"  >
+		<form class="login-form" action="__URL__/income_detail" method="get" style="margin:15px 0  0;">
+		充值编号：<input type="text" id="ordersn" name="ordersn"/> &nbsp;&nbsp;&nbsp;&nbsp;
+		套餐名称：
+		<select name="package_id">
+		<option value=''>全部</option>
+		<volist name="package_list" id="plist">
+		<option value="{$plist.packageid}">{$plist.name}</option>
+		</volist>
+		</select>
+		<br/>
+		商家账号：<input type="text" name="member_name"/> &nbsp;&nbsp;&nbsp;&nbsp;
+		业务编号：<input type="text" name="recommend_code"/> <br/>
+		
+		充值时间：<input type="text" id="Time1"  readonly name="Time1"/> 至 <input type="text"  readonly id="Time2" name="Time2"/>	
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="submit" name="button" id="button" value="搜索" style="height:28px; margin-left:10px; vertical-align:top;">  
+		</form>   
+		<table style="border:1px solid #ddd; width:100%" border="1px"> 
+			<tr>       
+			    <td>编号</td>
+			    <td >充值订单编号</td>
+				<td>套餐名称</td>
+				<td>客户价格</td>  
+				<td>充值商家账号</td>
+				<td>业务编号</td>
+				<td>运营总收益</td>
+				<td>其中推广佣金</td>
+				<td>其中团队分红</td>
+				<td>充值时间</td>
+				<td>状态</td>
+			</tr>
+			
+			<volist name ="lists" id ="list" key='k'>
+			<tr>	  
+				<td>{$k}</td>
+			    <td>{$list.ordersn}</td>
+			    <td>{$list.name}</td>  	 
+			    <td>{$list.sale_price}</td>  	 
+			    <td>{$list.member_name}</td>  	 
+			    <td>{$list.recommend_code}</td>  	 
+			    <td><?php echo $list['recommend_profit']+$list['operate_profit']; ?></td>  	     
+			    <td>{$list.recommend_profit}</td>
+			    <td>{$list.operate_profit}</td>
+			    <td>{$list.rechargetime|date="Y-m-d H:i:s",###}</td>
+			    <td><if condition="$list.issettlement eq '1'">已结算<else />未结算</if></td>	
+				  
+			</tr>	  
+			</volist>	
+			
+		</table>
+		<div class="pagination pagination-right">
+			<ul class="pageNumber">
+				{$page}
+			</ul>   
+		</div>
+		
+		<!-- BEGIN PAGE CONTENT-->
+		
+	</div>
+</div></div>
+<include file="Public:foot" />
+<script type="text/javascript">
+$(function () {
+	var currYear = (new Date()).getFullYear();	
+	var opt={};
+	opt.date = {preset : 'date'};
+	opt.datetime = {preset : 'datetime'};
+	opt.time = {preset : 'time'};
+	opt.default = {
+		theme: 'android-ics light', //皮肤样式
+		display: 'modal', //显示方式 
+		mode: 'scroller', //日期选择模式
+		dateFormat: 'yyyy-mm-dd',
+		lang: 'zh',
+		showNow: true,
+		nowText: "今天",
+		startYear: currYear - 50, //开始年份
+		endYear: currYear + 10 //结束年份
+	};
+  
+	$("#Time1").mobiscroll($.extend(opt['date'], opt['default']));
+	$("#Time2").mobiscroll($.extend(opt['date'], opt['default']));
+
+});
+</script>
+<script>
+function confirm_get(id){   
+	if(confirm('确认该月的利润已通过线下打款 了？')){
+		var url= "{:U('Fund/ajax_operate_confirm_get')}";  
+		$.ajax({    
+			type: "POST",
+			url: url,   
+			data: {id:id},   
+			dataType: "json",
+			success: function(data){
+				if(data.result == 1){
+					 window.location.reload();
+				}else{     
+					alert(data.desc);
+					window.location.reload();
+				}      
+				  
+			}	     
+		});      
+	}   
+}
+</script>

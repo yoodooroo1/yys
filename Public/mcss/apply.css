@@ -1,0 +1,33 @@
+div,p,span,h1,h2,h3,header,footer,button,input,body,html{padding:0; margin:0; font-family:"Microsoft Yahei","Helvetica Neue", Helvetica, STHeiTi, sans-serif;  font-size:14px; color:#323232;
+	-webkit-tap-highlight:transparent;}
+input{appearance:none; outline:none;
+-webkit-appearance:none;
+-moz-appearance:none;}
+.main{min-width:320px; max-width:1080px; position:relative; background:#f9f8f8;}
+.apply_header{position:fixed; top:0; width:100%; max-width:1080px; z-index:999; background-color:#d83838; height:44px; background-image:url('../mimages/back_btn.png'); background-position:4.44%  center; background-repeat:no-repeat; background-size:10px;}
+.apply_header a{display:block; text-decoration:none; line-height:44px; padding-left:10%; color:#FFf; font-size:1.05rem;}@media(min-width:640px){
+	.apply_header a{padding-left:8%;}
+}
+.btn_content{position:fixed; bottom:0; width:100%; max-width:1080px; background:#FFF; z-index:999; text-align:middle; padding:8px 0px; box-sizing:border; border-top:1px solid #dfdfdf;}
+.btn_content a{display:inline-block; width:90%; background:#D83838; border-radius:5px; line-height:38px; color:#FFF; text-align:center; text-decoration:none; margin-left:5%;}
+.text_primary{padding:4px 4.17%; }
+/*提交资料*/
+.state_box{text-align:center;}
+.top_state{ height:1.5rem; margin-top:1.1rem;} 
+.state_text,.top_state{display:inline-block; width:84.3%;}
+.state_1{background:url('../mimages/state_1.png')center center no-repeat; background-size:100%;}
+.state_2{background:url('../mimages/state_2.png')center center no-repeat; background-size:100%;}
+.state_3{background:url('../mimages/state_3.png')center center no-repeat; background-size:100%;}
+.state_text{margin-top:0.3rem; margin-bottom:1rem;}
+.state_text span{display:inline-block; width:33.3%; color:#828080;}
+.state_text .blue_t{color:#2b93d9;}
+.input_box{border-top:1px solid #dfdfdf; background:#FFF; text-align:left; height:3.5rem; padding: 0 4.17%;}
+.input_box label{display:inline-block; width:5rem; line-height:3.5rem; color:#828080;}
+.input_box input{border:0; margin-left:1.5rem;}
+.last_box{border-bottom:1px solid #dfdfdf;}
+.sub_btn{background:#D83838;color:#FFF; border-radius:5px; height:38px; line-height:38px; width:91.4%; border:0; margin-top:10rem; margin-left:4.3%;}
+
+.success_show{background:#FFF; text-align:center; overflow:hidden;}
+.circle_success{display:inline-block; width:90px; height:90px; background:#D83838; border-radius:100%; text-align:center; margin-top:15px;}
+.circle_success img{width:50px;margin-top:15px;}
+.success_text{margin:15px 0; color:#828080; }

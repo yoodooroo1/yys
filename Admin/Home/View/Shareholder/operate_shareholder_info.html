@@ -1,0 +1,131 @@
+<include file="Public:head"/>
+<link type="text/css" rel="stylesheet" href="__ROOT__/Public/media/css/add_seller.css" />
+<style type="text/css">
+	.diyCheckBox input + label{
+		padding:0 20px;
+		background:url('__ROOT__/Public/media/image/no-check.png')left center no-repeat;
+		background-size:14px;
+		margin:0;
+	}
+	.diyCheckBox input:checked + label{
+		padding:0 20px;
+		background:url('__ROOT__/Public/media/image/check.png')left center no-repeat;
+		background-size:14px;
+		margin:0;
+	}
+	.sub_button{
+		background: #4D90FE;
+		color: #FFF;
+		border: 1px solid #4D90FE;
+		padding: 5px 14px;
+		margin: 0 5px;   
+		border-radius: 5px !important;
+	}
+
+</style>
+<div class="container-fluid">
+	
+	<!-- END PAGE HEADER-->   
+          
+	<!--员工详情开始-->
+	<form action="{:U('Shareholder/operate_shareholder_edit')}" method="post"  onSubmit="return checkTabel();"> 
+ 	
+	<div style="position:fixed;line-height:0px;z-index:-2">  <!--解决360浏览器自动填充账号密码问题-->    
+	<input style="line-height:0px" type='text'  /><input style="line-height:0px" type='password' >    
+	</div>	  
+	<div class="">
+		<table name="add_infor" border="1px" style="border:1px dotted #EEE;">
+			<tr>
+				<td><font style="color:red; font-size:15px ;">* </font>股东身份</td>
+				<td style="position:relative;">
+					<input type="text" name="shareholder_role" value="{$info.shareholder_role}" />
+				</td>
+			</tr>
+			<tr>
+				<td><font style="color:red; font-size:15px ;">* </font>股东名称</td>
+				<td style="position:relative;">
+					<input type="text" value="{$info.shareholder_name}" name="shareholder_name"  />
+				</td>
+			</tr>
+			<tr>   
+				<td><font style="color:red; font-size:15px ;">* </font>手机号码</td>
+				<td style="position:relative;">
+					<input type="text" name="shareholder_tel" value="{$info.shareholder_tel}" />
+				</td>
+			</tr>
+			<tr>   
+				<td>分红比例</td>
+				<td style="position:relative;">
+					<input type="text" name="share_rate" value="{$info.share_rate}"/>%
+				</td>
+			</tr>
+			<tr>   
+				<td>开户银行名称</td>
+				<td style="position:relative;">
+					<input type="text" name="bank_name" value="{$info.bank_name}" />
+				</td>
+			</tr>
+			<tr>   
+				<td>收款人名称</td>
+				<td style="position:relative;">
+					<input type="text" name="bank_username" value="{$info.bank_username}" />
+				</td>
+			</tr>
+			<tr>   
+				<td>银行卡号</td>
+				<td style="position:relative;">
+					<input type="text" name="bank_sn" value="{$info.bank_sn}" />
+				</td>
+			</tr>
+			<tr>   
+				<td><font style="color:red; font-size:15px ;">* </font>绑定会员号</td>
+				<td style="position:relative;">
+					<input type="text" name="member_name" value="{$info.member_name}" />
+				</td>         
+			</tr>
+			
+		</table>  
+		<br/>	 
+		<div style="margin:15px 5px; text-align:right; padding-right:50px">
+		<if condition="$act eq 'info' ">
+		<input type="hidden" value="{$info.id}" name="id"/>
+		</if>   
+		<input type="hidden" value="{$act}" name="act">
+		<input type="hidden" value="{$operate_id}" name="operate_id">
+		<input class="sub_button" type="submit" value="确定"/>
+			
+         	</div>
+			<br/>
+	</div>   
+	</form>
+</div>   
+
+<script type="text/javascript">
+	function checkTabel(){
+		var shareholder_role = $("input[name=shareholder_role]").val();	
+		var shareholder_name = $("input[name=shareholder_name]").val();	
+		var shareholder_tel = $("input[name=login_password]").val();
+		var member_name = $("input[name=member_name]").val();		
+		if(shareholder_role == ''){
+			alert("请输入股东身份");
+			return false;
+		}
+		else if(shareholder_name == ''){
+			alert("股东名称不能为空");
+			return false;
+		}
+		else if(shareholder_tel == ''){
+			alert("手机号码不能为空");
+			return false;
+		}
+		else if(member_name == ''){
+			alert("绑定会员账号不能为空");  
+			return false;
+		}else{
+			return true;
+		}      
+		
+	}
+</script>
+
+<include file="Public:foot" />

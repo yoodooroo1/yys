@@ -1,0 +1,126 @@
+<include file="Public:head"/>
+<link href="__PUBLIC__/times/mobiscroll.css" rel="stylesheet" />
+<link href="__PUBLIC__/times/mobiscroll_date.css" rel="stylesheet" />
+<script src="__PUBLIC__/times/mobiscroll_date.js" charset="gb2312"></script> 
+<script src="__PUBLIC__/times/mobiscroll.js"></script> 
+<link type="text/css" rel="stylesheet" href="__ROOT__/Public/media/css/layout.css" />
+<div class="container-fluid" >
+	<!-- BEGIN PAGE HEADER-->
+	<div class="title"  >
+		 <h4 class="page-title">团队管理<small>   Team management</small></h4>
+		 <ul class="breadcrumb" >
+			<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> <i class="icon-angle-right"></i></li>
+			<li><a href="#">团队管理</a><i class="icon-angle-right"></i></li>
+			<li><a href="{:U('Team/team_list')}"><strong>成员列表</strong></a></li>
+		</ul>  		
+	</div><!-- END PAGE TITLE & BREADCRUMB-->
+    <div class="nav-tabs">
+        <ul>
+            <li class="{$ui.team_list}"> <a href="{:U('Team/team_list')}" > 成员列表</a> </li>
+            <li class="{$ui.team_info}"> <a href="{:U('Team/team_info')}"> 添加成员</a> </li>
+        </ul>
+    </div><!-- END PAGE HEADER-->
+
+	<div class="main-content">       
+		<table name="table-list">			
+			<tr>	
+				<th>编号</th>				
+				<th>成员名称/手机号</th>
+				<th>业务编号</th>
+				<th>开户银行</th>
+				<th>成员身份</th>
+				<th>持股比例</th>
+				<th>推广比例</th>
+				<th>加入时间</th>
+				<th>历史收益</th>
+				<th>未打款</th>
+				<th>操作</th>				
+			</tr>
+			<volist name="lists" key='k' id="list">
+			<tr>
+				
+				<td >{$k}</td>
+				<td>{$list.shareholder_name}/{$list.shareholder_tel}</td>
+				<td>{$list.shareholder_sn}</td>
+				<td>{$list.bank_name}</td> 
+				<td>{$list.shareholder_role}</td>
+				<td>{$list.share_rate}%</td>  
+				<td>{$list.recommend_rate}%</td>
+				<td>{$list.addtime|date="Y-m-d H:i:s",###}</td> 
+				<td>{$list.total}</td>
+				<td>{$list.unget}</td>  
+				<td style="letter-spacing:3px;">
+					<a href="{:U('Shareholder/holder_month_price_record',array('shareholder_id'=>$list['id']))}">查看数据</a>
+					<a href="{:U('Team/team_info',array('id'=>$list['id']))}">编辑</a>
+					<a href="{:U('Team/del_shareholder',array('id'=>$list['id']))}">删除</a>
+				</td> 
+				      
+			</tr> 
+			</volist>	 
+		</table>
+ 
+		<div class="pagination pagination-right">
+			<ul class="pageNumber">
+			 {$page}
+			</ul>
+		</div>
+    </div>		
+</div>
+<script>
+	function checkall(){
+		if($('.allcheck').prop("checked"))
+		{
+			$(".checks").attr('checked',true);	
+		}
+		else{
+			$(".checks").attr('checked',false);	
+		}
+	}
+</script>
+<script type="text/javascript">
+$(function () {
+	var currYear = (new Date()).getFullYear();	
+	var opt={};
+	opt.date = {preset : 'date'};
+	opt.datetime = {preset : 'datetime'};
+	opt.time = {preset : 'time'};
+	opt.default = {
+		theme: 'android-ics light', //皮肤样式
+		display: 'modal', //显示方式 
+		mode: 'scroller', //日期选择模式
+		dateFormat: 'yyyy-mm-dd',
+		lang: 'zh',
+		showNow: true,
+		nowText: "今天",
+		startYear: currYear - 50, //开始年份
+		endYear: currYear + 10 //结束年份
+	};
+  
+	$("#Time1").mobiscroll($.extend(opt['date'], opt['default']));
+	$("#Time2").mobiscroll($.extend(opt['date'], opt['default']));
+
+});
+</script>
+
+<script type="text/javascript">  
+//定义了分类的二维数组，里面的顺序跟外表的顺序是相同的。通过selectedIndex获得不同大类的下标值来得到相应的分类数组  
+     var item={$childs};    
+     function getItem(){  
+         //获得大类下拉框的对象  
+         var sltarea=document.getElementsByName('store_parenttype_id')[0];		 
+         //获得小类下拉框的对象   
+		 var sltItem=document.getElementsByName('store_childtype_id')[0];		
+         //得到对应大类的城市数组  
+         var areaItem=item[sltarea.selectedIndex - 1];  
+         //清空小类下拉框，仅留提示选项    
+         sltItem.length=1;         
+         //将小类数组中的值填充到城市下拉框中  
+         for(var i=0;i<areaItem.length;i++){        
+         //获得小类名称值areaItem[i][1]        //获得小类名称的下标areaItem[i][0]  
+         //如果都选值 sltItem[i+1]=new Option(areaItem[i][1],areaItem[i][1]);  
+             sltItem[i+1]=new Option(areaItem[i][1],areaItem[i][0]);  
+         }  
+     }  
+</script>  
+<include file="Public:foot" />
+

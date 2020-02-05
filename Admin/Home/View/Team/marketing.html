@@ -1,0 +1,154 @@
+<include file="Public:head"/>
+<link type="text/css" rel="stylesheet" href="__ROOT__/Public/media/css/layout.css" />
+<script src="__ROOT__/Public/layer/layer.js"></script>
+<div class="container-fluid" >
+	<!-- BEGIN PAGE HEADER-->
+	<div class="title"  >
+		 <h4 class="page-title">推广管理<small>   Marketing management</small></h4>
+		 <ul class="breadcrumb" >
+			<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> <i class="icon-angle-right"></i></li>
+			<li><a href="#">推广管理</a><i class="icon-angle-right"></i></li>
+		</ul>  		
+	</div><!-- END PAGE TITLE & BREADCRUMB-->
+  
+	<div class="main-content"> 
+		<form action="{:U('Team/marketing')}" method="POST" onsubmit="return checkTabel();">
+		设置套餐试用期：<input type="text" name="try_time" value="{$try_time}">小时(不超过72小时)
+		<input type="submit" value="确定">
+		</form> 
+		<table name="table-list">			
+			<tr>	
+				<th>套餐名称</th>				
+				<th>功能描述</th>
+				<th>市场价</th>
+				<th>成本价年</th>
+				<th>客户价（折扣）</th>
+				<th>预期收益</th>
+				<th>操作</th>				
+			</tr> 
+			<volist name="lists" id="list" >
+				<tr>
+					<td >{$list.name}</td>
+					<td>{$list.desc}</td>
+					<td>
+						一年：￥{$list.market_price}<br/>
+						两年：￥{$list.market_price2}<br/>
+						三年：￥{$list.market_price3}
+					</td> 
+					<td>
+						一年：￥{$list.operate_price}<br/>
+						两年：￥{$list.operate_price2}<br/>
+						三年：￥{$list.operate_price3}
+					</td>
+					<td>
+					一年：￥<font id="p_price_{$list.packageid}">{$list.package_price}</font>&nbsp;(<font id="p_discount_{$list.packageid}">￥<?php echo round($list['package_price']/$list['market_price']*10,2);?></font>折) <br/>
+					两年：￥<font id="p_price2_{$list.packageid}">{$list.package_price2}</font>&nbsp;(<font id="p_discount2_{$list.packageid}">￥<?php echo round($list['package_price2']/$list['market_price2']*10,2);?></font>折) <br/>
+					三年：￥<font id="p_price3_{$list.packageid}">{$list.package_price3}</font>&nbsp;(<font id="p_discount3_{$list.packageid}">￥<?php echo round($list['package_price3']/$list['market_price3']*10,2);?></font>折) <br/>
+					</td> 
+					<td>
+					一年：￥<font id="pre_price_{$list.packageid}"><?php echo $list['package_price']-$list['operate_price']; ?></font> <br/>
+					两年：￥<font id="pre_price2_{$list.packageid}"><?php echo $list['package_price2']-$list['operate_price2']; ?></font> <br/>
+					三年：￥<font id="pre_price3_{$list.packageid}"><?php echo $list['package_price3']-$list['operate_price3']; ?></font> 
+					</td>   
+					<td>  
+						<button   type="button"  onclick="func7({$list.packageid},{$list.market_price},{$list.operate_price},{$list.market_price2},{$list.operate_price2},{$list.market_price3},{$list.operate_price3})">设置</button>
+					</td>  
+				</tr> 
+			</volist>
+		</table>
+		<div class="pagination pagination-right">
+			<ul class="pageNumber">
+			 {$page}
+			</ul>
+		</div> 
+    </div>		
+</div>
+<script type="text/javascript"> 
+
+function func7(package_id,market_price,operate_price,market_price2,operate_price2,market_price3,operate_price3) { 
+	title: false; 
+	layer.confirm(' <div  style="width:300px;padding-left:25px;"><p>设置客户价</p>一年：￥<input type="text"  id="package_price"  /><br/> 两年：￥<input type="text"  id="package_price2"  /><br/>三年：￥<input type="text"  id="package_price3"  /></div>', {  
+	  btn: ['确定','取消'] //按钮
+	  
+	}, function(){
+		package_price = Number($("#package_price").val());
+		package_price2 = Number($("#package_price2").val());
+		package_price3 = Number($("#package_price3").val());
+		if(package_price != '' && package_price2 != '' && package_price3 != ''){
+			if(Number(market_price) < Number(package_price)){
+				alert('一年客户价不能大于市场价');
+			}else if(Number(operate_price) > Number(package_price)){
+				alert('一年客户价不能低于成本价');
+			}else if(Number(package_price) < Number(market_price*0.8)){
+				alert('一年客户价不能低于市场价的80%'); 
+			}else if(Number(market_price2) < Number(package_price2)){
+				alert('两年客户价不能大于市场价');
+			}else if(Number(operate_price2) > Number(package_price2)){
+				alert('两年客户价不能低于成本价');
+			}else if(Number(package_price2) < Number(market_price*0.8)){
+				alert('两年客户价不能低于市场价的80%');
+			}else if(Number(market_price3) < Number(package_price3)){
+				alert('三年客户价不能大于市场价');
+			}else if(Number(operate_price3) > Number(package_price3)){
+				alert('三年客户价不能低于成本价'); 
+			}else if(Number(package_price3) < Number(market_price*0.8)){
+				alert('三年客户价不能低于市场价的80%');
+			} 
+			else{
+				var url ="{:U('Team/ajax_edit_package_price')}";
+				$.ajax({  
+					type: "POST",
+					url: url,
+					data: {package_id:package_id, package_price:package_price, package_price2:package_price2, package_price3:package_price3},
+					dataType: "json",
+					success: function(data){   
+						if(data.status == 1){  
+							$("#p_price_"+package_id).html(package_price);
+							var discount = (Number(package_price)/Number(market_price)*10).toFixed(2);  
+							$("#p_discount_"+package_id).html(discount);
+							$("#pre_price_"+package_id).html((Number(package_price)-Number(operate_price)).toFixed(2));
+							
+							$("#p_price2_"+package_id).html(package_price2);
+							var discount2 = (Number(package_price2)/Number(market_price2)*10).toFixed(2);  
+							$("#p_discount2_"+package_id).html(discount2);
+							$("#pre_price2_"+package_id).html((Number(package_price2)-Number(operate_price2)).toFixed(2));
+							
+							$("#p_price3_"+package_id).html(package_price3);
+							var discount3 = (Number(package_price3)/Number(market_price3)*10).toFixed(2);  
+							$("#p_discount3_"+package_id).html(discount3);
+							$("#pre_price3_"+package_id).html((Number(package_price3)-Number(operate_price3)).toFixed(2)); 
+
+							layer.msg('设置成功', {icon: 1});
+						}else{ 
+							layer.msg(data.desc, {icon: 1});
+						} 
+					}  
+				});
+			}
+			
+		}else{
+			alert('请填写客户价格');
+		}   
+		 
+	});
+}
+
+
+function checkTabel(){
+	var try_time = $("input[name=try_time]").val();	
+	if(isNaN(try_time)){
+		alert('请输入数字');
+		return false;
+	}else if(try_time<0 || try_time >72){
+		alert('输入值错误');
+		return false;
+	}else{
+		return  true;
+	}
+}	
+
+</script>
+
+
+<include file="Public:foot" />
+

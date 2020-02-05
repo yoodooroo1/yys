@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>登录后</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+<div class="header">
+    <ul>
+        <li><a href="javascript:history.go(-1)" class="fl">
+            <img class="img_back" src="./images/back.png">运营中心</a>
+        </li>
+    </ul>
+</div>
+<div class="main b_fff">
+    <div class="ptrbl_15 border_b10">
+        <span class="mr_10">我的团队:</span>
+        <span class="color_999">运营商名称</span>
+    </div>
+    <div class="ptrbl_15 f_14 color_999">
+        通过分享链接直接开户或开户时输入您的业务编号发展的商家，充值或续费时即可产生收益
+    </div>
+    <div class="ptrbl_15 b_f2">
+        <span class="color_999">我的推广链接:</span>
+        <span class="fr">推广页分享赚受益<img class="img_20_20 img_sub" src="images/next.png"></span>
+    </div>
+    <div class="ptrbl_15 mtb_10">
+        <span class="hidden_nowrap" style="width: 65%">htttp://www.xunxin.org/?=12345</span>
+        <button class="fr button2 border_000 click_copy" style="margin-top: -28px">复制推广</button>
+    </div>
+    <div class="ptrbl_15 b_f2">
+        <span class="color_999">我的业务编号</span>
+    </div>
+    <div class="ptrbl_15 mtb_10">
+        <span class="hidden_nowrap" style="width: 65%">X123451</span>
+        <button class="fr button2 border_000 click_copy" style="margin-top: -28px">复制</button>
+    </div>
+    <div class="b_f2 ptrbl_15 f_12">
+        <p><a href="profit_detail.html" class="color_blue">已发展3家,累计获得推广/团队收益￥3000.00 ></a></p>
+        <p class="color_999 pt_10">已发展50家，收益￥3000.00 明细请登录电脑端查看！</p>
+    </div>
+    <button class="footer border_no color_red f_16">退出登录</button>
+
+</div>
+<script type="text/javascript" src="js/jquery-2.1.3.js"></script>
+<script type="text/javascript" src="js/layer/layer.js"></script>
+<script type="text/javascript" src="js/function_js.js"></script>
+<script>
+    $(function () {
+        //点击复制按钮
+        $('.click_copy').click(function () {
+            // 获取复制内容
+            var text=$(this).prev('span').text();
+            copy_text(text);
+        })
+        //点击退出登录按钮
+        $('.footer').click(function () {
+            layer.confirm('确认要退出登录吗？',function (index) {
+                window.location.href="login.html";
+            })
+        })
+    })
+</script>
+</body>
+</html>

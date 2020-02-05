@@ -1,0 +1,147 @@
+<include file="Public:head"/>
+<link href="__PUBLIC__/times/mobiscroll.css" rel="stylesheet" />
+<link href="__PUBLIC__/times/mobiscroll_date.css" rel="stylesheet" />
+<script src="__PUBLIC__/times/mobiscroll_date.js" charset="gb2312"></script> 
+<script src="__PUBLIC__/times/mobiscroll.js"></script> 
+<link href="__ROOT__/Public/media/css/table.css" rel="stylesheet" type="text/css"/>
+<div class="container-fluid">
+	<!-- BEGIN PAGE HEADER-->
+	<div class="row-fluid">
+		<div class="span12">
+			<h4 class="page-title">
+				商城数据
+				<small>  Mall Data</small>
+			</h4>
+			<ul class="breadcrumb">
+				<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> 
+				<i class="icon-angle-right"></i></li>   
+				<li><a href="#">商城数据</a><i class="icon-angle-right"></i></li>
+				<li><a href="#"><strong>单日利润分成与成长值分红报表</strong></a></li> 
+			</ul>        
+		<!-- END PAGE TITLE & BREADCRUMB-->
+		</div>
+	</div>
+	<!-- END PAGE HEADER-->
+<hr> 
+	<!-- BEGIN PAGE CONTENT-->
+	<!-- END PAGE HEADER-->
+	<div class="tabbable tabbable-custom tabbable-full-width">
+		<form class="login-form" action="__URL__/malldata_shareinfo" method="get" style="margin:0;">
+        当日日期：<input type="text" id="Time1"  readonly name="Time1" value="{$Time1}" /> 
+		<input type="submit" name="button" id="button" value="搜索"  />           		   
+		</form>  
+		  
+	</div>
+	<!-- BEGIN PAGE CONTENT-->          
+	<div class="row-fluid">
+	<div class="span12 ">
+		<!-- BEGIN EXAMPLE TABLE PORTLET-->
+		<div class="portlet-body">
+		<!-- END PAGE HEADER-->
+			<div class="portlet-body form ">
+			<table name="msg" >			
+				<tr>     
+					<th colspan='4'>订单情况（已完成订单）</th>
+				</tr>   
+				<tr class="center">
+					<td style="width:25%">订单量（单）</td>
+					<td style="width:25%">订单额（元）</td>
+					<td style="width:25%">利润总额（元）</td>
+					<td style="width:25%">平台补贴（元）</td>
+				</tr>  	    
+				<tr class="center">
+					<td style="width:25%" >{$info.ordernum}</td>
+					<td style="width:25%">{$info.orderprice}</td>
+					<td style="width:25%">{$info.orderpv}</td>
+					<td style="width:25%">{$info.subsidy}</td>
+				</tr>
+			</table> 	
+			<table name="msg" >			
+				<tr>
+					<th colspan='6'>利润总额分成</th>
+				</tr>    
+				<tr class="center">
+					<th>公益基金（元）</th>
+					<th>团队激励（元）</th>
+					<th>新成长值总分红（元）</th>
+					<th>总成长值总分红（元）</th>
+					<th>运营商总分红（元）</th>
+					<th>直接推荐人分红（元）</th>
+				</tr>  	    
+				<tr class="center">  
+					<td><?php echo $info['orderpv']*$config['public_pv_percent']/100; ?></td>
+					<td style="width:20%"><?php echo $info['orderpv']*$config['group_pv_percent']/100; ?></td>
+					<td><?php echo ($info['orderpv']*$config['new_contribute_percent']/100)+$info['subsidy']*($config['new_contribute_percent']/($config['new_contribute_percent']+$config['old_contribute_percent'])); ?></td>
+					<td><?php echo ($info['orderpv']*$config['old_contribute_percent']/100)+$info['subsidy']*($config['old_contribute_percent']/($config['new_contribute_percent']+$config['old_contribute_percent'])); ?></td>
+					<td><?php echo $info['orderpv']*$config['operate_pv_percent']/100; ?></td>
+					<td><?php echo $info['orderpv']*$config['recommend_pv_percent']/100; ?></td>
+				</tr>
+			</table>  
+  
+			<table name="msg" >			   
+				<tr>
+					<th colspan='3'>新成长值分红明细（新成长值总分红÷新成长值=每新成长值的分红金额）（每新成长值的分红金额×个人新成长值=个人新成长值分红金额）  </th>
+				</tr>   
+				<tr class="center">
+					<td style="width:25%">新成长值</td>
+					<td style="width:25%">每新成长值的分红金额（元）</td>
+					<td style="width:25%">个人新成长值的分红金额（元）</td>
+				</tr>  	    
+				<tr class="center">
+					<td style="width:25%" >{$info.newcontribute}</td>
+					<td style="width:25%"><?php echo ($info['newcontribute'] == 0) ? 0 :  ((($info['orderpv']*$config['new_contribute_percent']/100)+$info['subsidy']*($config['new_contribute_percent']/($config['new_contribute_percent']+$config['old_contribute_percent'])))/$info['newcontribute']) ;?></td>
+					<td style="width:25%"><a href="{:U('Fund/CashMoney')}">查看详情</a></td>
+				</tr>
+			</table>	 
+			<table name="msg" >			
+				<tr> 
+					<th colspan='3'>总成长值分红明细（总成长值总分红÷总成长值=每总成长值的分红金额）（每总成长值的分红金额×个人总成长值=个人总成长值分红金额）  </th>
+				</tr>   
+				<tr class="center">
+					<td style="width:25%">总成长值</td>
+					<td style="width:25%">每总成长值的分红金额（元）</td>
+					<td style="width:25%">个人总成长值的分红金额（元）</td>
+				</tr>  	    
+				<tr class="center">
+					<td style="width:25%" >{$info.allcontribute}</td>
+					<td style="width:25%"><?php echo ($info['allcontribute'] == 0) ? 0 :  ((($info['orderpv']*$config['old_contribute_percent']/100)+$info['subsidy']*($config['old_contribute_percent']/($config['new_contribute_percent']+$config['old_contribute_percent'])))/$info['allcontribute']) ;?></td>
+					<td style="width:25%"><a href="{:U('Fund/CashMoney')}">查看详情</a></td>
+				</tr>  
+			</table>
+			</div> 
+		</div>
+	</div> 
+	<!-- BEGIN PAGE CONTENT-->
+	<div class="pagination pagination-right">
+		<ul class="pageNumber">
+			{$page}
+		</ul>
+	</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(function () {   
+	var currYear = (new Date()).getFullYear();	
+	var opt={};
+	opt.date = {preset : 'date'};
+	opt.datetime = {preset : 'datetime'};
+	opt.time = {preset : 'time'};
+	opt.default = {
+		theme: 'android-ics light', //皮肤样式
+		display: 'modal', //显示方式 
+		mode: 'scroller', //日期选择模式
+		dateFormat: 'yyyy-mm-dd',
+		lang: 'zh',
+		showNow: true,
+		nowText: "今天",
+		startYear: currYear - 50, //开始年份
+		endYear: currYear + 10 //结束年份
+	};
+  
+	$("#Time1").mobiscroll($.extend(opt['date'], opt['default']));
+	$("#Time2").mobiscroll($.extend(opt['date'], opt['default']));
+
+});
+</script>
+<include file="Public:foot" />

@@ -1,0 +1,118 @@
+<include file="Public:head"/>
+<link href="__PUBLIC__/times/mobiscroll.css" rel="stylesheet" />
+<link href="__PUBLIC__/times/mobiscroll_date.css" rel="stylesheet" />
+<script src="__PUBLIC__/times/mobiscroll_date.js" charset="gb2312"></script> 
+<script src="__PUBLIC__/times/mobiscroll.js"></script> 
+<link href="__ROOT__/Public/media/css/table.css" rel="stylesheet" type="text/css"/>
+<div class="container-fluid">
+	<!-- BEGIN PAGE HEADER-->
+	<div class="row-fluid">
+		<div class="span12">
+			<h4 class="page-title">
+				商城数据
+				<small>  Mall Data</small>
+			</h4>
+			<ul class="breadcrumb">
+				<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> 
+				<i class="icon-angle-right"></i></li>   
+				<li><a href="#">商城数据</a><i class="icon-angle-right"></i></li>
+				<li><a href="#"><strong>商品订单分成明细</strong></a></li> 
+			</ul>     
+		<!-- END PAGE TITLE & BREADCRUMB-->
+		</div>
+	</div>
+	<!-- END PAGE HEADER-->
+<hr>  
+	<!-- BEGIN PAGE CONTENT-->
+	<!-- END PAGE HEADER-->
+	<div class="tabbable tabbable-custom tabbable-full-width" style="margin-bottom:0;">
+		<form class="login-form" action="__URL__/malldata_list" method="get" style="margin:0;">
+        选择时间：<input type="text" id="Time1"  readonly name="Time1" /> 至 <input type="text"  readonly id="Time2" name="Time2"  />&nbsp;&nbsp;&nbsp;&nbsp;
+		店铺名称：<input type="text" name="store_name" value="{$store_name}" /> &nbsp;&nbsp;&nbsp;&nbsp;
+		运营商名称：<input type="text" name="operate_name"   value="{$operate_name}"  />&nbsp;&nbsp;&nbsp;&nbsp;
+		购买账号：<input type="text" name="member_name"   value="{$member_name}" /><br/>
+		订单编号：<input type="text" name="order_id"   value="{$order_id}" /> 
+		<input type="submit" name="button" id="button" value="搜索" />           		   
+		</form>  
+		 
+	</div>
+	<!-- BEGIN PAGE CONTENT-->          
+	<div class="row-fluid">
+	<div class="span12 ">
+		<!-- BEGIN EXAMPLE TABLE PORTLET-->
+		<div class="portlet-body">
+		<!-- END PAGE HEADER-->
+			<div class="portlet-body form ">
+				<table name="orderList" border="1px" style="border:1px solid #ddd;width:100%; ">
+					<tr>
+						<th>【来自店铺】<br/>商品订单号</th>
+						<th>【付款方式】订单额<br/>￥{$total_price}</th>
+						<th>【购买账号】<br/>收货人</th>
+						<th>订单PV <br/>{$total_pv}</th>   
+						<th>公益基金<br/>￥<?php echo $total_pv*$config['public_pv_percent']/100; ?></th>  
+						<th>团队激励<br/>￥<?php echo $total_pv*$config['group_pv_percent']/100; ?></td>	
+						<th>当日成长值分成<br/>￥<?php echo $total_pv*$config['new_contribute_percent']/100; ?></th>											
+						<th>总成长值分成<br/>￥<?php echo $total_pv*$config['old_contribute_percent']/100; ?></th>
+						<th>直推分成<br/>￥<?php echo $total_pv*$config['recommend_pv_percent']/100; ?></th>											
+						<th>【运营商名称】分成<br/>￥<?php echo $total_pv*$config['operate_pv_percent']/100; ?></th>
+						<th>订单状态</th> 
+					</tr>      
+					<foreach name='lists' item='order' > 
+					<tr>
+						<td>【{$order.store_name}】<br/>{$order.order_id}</td>
+						<td>【{$order.pay_name}】<br/>￥{$order.totalprice}</td>
+						<td>【{$order.member_name}】<br/>{$order.order_membername}</td>
+						<td>{$order.order_pv}</td>  
+						<td>￥<?php echo $order['order_pv']*$config['public_pv_percent']/100; ?></td>
+						<td>￥<?php echo $order['order_pv']*$config['group_pv_percent']/100; ?></td>
+						<td>￥<?php echo $order['order_pv']*$config['new_contribute_percent']/100; ?></td>
+						<td>￥<?php echo $order['order_pv']*$config['old_contribute_percent']/100; ?></td>
+						<td>￥<?php echo $order['order_pv']*$config['recommend_pv_percent']/100; ?></td>
+						<td >【{$order.operate_name}】<br/> 
+							￥<?php echo $order['order_pv']*$config['operate_pv_percent']/100; ?>
+						</td>	  
+						<td >下单{$order.create_time|date='Y-m-d H:i',###}<br/>
+							 <?php if(!empty($order['receive_time'])) { ?>
+							 完成{$order.receive_time|date='Y-m-d H:i',###}
+							 <?php } ?>
+						</td>	   
+					</tr>   
+					</foreach>  
+				</table>
+			</div>
+		</div>
+	</div> 
+	<!-- BEGIN PAGE CONTENT-->
+	<div class="pagination pagination-right">
+		<ul class="pageNumber">
+			{$page}
+		</ul>
+	</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(function () {   
+	var currYear = (new Date()).getFullYear();	
+	var opt={};
+	opt.date = {preset : 'date'};
+	opt.datetime = {preset : 'datetime'};
+	opt.time = {preset : 'time'};
+	opt.default = {
+		theme: 'android-ics light', //皮肤样式
+		display: 'modal', //显示方式 
+		mode: 'scroller', //日期选择模式
+		dateFormat: 'yyyy-mm-dd',
+		lang: 'zh',
+		showNow: true,
+		nowText: "今天",
+		startYear: currYear - 50, //开始年份
+		endYear: currYear + 10 //结束年份
+	};
+  
+	$("#Time1").mobiscroll($.extend(opt['date'], opt['default']));
+	$("#Time2").mobiscroll($.extend(opt['date'], opt['default']));
+
+});
+</script>
+<include file="Public:foot" />

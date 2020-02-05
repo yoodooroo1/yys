@@ -1,0 +1,136 @@
+<include file="Public:head"/>
+<link href="__PUBLIC__/times/mobiscroll.css" rel="stylesheet" />
+<link href="__PUBLIC__/times/mobiscroll_date.css" rel="stylesheet" />
+<script src="__PUBLIC__/times/mobiscroll_date.js" charset="gb2312"></script> 
+<script src="__PUBLIC__/times/mobiscroll.js"></script> 
+<style type="text/css">
+	hr{margin:0; padding:0;}
+	table tr:nth-child(1){  
+		background:#eee;  
+		font-size:0.75rem;
+		font-weight:bold;
+		color:#333;
+	}
+	td{
+		padding:14px 10px;
+		text-align:center;
+		border:1px solid #DDD;
+	}  
+	
+</style>
+<div class="container-fluid">  
+	<!-- BEGIN PAGE HEADER-->
+	<div class="row-fluid">
+		<div class="span12">
+		<h4 class="page-title">资金管理<small> Fund management</small></h4>
+			<ul class="breadcrumb" style="margin:0;">
+				<li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> 
+					<i class="icon-angle-right"></i></li>
+  
+				<li><a href="#">资金管理</a><i class="icon-angle-right"></i></li>
+				<li><a href=""><strong>运营商利润</strong></a><i class="icon-angle-right"></i></li>
+				<li><a href="">分润详情</a><i class="icon-angle-right"></i></li>
+				<li><a href="">股东收入分红明细</a></li>
+			</ul>           
+			<!-- END PAGE TITLE & BREADCRUMB-->
+		</div>
+	</div>
+<hr>   
+	<!-- BEGIN PAGE CONTENT-->                
+	<div class="row-fluid"  > 
+		<form class="login-form" action="__URL__/holder_day_price_record" method="get" style="margin:15px 0  0;">
+		成员名称：<input type="text" name="shareholder_name"  />&nbsp;&nbsp;&nbsp;&nbsp;   
+		业务编号：<input type="text" name="shareholder_sn" /><br/> 	
+		充值编号：<input type="text" name="link_orderid" />&nbsp;&nbsp;&nbsp;&nbsp; 
+		账单类目：	<select name="style">      
+					<option value ="">全部</option>
+					<option value ="1">推广收益</option>
+					<option value ="2">分红收益</option> 
+					<option value="3">打款</option>
+					</select> 	 
+		<br/>				   
+		触发时间：<input type="text" id="Time1"  readonly name="Time1"/> 至 <input type="text"  readonly id="Time2" name="Time2"/>	 &nbsp;&nbsp;&nbsp;&nbsp;  
+		<input type="submit" name="button" id="button" value="搜索" style="height:28px; margin-left:10px; vertical-align:top;">  
+		</form>   
+		<b>搜索结果：{$info.num}条记录，收益总额￥{$info.totalmoney} &nbsp;&nbsp;&nbsp;      		    已打款总额￥{$info.getmoney}.</b>
+		<table style="border:1px solid #ddd; width:100%" border="1px"> 
+			<tr>       
+			    <td>编号</td>
+			    <td >成员名称</td>
+				<td>业务编号</td>
+				<td>充值订单编号</td>  
+				<td>账单类目</td>  
+				<td>收支金额</td>  
+				<td>触发时间</td>
+			</tr>
+			
+			<volist name ="lists" id ="list" key='k'>
+			<tr>	
+				<td>{$k}</td>
+			    <td>{$list.shareholder_name}</td>
+			    <td>{$list.shareholder_sn}</td>
+			    <td>{$list.link_orderid}</td>
+			    <td> {$list.desc} </td>  
+			    <td>{$list.value}</td>
+			    <td>{$list.addtime|date="Y-m-d H:i:s",###}</td>
+			</tr>	
+			</volist>	  
+			
+		</table>
+		<div class="pagination pagination-right">
+			<ul class="pageNumber">
+				{$page}
+			</ul>   
+		</div>
+		
+		<!-- BEGIN PAGE CONTENT-->
+		
+	</div>
+</div></div>
+<include file="Public:foot" />
+<script type="text/javascript">
+$(function () {
+	var currYear = (new Date()).getFullYear();	
+	var opt={};
+	opt.date = {preset : 'date'};
+	opt.datetime = {preset : 'datetime'};
+	opt.time = {preset : 'time'};
+	opt.default = {
+		theme: 'android-ics light', //皮肤样式
+		display: 'modal', //显示方式 
+		mode: 'scroller', //日期选择模式
+		dateFormat: 'yyyy-mm-dd',
+		lang: 'zh',
+		showNow: true,
+		nowText: "今天",
+		startYear: currYear - 50, //开始年份
+		endYear: currYear + 10 //结束年份
+	};
+  
+	$("#Time1").mobiscroll($.extend(opt['date'], opt['default']));
+	$("#Time2").mobiscroll($.extend(opt['date'], opt['default']));
+
+});
+</script>
+<script>
+function confirm_get(id){   
+	if(confirm('确认该月的利润已通过线下打款 了？')){
+		var url= "{:U('Fund/ajax_operate_confirm_get')}";  
+		$.ajax({    
+			type: "POST",
+			url: url,   
+			data: {id:id},   
+			dataType: "json",
+			success: function(data){
+				if(data.result == 1){
+					 window.location.reload();
+				}else{     
+					alert(data.desc);
+					window.location.reload();
+				}      
+				  
+			}	     
+		});      
+	}   
+}
+</script>

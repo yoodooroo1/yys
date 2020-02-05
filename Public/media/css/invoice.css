@@ -1,0 +1,97 @@
+/***
+Invoice page
+***/
+.invoice table {
+  margin:30px 0 30px;
+}
+
+.invoice .invoice-logo {
+  margin-bottom:20px;
+}
+
+.invoice .invoice-logo p {
+  padding:5px 0;
+  font-size:26px;
+  line-height:28px;
+  text-align:right;
+}
+
+.invoice .invoice-logo p span {
+  display:block;
+  font-size:14px;
+}
+
+.invoice .invoice-logo-space {
+  margin-bottom:15px;
+}
+
+.invoice .invoice-payment strong {
+  margin-right:5px;
+}
+
+.invoice .invoice-block {
+  text-align:right;
+}
+
+.invoice .invoice-block .amounts {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+/*管理首页*/
+.in_msg{
+  border:1px solid #DDD;
+  line-height:40px;
+  height:40px;
+  background:#EEE;
+  color:#FF0000;
+  margin:10px 0;
+  padding:0 10px;
+}
+.QRcontent{
+  text-align:center;
+  line-height:30px;
+}
+.QRcontent h5{
+  padding-left:10px;
+  font-weight:700;
+  text-align:center;
+  letter-spacing:3px;
+}
+.QRcode{
+  width:150px;
+  padding:10px;
+  background:#FFF;
+  border:1px solid #EEE;
+  border-radius:5px !important;
+  display:inline-block;
+  text-align:center;
+}
+.QRcode img{
+  width:100%;
+  border-radius:5px;
+}
+.saveBtn{
+  color:#FFF;
+  background:#008100;
+  padding:3px 48px;
+  letter-spacing:2px;
+  border-radius:5px !important;
+  display:inline-block;
+  text-decoration:none !important;
+  margin:6px 0 8px;
+}
+.saveBtn:hover{
+  text-decoration:none;
+  color:#FFF;
+}
+.QRcontent p{  
+  font-size:0.9rem;
+  color:#999;
+}
+.xunLogo{
+  width:1.35em;
+}
+ul.page-sidebar-menu > li > a.logoA{
+  border-top:0 !important;
+}

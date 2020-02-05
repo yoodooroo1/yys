@@ -1,0 +1,65 @@
+<include file="Public:head"/>
+<style type="text/css">
+	hr{margin:0; padding:0;}
+	table tr:nth-child(1){  
+		background:#eee;  
+		font-size:0.75rem;
+		font-weight:bold;
+		color:#333;
+	}
+	td{
+		padding:14px 10px;
+		text-align:center;
+		border:1px solid #DDD;
+	}     
+	button {
+		background: #4D90FE;
+		color: #FFF;
+		border: 1px solid #4D90FE;
+		padding: 5px 14px;
+		margin: 10px 5px;   
+		border-radius: 5px !important;
+	}
+</style>
+<div class="container-fluid">  
+	  
+	<!-- BEGIN PAGE CONTENT-->          
+	<div class="row-fluid"  >
+		<a href="{:U('Shareholder/operate_shareholder_info',array('operate_id'=>$operate_id))}"><button >新增股东</button></a>  <!-- <button>内部分红明细</button>  -->  
+		<table style="border:1px solid #ddd; width:100%" border="1px">
+			<tr>
+			    <td>编号</td>   
+			    <td >股东名称/手机号</td>
+				<td>开户银行</td>
+				<td>收款名称</td>  
+				<td>卡号</td>
+				<td>股东身份</td>
+				<td>运营比例</td>
+				<td>加入时间</td>
+				<td>操作</td>   
+				
+			</tr>
+			 
+				<volist name ="lists" id ="list">
+				<tr>
+				<td style="text-align:center">{$list.id}</td>   
+				<td style="text-align:center">{$list.shareholder_name}/{$list.shareholder_tel}</td>   
+				<td>{$list.bank_name}</td> 
+				<td>{$list.bank_username}</td>
+				<td>{$list.bank_sn}</td>	  
+				<td>{$list.shareholder_role}</td>	  
+				<td>{$list.share_rate}</td>	   
+				<td>{$list.addtime|date="Y-m-d H:i:s",###}</td>   
+				<td><a href="{:U('Shareholder/holder_month_price_record',array('shareholder_id'=>$list['id']))}">查看</a>&nbsp;
+				<a href="{:U('Shareholder/operate_shareholder_info',array('id'=>$list['id'],'operate_id'=>$operate_id))}">编辑</a>&nbsp;
+				<a href="{:U('Shareholder/del_shareholder',array('id'=>$list['id']))}">删除</a>
+				</td>	       
+				</tr>                       
+				</volist>   
+		</table>
+		
+		<!-- BEGIN PAGE CONTENT-->
+		
+	</div>
+</div></div>
+<include file="Public:foot" />
