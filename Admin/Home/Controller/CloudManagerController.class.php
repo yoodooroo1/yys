@@ -95,10 +95,10 @@ class CloudManagerController extends AdminController
             die;
         }
 
-        if(empty($market_price)){
-            $this->error('商品价格不能为空');
-            die;
-        }
+//        if(empty($market_price)){
+//            $this->error('商品价格不能为空');
+//            die;
+//        }
 
         if($market_price1<0||$market_price2<0||$market_price3<0){
             $this->error('价格格式错误');
@@ -113,7 +113,9 @@ class CloudManagerController extends AdminController
         $data['package_id'] = $package_id;
         $data['cloud_product_id'] = $cloud_product_id;
         $data['spec_name'] = $spec_name;
-        $data['market_price'] = $market_price;
+        $data['market_price1'] = $market_price1;
+        $data['market_price2'] = $market_price2;
+        $data['market_price3'] = $market_price3;
         $data['try_day'] = $try_day;
         $data['status'] = 1;
 

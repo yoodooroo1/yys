@@ -19,9 +19,9 @@ class MarketController extends Controller
         parent::__construct();
     }
 
-    private $admin_url = 'http://devp.6cm.net/yys/';
+//    private $admin_url = 'http://devp.6cm.net/yys/';
 
-//    private $admin_url = ADMIN_URL;
+    private $admin_url = ADMIN_URL;
 
     private $store_parenttype_id = 1;
 
@@ -167,13 +167,111 @@ class MarketController extends Controller
                         $response['account_id'] = $account_id;
                         $response['user'] = $xunxin_num;
                         $response['password'] = $passWard;
-                        $response['index_url'] = 'http://dev.duinin.com/admin.php';
+                        $response['index_url'] = 'http://m.duinin.com/admin.php';
                         $this->output_data($response);
                     } else {
                         $this->output_error($rt2['error']);
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * 续费
+     */
+    public function renewShop(){
+        $account_id = I('account_id');
+        $age_limit = I('age_limit');
+        $cloud_product_id = I('cloud_product_id');
+        $spec_name = I('spec_name');
+        $rt = array();
+
+        $m = M('stores');
+        $w = array();
+        $w['account_id'] = $account_id;
+        $w['isdelete'] = 0;
+        $info = $m->where($w)->find();
+        $store_id = $info['store_id'];
+        if(empty($info['package_id'])){
+            $this->output_error('该店铺没有购买套餐');
+        }else{
+            $cloudProduct = $this->getCloudProduct($cloud_product_id,$spec_name);
+            if(empty($cloudProduct)){
+                $this->output_error('未找到相应的配置');
+            }
+
+            if($age_limit == '1'){
+                $cost_price = $cloudProduct['market_price1'];
+            }else if($age_limit == '2'){
+                $cost_price = $cloudProduct['market_price2'];
+            }else if($age_limit == '3'){
+                $cost_price = $cloudProduct['market_price3'];
+            }
+
+            if(empty($info['operate_id'])){
+             $this->output_error('代理商不存在');
+            }
+            $operate_info = M('operate_center')->where(array('id'=>$info['operate_id']))->find();
+            if($cost_price > $operate_info['money']){
+                $this->output_error('该运营商预存资金为￥'.$operate_info['money'].',购买套餐成本为￥'.$cost_price.',预存资金不足');
+            }
+            $w2 = array();
+            $w2['packageid'] = $info['package_id'];
+            $w2['status'] = 1;
+            $packageinfo = M('package_list')->where($w2)->find();
+            if(empty($packageinfo)){
+                $rt['status'] = -1;
+                $rt['error'] = '该套餐不存在';
+                die(json_encode($rt,JSON_UNESCAPED_UNICODE));
+            }
+            if($age_limit == 1){
+                $market_price = $packageinfo['market_price'];
+            }else if($age_limit == 2){
+                $market_price = $packageinfo['market_price2'];
+            }else if($age_limit == 3){
+                $market_price = $packageinfo['market_price3'];
+            }
+            $sync_url = M('system_config')->where(array('status'=>1))->getField('sync_url');
+            $url = "http://".$sync_url."/xxapi/index.php?act=operate&op=pcReNews";
+            $out_trade_no = 'pcupgrade_'.date('ymdHis').'-'.$info['member_id'];
+            $param = array();
+            $param['channel_id'] = 0;
+            $param['store_id'] = $store_id;
+            $param['out_trade_no'] = $out_trade_no;
+            $param['age_limit'] = $age_limit;
+            $param['money'] = $market_price;
+            $json = $this->postCurl($url,$param);
+            $datas = json_decode($json,true);
+            if($datas['status'] == 1){
+                if(!empty($info['operate_id'])){
+                    $da = array();
+                    $da['value'] = 0 -$cost_price;
+                    $da['final_value'] = $operate_info['money'] - $cost_price;
+                    $da['operate_id'] = $info['operate_id'];
+                    $da['type'] = 2;
+                    $da['order_sn'] = $out_trade_no;
+                    $da['periods'] = date('Y-m-d');
+                    $da['addtime'] = mktime();
+                    $da['editor'] =  session('loginname');
+                    $da['status'] = 1;
+                    if(M('operate_trade_record')->add($da)){
+                        $check = M('operate_center')->where(array('id'=>$info['operate_id']))->setDec('money',$cost_price);
+                        if($check !== false){
+                            $data = [];
+                            $data['order_id'] = $out_trade_no;
+                            $this->output_data($data);
+                        }else{
+                            $this->output_error('更改运营商预存金额失败');
+                        }
+                    }else{
+                        $this->output_error('更改运营商预存金额失败');
+                    }
+                }else{
+                    $this->output_error('更改运营商预存金额失败');
+                }
+            }
+
         }
     }
 
