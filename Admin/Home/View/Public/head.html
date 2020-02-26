@@ -290,6 +290,21 @@
 					<span class="selected"></span>
 				</a>
 			</li>
+			  <li class="{$ui.qcloud_config}{$ui.qcloud_info}">
+				  <a href="javascript:;">
+					  <i class="icon-cloud"></i>
+					  <span class="title">腾讯云市场配置</span>
+					  <span class="selected "></span>
+				  </a>
+				  <ul class="sub-menu">
+					  <li class="{$ui.qcloud_config}">
+						  <a href="{:U('CloudManager/qcloud_config')}"> 商品配置</a>
+					  </li>
+					  <li class="{$ui.qcloud_info}">
+						  <a href="{:U('CloudManager/qcloud_info')}"> 新增商品</a>
+					  </li>
+				  </ul>
+			  </li>
 		<?php }else{ ?>  
             <li class="{$ui.index}">
 				<a href="{:U('Shareholder/index')}">

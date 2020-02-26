@@ -1,0 +1,167 @@
+<include file="Public:head"/>
+<link href="__ROOT__/Public/media/css/layout.css" rel="stylesheet" type="text/css"/>
+<script src="__ROOT__/Public/layer/layer.js"></script>
+<div class="container-fluid">
+    <!-- BEGIN PAGE HEADER-->
+    <div class="title">
+        <h4 class="page-title">运营商管理<small>   Operate management</small></h4>
+        <ul class="breadcrumb">
+            <li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> <i class="icon-angle-right"></i></li>
+            <li><a href="#">运营商管理</a><i class="icon-angle-right"></i></li>
+            <if condition="$act eq 'info'">
+                <li><a href="{:U('CloudManager/qcloud_config')}">商品列表</a><i class="icon-angle-right"></i></li>
+                <li><a href="#"><strong>商品详情</strong></a></li>
+                <else />
+                <li><a href="#"><strong>添加商品</strong></a></li>
+            </if>
+        </ul>
+    </div><!-- END PAGE TITLE & BREADCRUMB-->
+    <if condition="$act neq 'info'">
+        <div class="nav-tabs">
+            <ul >
+                <li class="{$ui.qcloud_config}"> <a href="{:U('CloudManager/qcloud_config')}"> 商品配置</a> </li>
+                <li class="{$ui.qcloud_info}"> <a href="{:U('CloudManager/qcloud_info')}"> 新增商品</a> </li>
+            </ul>
+        </div>
+    </if><!-- END PAGE HEADER-->
+    <div style="position:fixed;line-height:0px;z-index:-2">  <!--解决360浏览器自动填充账号密码问题-->
+        <input style="line-height:0px" type='text'  /><input style="line-height:0px" type='password' >
+    </div>
+    <div class="main-content" >
+        <form action="{:U('CloudManager/qcloud_edit')}" method="post"  name="add-submit"  id="form1" onSubmit="return checkTabel();">
+            <table name="add_table">
+                <tr>
+                    <td><font style="color:red; font-size:15px ;">* </font>套餐名称</td>
+                    <td>
+                        <select name="package_id" style="width:415px;">
+                            <option value="1" <?php if($info['package_id'] == "1") echo "selected = 'selected'"; ?>  >  商铺版 </option>
+                            <option value="2" <?php if($info['package_id'] == "2") echo "selected = 'selected'"; ?>  >  批发版 </option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><font style="color:red; font-size:15px ;">* </font>运营商ID</td>
+                    <td>
+                        <input type="text" name="operate_id" value="{$info.operate_id}" /><font style="color:#a1a1a1"> 备注：请保证运营商有充足的预存余额</font>
+                    </td>
+                </tr>
+                <tr>
+                    <td><font style="color:red; font-size:15px ;">* </font>商品ID</td>
+                    <td>
+                        <input type="text" value="{$info.cloud_product_id}" name="cloud_product_id"/> <font style="color:#a1a1a1"> 备注： 请与腾讯云市场配置保持一致</font>
+                    </td>
+                </tr>
+                <tr>
+                    <td><font style="color:red; font-size:15px ;">* </font>规格名称</td>
+                    <td>
+                        <input type="text" name="spec_name" value="{$info.spec_name}"/><font style="color:#a1a1a1"> 备注：请与腾讯云市场配置保持一致</font>
+                    </td>
+                </tr>
+                <tr>
+                    <td><font style="color:red; font-size:15px ;">* </font>一年价格</td>
+                    <td>
+                        <input type="text" name="market_price1"  value="{$info.market_price1}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><font style="color:red; font-size:15px ;">* </font>两年价格</td>
+                    <td>
+                        <input type="text" name="market_price2"  value="{$info.market_price2}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><font style="color:red; font-size:15px ;">* </font>三年价格</td>
+                    <td>
+                        <input type="text" name="market_price3"  value="{$info.market_price}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><font style="color:red; font-size:15px ;"></font>试用天数</td>
+                    <td>
+                        <input type="text" name="try_day"  value="{$info.try_day}" />
+                    </td>
+                </tr>
+            </table>
+
+            <div class="info-input">
+                <input  type="submit" value="确定"/>
+                <if condition="$act eq 'info' ">
+                    <input type="hidden" value="{$info.id}" name="id"/>
+                </if>
+                <input type="hidden" value="{$act}" name="act">
+            </div>
+        </form>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function checkTabel(){
+        var package_id = $("input[name=package_id]").val();
+        var operate_id = $("input[name=operate_id]").val();
+        var cloud_product_id = $("input[name=cloud_product_id]").val();
+        var spec_name = $("input[name=spec_name]").val();
+        var market_price1 = $("input[name=market_price1]").val();
+        var market_price2 = $("input[name=market_price2]").val();
+        var market_price3 = $("input[name=market_price3]").val();
+        var try_day = $("input[name=try_day]").val();
+
+        if(package_id == ''){
+            alert("请输入选择套餐");
+            return false;
+        }
+
+        if(operate_id == ''){
+            alert("请输入运营商ID");
+            return false;
+        }
+
+        if(cloud_product_id == ''){
+            alert("请输入商品ID");
+            return false;
+        }
+
+        if(spec_name == ''){
+            alert("请输入规格名称");
+            return false;
+        }
+
+        // if(market_price == ''){
+        //     alert("价格不能为空");
+        //     return false;
+        // }
+        return true;
+    }
+</script>
+<script>
+    function change_edit(){
+        var state = $("#is_edit").attr('attr_id');
+        var operate_id = "{$info.id}";
+        var url="{:U('Operate/ajax_change_edit')}";
+        $.ajax({
+            type:'get',
+            url:''+url+'',
+            data:'operate_id=' + operate_id + '&state=' + state,
+            dataType:'text',
+            success:function(msg){
+                if(msg == -1){
+                    alert('更改状态失败');
+                }else{
+                    if(state == 0){
+                        $("#is_edit").attr('attr_id',1);
+                        $("#is_edit").val('已开启前端编辑');
+                        $("#is_edit").removeClass('bg_red');
+                    }else{
+                        $("#is_edit").attr('attr_id',0);
+                        $("#is_edit").val('已关闭前端编辑');
+                        $("#is_edit").addClass('bg_red');
+                    }
+                }
+            },
+            error:function(){
+                alert('访问失败');
+            }
+        })
+    }
+</script>
+<include file="Public:foot" />

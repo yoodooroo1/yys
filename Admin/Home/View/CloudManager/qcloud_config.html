@@ -1,0 +1,60 @@
+<include file="Public:head"/>
+<script type="text/javascript" src="__ROOT__/Public/media/js/area.min.js"></script>
+<link href="__ROOT__/Public/media/css/layout.css" rel="stylesheet" type="text/css"/>
+<style>
+    .small_input input[type="text"]{
+        max-width:65px;
+    }
+</style>
+<div class="container-fluid">
+    <!-- BEGIN PAGE HEADER-->
+    <div class="title">
+        <ul class="breadcrumb">
+            <li><i class="icon-home"></i><a href="{:U('Index/index')}">首页</a> <i class="icon-angle-right"></i></li>
+            <li><a href="#">系统管理</a><i class="icon-angle-right"></i></li>
+            <li><a href="#"><strong>腾讯云市场配置</strong></a></li>
+        </ul>
+    </div>
+    <div  class="nav-tabs">
+        <ul >
+            <li class="{$ui.qcloud_config}"> <a href="{:U('CloudManager/qcloud_config')}"> 商品列表</a> </li>
+            <li class="{$ui.qcloud_info}"> <a href="{:U('CloudManager/qcloud_info')}"> 新增商品</a> </li>
+        </ul>
+    </div><!-- END PAGE HEADER-->
+    <div class="main-content" >
+        <form action="{:U('CloudManager/award_config')}" method="post" name="add-submit" enctype="multipart/form-data" onSubmit="return checkMust()">
+            <table name="table-list">
+                <tr>
+                    <th>套餐名称</th>
+                    <th>运营商ID</th>
+                    <th>商品ID</th>
+                    <th>规格名称</th>
+<!--                    <th>价格</th>-->
+<!--                    <th>试用天数</th>-->
+                    <th width="100">操作</th>
+                </tr>
+                <volist name ="lists" id ="list">
+                    <tr>
+                        <td style="text-align:center">{$list.package_name}</td>
+                        <td style="text-align:center">{$list.operate_id}</td>
+                        <td>{$list.cloud_product_id}</td>
+                        <td>{$list.spec_name}</td>
+<!--                        <td>{$list.market_price}</td>-->
+<!--                        <td>{$list.try_day}</td>-->
+                        <td>
+                            <a href="{:U('CloudManager/qcloud_info',array('id'=>$list['id']))}">编辑</a>
+                            <a href="{:U('CloudManager/delete_info',array('id'=>$list['id']))}">删除</a>
+                        </td>
+                    </tr>
+                </volist>
+            </table>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+</script>
+<!--查找地图-->
+
+<include file="Public:foot" />

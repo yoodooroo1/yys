@@ -19,42 +19,26 @@ class MarketController extends Controller
         parent::__construct();
     }
 
+    private $admin_url = 'http://devp.6cm.net/yys/';
+
+//    private $admin_url = ADMIN_URL;
+
     private $store_parenttype_id = 1;
 
     private $store_childtype_id = 2;
 
-    /**
-     * 获取市场配置
-     * @param int $marketType
-     * @param array $condition
-     * @return mixed|null
-     */
-    public function getMarketConfig($marketType = 0,$condition = []){
-        $config = NULL;
-        $m = M('cloud_market_config');
-        $where = [];
-        $where['is_delete'] = 0;
-        $where['status'] = 1;
-        $where['cloud_market_type'] = $marketType;
-        if(!empty($condition)){
-            $where['_complex'] = $condition;
-        }
-        $config = $m->where($where)->find();
-        return $config;
-    }
 
-    public function getCloudProduct($id = 0){
+    public function getCloudProduct($id = 0 , $spec_name = ''){
         $where = [];
         $where['cloud_product_id'] = $id;
+        if($spec_name){
+            $where['spec_name'] = (string)trim($spec_name);
+        }else{
+            $where['package_id'] = 1;
+        }
         $where['status'] = 1;
-        return M('cloud_product')->where($where)->find();
-    }
-
-    public function getCloudSpec($spec_name = ''){
-        $where = [];
-        $where['spec_name'] = (string)trim($spec_name);
-        $where['status'] = 1;
-        return M('cloud_product_spec')->where($where)->find();
+        $where['is_delete'] = 0;
+        return M('cloud_product_list')->where($where)->find();
     }
 
     public function getOperate($id = 0){
@@ -62,11 +46,6 @@ class MarketController extends Controller
         $where['id'] = $id;
         $where['status'] = 1;
         return M('operate_center')->where($where)->find();
-    }
-
-    public function test(){
-       $marketConfig = $this->getCloudSpec('普通版');
-       $this->output_data($marketConfig);
     }
 
     /**
@@ -79,36 +58,31 @@ class MarketController extends Controller
      * params  string $remark 备注
      */
     public function openShop(){
-        $market_type = I('cloud_market_type');
+//        $market_type = I('cloud_market_type');
         $is_try = I('is_try');
         $cloud_product_id = I('cloud_product_id');
         $age_limit = I('age_limit');
         $openId = I('qcloud_openId');
         $spec_name = I('spec_name');
+        if($is_try == '1'){
+            $spec_name = '';
+        }
         $remark  = I('remark');
-        $marketConfig = $this->getMarketConfig($market_type);
-        if(empty($marketConfig)){
+        $cloudProduct = $this->getCloudProduct($cloud_product_id,$spec_name);
+        if(empty($cloudProduct)){
             $this->output_error('未找到相应的配置');
         }
-        $operate_id = $marketConfig['operate_id'];
+        $operate_id = $cloudProduct['operate_id'];
         $operate_info = $this->getOperate($operate_id);
         if(empty($operate_info)){
             $this->output_error('未找到相应的代理商');
         }
-        $cloud_product_info = $this->getCloudProduct($cloud_product_id);
-        if(empty($cloud_product_info)){
-            $this->output_error('未找到相应的商品');
+        $package_id = $cloudProduct['package_id'];
+        $vip = M('package_list')->where(array('packageid'=>$package_id,'status'=>1))->getField('up_level');
+        if(empty($vip)){
+            $this->output_error('套餐配置错误');
         }
-        $spec_info = $this->getCloudSpec($spec_name);
-        if(empty($spec_info)){
-            $this->output_error('未找到相应的规格');
-        }
-        if($cloud_product_info['product_id']!=$spec_info['product_id']){
-            $this->output_error('规格和商品不对应');
-        }
-        $package_id = $spec_info['package_id'];
-        $vip = $spec_info['up_level'];
-        $try_day = $cloud_product_info['try_day'];
+        $try_day = $cloudProduct['try_day'];
         $xunxin_num = $this->getXunXinNum($vip);
         if(empty($xunxin_num)){
             $this->output_error('迅信帐号为空');
@@ -116,7 +90,7 @@ class MarketController extends Controller
         $passWard = $this->randNum(6);
         $params = array();
         $params['package_id'] = $package_id;
-        $params['shopName'] = '测试'.time();  //商户名
+        $params['shopName'] = '腾讯云'.$this->randNum(6);  //商户名
         $params['account_membertel'] = '17746071624';  //电话
         $params['qcloud_openId'] = $openId;  //腾讯云客户的标识
         $params['store_parenttype_id'] = $this->store_parenttype_id;
@@ -125,11 +99,12 @@ class MarketController extends Controller
         $params['xunxin_num'] = $xunxin_num;  //讯信账号
         $params['password'] = $passWard;  //密码
         $params['is_try'] = $is_try;  //是否试用
-        if($is_try == '1'){
-            $params['try_time'] = (int)$try_day * 84000;
-        }
         $params['age_limit'] = $age_limit;
-        $params['account_membername'] = '总后台云市场';
+        if($is_try == '1'){
+            $params['try_time'] = (int)$try_day * 84600;
+            $params['age_limit'] = 1;
+        }
+        $params['account_membername'] = '云市场';
 
         if(!empty($remark)){
             $params['remark'] = $remark;
@@ -146,8 +121,16 @@ class MarketController extends Controller
             $this->output_error($rt['error']);
         }else {
             $account_id = $rt['datas'];
-            $market_price = $spec_info['market_price'];
-            $order_id = $this->create_package_order($account_id, $xunxin_num, $is_try, $package_id, $age_limit, $operate_sn, $params['account_membertel'], 4, 0,$market_price,$vip);
+            if($age_limit == '1'){
+                $market_price = $cloudProduct['market_price1'];
+            }else if($age_limit == '2'){
+                $market_price = $cloudProduct['market_price2'];
+            }else if($age_limit == '3'){
+                $market_price = $cloudProduct['market_price3'];
+            }else{
+                $market_price = 0;
+            }
+            $order_id = $this->create_package_order($account_id, $xunxin_num, $is_try, $package_id, $age_limit, $operate_sn, $params['account_membertel'], 3, 1,$vip,$market_price);
             if (empty($order_id)) {
                 $this->output_error('创建订单失败');
             } else {
@@ -163,7 +146,7 @@ class MarketController extends Controller
                     $json2 = $this->postCurl($url2, $params2);
                     $rt2 = json_decode($json2, true);
                     if ($rt2['result'] == '0' || $rt2['result'] == '-10' || $rt2['result'] == '1001') {
-                        $order_sn = $operate_info['order_sn'];
+                        $order_sn = M('vip_orders')->where(array('id'=>$order_id))->getField('orderSn');
                         M('data_record')->where(array('order_sn' => $order_sn))->save(array('open_result' => 'SUCCESS'));
                         $newdata = array();
                         $newdata['rechargetime'] = mktime();
@@ -173,18 +156,18 @@ class MarketController extends Controller
                         $this->settlement_package_order($order_id);
                         $this->checkOperateUplevel($operate_info['id']);
                         $auth_code = M('system_config')->where(array('status' => 1))->getField('auth_code');
-                        $sync_url = ADMIN_URL.'/index.php?m=api&c=Store&a=index&auth_code=' . $auth_code;
+                        $sync_url = $this->admin_url.'/index.php?m=api&c=Store&a=index&auth_code='.$auth_code;
                         $x = 1;
                         do {
                             $json = file_get_contents($sync_url);
                             $result = json_decode($json, true);
                         } while (++$x <= 3 && $result['result'] != '0' && $result['result'] != '1');
                         $response = [];
-                        $response['order_id'] = $order_sn;
-                        $response['account_id'] = $rt2['datas'];
+                        $response['order_id'] = $order_id;
+                        $response['account_id'] = $account_id;
                         $response['user'] = $xunxin_num;
                         $response['password'] = $passWard;
-                        $response['index_url'] = 'http://m.duinin.com/admin.php';
+                        $response['index_url'] = 'http://dev.duinin.com/admin.php';
                         $this->output_data($response);
                     } else {
                         $this->output_error($rt2['error']);
@@ -208,7 +191,7 @@ class MarketController extends Controller
      * params  tinyint $store_id  店铺编号
      * return  int $order_id  订单编号
      */
-    public function create_package_order($account_id,$member_name,$is_try,$package_id,$age_limit,$recommend_code,$tel,$paytype,$type,$market_price,$up_level,$store_id = ''){
+    public function create_package_order($account_id,$member_name,$is_try,$package_id,$age_limit,$recommend_code,$tel,$paytype,$type,$up_level,$price,$store_id = ''){
 
         $shareholder_info = M('operate_shareholder')->where(array('shareholder_sn'=>$recommend_code))->find();
         if(!empty($shareholder_info)){
@@ -225,68 +208,41 @@ class MarketController extends Controller
         if($is_try == 1){
             $cost_price = 0;
         }else{
-            $cost_price = $market_price;
 //            $cost_price = $this->getPackageCostPrice($age_limit,$package_id,$operate_id,$store_id);
+            $cost_price = $price;
         }
         $datas['cost_price'] = $cost_price;
         $datas['age_limit'] = $age_limit;
         /*获取用户套餐购买价格*/
         $w = array();
         $w['packageid'] = $package_id;
-        $w['is_show'] = 1;
-        $w['status'] = 1;
-//        $marketinfo = M('package_list')->where($w)->field('market_price,market_price2,market_price3')->find();
+        $w['is_show'] =1;
+        $w['status'] =1;
+        $marketinfo = M('package_list')->where($w)->field('market_price,market_price2,market_price3')->find();
         if($is_try == 1){
             $market_price = 0;
+        }else{
+            if($age_limit == 1){
+                $market_price = $marketinfo['market_price'];
+            }else if($age_limit == 2){
+                $market_price = $marketinfo['market_price2'];
+            }else{
+                $market_price = $marketinfo['market_price3'];
+            }
         }
-//        else{
-//            if($age_limit == 1){
-//                $market_price = $marketinfo['market_price'];
-//            }else if($age_limit == 2){
-//                $market_price = $marketinfo['market_price2'];
-//            }else{
-//                $market_price = $marketinfo['market_price3'];
-//            }
-//        }
         $datas['sale_price'] = $market_price;
         /*管理员添加时，实际售价等于成本价*/
-        if($type == 1){
-            if($is_try == 1){
-                $actual_price = 0;
-            }else{
-                $actual_price = $cost_price;
-            }
+        if($is_try == 1){
+            $actual_price = 0;
         }else{
-            if($is_try == 1){
-                $actual_price = 0;
-            }else{
-                if(!empty($store_id)){
-                    $actual_price = $market_price;
-                }else{
-                    $edit = M('shareholder_package_edit');
-                    $w3 = array();
-                    $w3['operate_id'] = $operate_id;
-                    $w3['package_id'] = $package_id;
-                    $w3['status'] = 1;
-                    $priceinfo = $edit->where($w3)->field('package_price,package_price2,package_price3')->find();
-                    if($age_limit == 1){
-                        $package_price = $priceinfo['package_price'];
-                    }else if($age_limit == 2){
-                        $package_price = $priceinfo['package_price2'];
-                    }else if($age_limit == 3){
-                        $package_price = $priceinfo['package_price3'];
-                    }
-                    $actual_price = empty($package_price) ? $market_price : $package_price;
-                }
-            }
+            $actual_price = $cost_price;
         }
-
         /*获取用户套餐购买价格结束*/
-        $datas['actual_price'] = $market_price;
+        $datas['actual_price'] = $actual_price;
         if(!empty($shareholder_info)){
             $recommend_profit = ($actual_price-$cost_price)* $shareholder_info['recommend_rate']/100;
         }else{
-        $recommend_profit = 0;
+            $recommend_profit = 0;
         }
         $datas['recommend_profit'] = $recommend_profit;
         $datas['operate_profit'] = 0-$cost_price-$recommend_profit;
@@ -627,8 +583,6 @@ class MarketController extends Controller
         return $num;
     }
 
-
-
     public function postCurl($url='',$data = array()) {
 
         $ch = curl_init ();
@@ -652,18 +606,17 @@ class MarketController extends Controller
         }
     }
 
-
-    function output_error($error = '')
+    public function output_error($error = '')
     {
         $data = array();
         $data['result'] = -1;
         $data['code'] = 500;
-        $data['error_msg'] = $error;
+        $data['msg'] = $error;
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
         die;
     }
 
-    function output_data($datas, $msg = '')
+    public function output_data($datas, $msg = '')
     {
         $data = array();
         $data['result'] = 0;
@@ -674,7 +627,7 @@ class MarketController extends Controller
         die;
     }
 
-    function randNum($length = 10, $type = 0)
+    public function randNum($length = 10, $type = 0)
     {
         $arr = array(1 => "3425678934567892345678934567892", 2 => "ABCDEFGHJKLMNPQRSTUVWXY");
         $code = '';
